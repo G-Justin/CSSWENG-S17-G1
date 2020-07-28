@@ -7,6 +7,9 @@ var OrderItemSchema = new mongoose.Schema({
     amount: {
         type: Number,
         min: 0
+    },
+    price: {
+        type: Number
     }
 });
 
