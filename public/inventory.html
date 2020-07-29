@@ -152,7 +152,8 @@
 
     <div>
         <button type="button" class="btn btn-lg" data-toggle="modal" data-target="#myModal" style = "background-color: rgb(215, 201, 151)" id = "btnI">Check Inventory</button>
-        <button type="button" class="btn btn-lg" data-toggle="modal" data-target="#myModal2" style = "background-color: rgb(215, 201, 151)" id = "btnA">Check Amount Sold & Available Color/Size</button>
+        <button type="button" class="btn btn-lg" data-toggle="modal" data-target="#myModal2" style = "background-color: rgb(215, 201, 151)" id = "btnA">Check Amount Sold & Available Color/Size</button><br>
+        <button type="button" class="btn btn-lg" data-toggle="modal" data-target="#production" style = "background-color: rgb(215, 201, 151); margin-left: 42%; margin-top: 2%;">Request Production</button>
 
     </div>
 
@@ -430,6 +431,60 @@
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div id="production" class="modal fade" role="dialog"  style = "text-align: center; margin-top: 10%">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header" style = "background-color: rgb(215, 201, 151)">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Production Request</h4>
+            </div>
+            <div class="modal-body">
+              <label for="style">Choose a Style:</label>
+                <select name="style" id="style">
+                    <option value="style 1">Style 1</option>
+                    <option value="style 2">Style 2</option>
+                    <option value="foam 1">Foam 1</option>
+                </select><br>
+                <label for="color">Choose a Color:</label>
+                <select name="color" id="color">
+                    <option value="ICON">ICON</option>
+                    <option value="BLACK">BLACK</option>
+                    <option value="MAROON">MAROON</option>
+                    <option value="PGE">PGE</option>
+                    <option value="CAR27">CAR27</option>
+                    <option value="SKINTN62">SKINTN62</option>
+                    <option value="PPINK33">PPINK33</option>
+                    <option value="ABLUE44">ABLUE44</option>
+                    <option value="LGRAY36">LGRAY36</option>
+                    <option value="CYAN46">CYAN46</option>
+                    <option value="GRN63">GRN63</option>
+                    <option value="SUNKIST65">SUNKIST65</option>
+                    <option value="MUSTARD30">MUSTARD30</option>
+                    <option value="MOSSGRN58">MOSSGRN58</option>
+                    <option value="D GRAY18">D GRAY18</option>
+                    <option value="MAGENDA56">MAGENDA56</option>
+                    <option value="RBLUE17">RBLUE17</option>
+                    <option value="NBLUE19">NBLUE19</option>
+                </select><br>
+                <label for="size">Choose a Style:</label>
+                <select name="size" id="sise">
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">X</option>
+                    <option value="XL">XL</option>
+                </select><br>
+                <label for="amount">Enter Amount: </label>
+                <input type="text" name="amount">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" style = "background-color: rgb(215, 201, 151)">Request</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+      
         </div>
       </div>
 </body>
