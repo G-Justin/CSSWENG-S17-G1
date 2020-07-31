@@ -55,7 +55,7 @@
             });
         }); 
         
-       
+        var count = 0;
          $(document).ready(function() {
             var table = $('#table').DataTable();
 
@@ -76,16 +76,17 @@
                 table.row.add( [
                     '<button id = "btnC" data-toggle="modal" data-target="#myModal" style = "width:100px;min-height:15px"></button>','','','','','','','','','','','','','',''
                 ] ).draw( false );
-                $('#btnC').click( function () {
+                document.getElementById('btnC').id = 'btnC'+count;
+                $('#btnC'+count).click( function () {
                     var table =  $('#table_id').DataTable({
                     "oSearch":
                     {
-                        "sSearch": $('#btnC').text()
+                        "sSearch": $(this).text()
                     },
                     "bDestroy": true
                     });
                 }); 
-
+                    count ++;
             });
 
             });  
