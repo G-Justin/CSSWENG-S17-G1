@@ -35,7 +35,7 @@
 
             $('#addRow').on( 'click', function () {
                 table.row.add( [
-                    '','','','','','',''
+                    '','','','','','','','','','','<select><option value="IP">In process</option><option value="Done">Done</option><option value="Cancelled">Cancelled</option><option value="Sewing">Sewing</option><option value="Cutting">Cutting</option></select>',''
                 ] ).draw( false );
             });
         });
@@ -51,114 +51,131 @@
             <thead>
                 <tr>
                     <th>Date Endoded</th>
+                    <th>Jo/Batch Number</th>
                     <th>Style</th>
+                    <th>Description</th>
                     <th>Color</th>
                     <th>S</th>
                     <th>M</th>
                     <th>L</th>
                     <th>XL</th>
+                    <th>TTL</th>
+                    <th>Status update</th>
+                    <th>remarks</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>2020/01/01</td>
-                    <td>Style 1</td>
-                    <td>ICON</td>
-                    <td>2</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                </tr>
-                <tr>
-                    <td>2020/01/02</td>
-                    <td>Style 2</td>
-                    <td>BLACK</td>
+                    <td>1</td>
+                    <td>S1</td>
+                    <td>Surgical Solid</td>
+                    <td>ICON - Purple</td>
                     <td>3</td>
-                    <td>0</td>
-                    <td>12</td>
-                    <td>0</td>
-                </tr>
-                <tr>
-                    <td>2020/01/03</td>
-                    <td>Style 1</td>
-                    <td>PGE</td>
-                    <td>0</td>
-                    <td>100</td>
-                    <td>0</td>
-                    <td>0</td>
+                    <td>3</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>9</td>
+                    <td>
+                        <select>
+                            <option value="IP">In process</option>
+                            <option value="Done">Done</option>
+                            <option value="Cancelled">Cancelled</option>
+                            <option value="Sewing">Sewing</option>
+                            <option value="Cutting">Cutting</option>
+                        </select>
+                    </td>
+                    <td></td>
                 </tr>
                 <tr>
                     <td>2020/01/05</td>
-                    <td>Style 1</td>
-                    <td>SKNTN62</td>
                     <td>1</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                </tr>
-                <tr>
-                    <td>2020/01/21</td>
-                    <td>Style 1</td>
-                    <td>LGRAY36</td>
-                    <td>0</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>0</td>
-                </tr>
-                <tr>
-                    <td>2020/01/22</td>
-                    <td>Style 1</td>
-                    <td>CYAN46</td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>0</td>
-                    <td>0</td>
-                </tr>
-                <tr>
-                    <td>2020/02/01</td>
-                    <td>Style 1</td>
-                    <td>MAGENDA56</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>1</td>
-                </tr>
-                <tr>
-                    <td>2020/02/02</td>
-                    <td>Style 1</td>
-                    <td>BLACK</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>9</td>
-                </tr>
-                <tr>
-                    <td>2020/02/05</td>
-                    <td>Style 1</td>
-                    <td>ICON</td>
-                    <td>2</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                </tr>
-                <tr>
-                    <td>2020/02/06</td>
-                    <td>Style 2</td>
-                    <td>GRN63</td>
+                    <td>S1</td>
+                    <td>Surgical Solid</td>
+                    <td>Angel BLue</td>
                     <td>3</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
+                    <td>3</td>
+                    <td>3</td>
+                    <td>3</td>
+                    <td>12</td>
+                    <td>
+                        <select>
+                            <option value="IP">In process</option>
+                            <option value="Done">Done</option>
+                            <option value="Cancelled">Cancelled</option>
+                            <option value="Sewing">Sewing</option>
+                            <option value="Cutting">Cutting</option>
+                        </select>
+                    </td>
+                    <td></td>
                 </tr>
                 <tr>
-                    <td>2020/01/01</td>
-                    <td>Style 1</td>
-                    <td>ICON</td>
+                    <td>2020/01/25</td>
+                    <td>1</td>
+                    <td>S1</td>
+                    <td>Surgical PRINT</td>
+                    <td>PPINK</td>
+                    <td>5</td>
+                    <td>3</td>
                     <td>2</td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>2</td>
+                    <td>1</td>
+                    <td>11</td>
+                    <td>
+                        <select>
+                            <option value="IP">In process</option>
+                            <option value="Done">Done</option>
+                            <option value="Cancelled">Cancelled</option>
+                            <option value="Sewing">Sewing</option>
+                            <option value="Cutting">Cutting</option>
+                        </select>
+                    </td>
+                    <td></td>
                 </tr>
+                <tr>
+                    <td>2020/01/27</td>
+                    <td>1</td>
+                    <td>S1</td>
+                    <td>Surgical Solid</td>
+                    <td>Pale Pink</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>
+                        <select>
+                            <option value="IP">In process</option>
+                            <option value="Done">Done</option>
+                            <option value="Cancelled">Cancelled</option>
+                            <option value="Sewing">Sewing</option>
+                            <option value="Cutting">Cutting</option>
+                        </select>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>2020/02/07</td>
+                    <td>1</td>
+                    <td>S2</td>
+                    <td>Duckbill Print</td>
+                    <td>LightGrey</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>3</td>
+                    <td>
+                        <select>
+                            <option value="IP">In process</option>
+                            <option value="Done">Done</option>
+                            <option value="Cancelled">Cancelled</option>
+                            <option value="Sewing">Sewing</option>
+                            <option value="Cutting">Cutting</option>
+                        </select>
+                    </td>
+                    <td></td>
+                </tr>
+               
             </tbody>
         </table>
         <button id = "addRow" class = "btn btn-primary" style = "background-color: rgb(215, 201, 151); color:black">Add row</button>
