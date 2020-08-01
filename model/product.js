@@ -9,19 +9,69 @@ var ProductSchema = new mongoose.Schema({
         type: String,
         trim: true
     }, 
-    available: {
-        type: Number
-    },
-    sold: {
+    smallInventory: {
         type: Number,
         min: 0
     },
-    size: {
-        type: String,
-        enum: ['B', 'C', 'S', 'M', 'L', 'XL']
+    mediumInventory: {
+        type: Number,
+        min: 0
     },
-    price: {
-        type: Number
+    largeInventory: {
+        type: Number,
+        min: 0
+    },
+    extraLargeInventory: {
+        type: Number,
+        min: 0
+    },
+    smallSold: {
+        type: Number,
+        min: 0
+    },
+    mediumSold: {
+        type: Number,
+        min: 0
+    },
+    largeSold: {
+        type: Number,
+        min: 0
+    },
+    extraLargeSold: {
+        type: Number,
+        min: 0
+    },
+    smallAvailable: {
+        type: Number,
+        min: 0
+    },
+    mediumAvailable: {
+        type: Number,
+        min: 0
+    },
+    largeAvailable: {
+        type: Number,
+        min: 0
+    },
+    extraLargeAvailable: {
+        type: Number,
+        min: 0
+    }, 
+    totalAvailable: {
+        type: Number,
+        min: 0
+    },
+    smallDeficit: {
+        type: Number,
+        min: 0
+    },
+    mediumDeficit: {
+        type: Number, 
+        min: 0
+    },
+    largeDeficit: {
+        type: Number,
+        min: 0
     }
 });
 

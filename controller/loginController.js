@@ -46,8 +46,6 @@ const loginController = {
     }
 }
 
-
-
 function renderLogin(res, err) {
     res.render('login', {
         title: 'Facemustph Admin Login',

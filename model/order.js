@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var CartSchema = new mongoose.Schema({
+var OrderSchema = new mongoose.Schema({
     orderDate: {
         type: Date
     },
@@ -21,9 +21,13 @@ var CartSchema = new mongoose.Schema({
     address: {
         type: String
     },
-    status: {
+    deliveryStatus: {
         type: String,
-        enum: ['PARTIAL', 'DELIVERED']
+        enum: ['NOT DELIVERED', 'DELIVERED']
+    },
+    paymentStatus: {
+        type: String,
+        enum: ['NOT PAID', 'PAID']
     },
     paymentMode: {
         type: String
@@ -32,10 +36,13 @@ var CartSchema = new mongoose.Schema({
     paymentDate: {
         type: Date
     },
+    deliveryMode: {
+        type: String,
+    },
     deliveredDate: {
         type: Date
     },
-    total: {
+    totalItems: {
         type: Number,
         min: 0
     },
@@ -49,4 +56,4 @@ var CartSchema = new mongoose.Schema({
     }]
 });
 
-module.exports = mongoose.model('Cart', CartSchema);
+module.exports = mongoose.model('Order', OrderSchema);

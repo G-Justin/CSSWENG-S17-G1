@@ -4,12 +4,25 @@ var OrderItemSchema = new mongoose.Schema({
     product: {
         type: mongoose.Schema.Types.ObjectId,
     },
-    amount: {
+    smallAmount: {
+        type: Number,
+        min: 0
+    },
+    mediumAmount: {
+        type: Number,
+        min: 0
+    },
+    largeAmount: {
+        type: Number,
+        min: 0
+    },
+    extraLargeAmount: {
         type: Number,
         min: 0
     },
     price: {
-        type: Number
+        type: Number,
+        min: 0
     }
 });
 
