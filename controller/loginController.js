@@ -1,4 +1,7 @@
 const bcrypt = require('bcrypt');
+
+const session = require('express-session');
+
 const database = require('../model/database.js');
 const sanitize = require('mongo-sanitize');
 
@@ -31,8 +34,10 @@ const loginController = {
                     renderLogin(res, true);
                     return;
                 }
-
-                res.redirect('/admin/inventory');
+                
+                //login success
+                req.session.user = usernameResult.username;
+                res.redirect('/admin/orders');
             });
         });
 
@@ -41,7 +46,7 @@ const loginController = {
     }
 }
 
-module.exports = loginController;
+
 
 function renderLogin(res, err) {
     res.render('login', {
@@ -49,3 +54,5 @@ function renderLogin(res, err) {
         //showError: err
     });
 }
+
+module.exports = loginController;

@@ -1,8 +1,46 @@
 const express = require('express');
 const app = express();
+const database = require('../model/database.js');
+
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+
+//INIT COOKIE AND BODY
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(cookieParser());
+
+app.use(session({ // START COOKIE
+    key: 'user_sid', //user session id
+    secret: 'delasalle',
+    resave: false,
+    saveUninitialized: true,
+    store: database.sessionStore,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 // 1 Day.
+    }
+}));
+
+app.use((req, res, next) => { //LOGOUT / BREAK COOKIE
+    if(req.cookies.user_sid && !req.session.user) {
+        res.clearCookie('user_sid');
+    }
+    next();
+});
+
 const loginController = require('../controller/loginController.js');
+app.get('/logout', function(req, res) {
+    req.logout;
+    req.session.destroy(function(err) { });
+    res.redirect('/admin');
+})
 
 app.get('/admin', loginController.getLogin);
 app.post('/admin', loginController.postLogin);
+
+const orderpageController = require('../controller/orderpageController.js');
+app.get('/admin/orders', orderpageController.getOrderpage)
+
+
 
 module.exports = app;
