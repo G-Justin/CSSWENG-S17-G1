@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var AdminSchema = new mongoose.Schema({
+var UserSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
@@ -9,7 +9,11 @@ var AdminSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    userType: {
+        type: String, 
+        enum: ['ADMIN'] //and more
     }
 });
 
-module.exports = mongoose.model('Admin', AdminSchema);
+module.exports = mongoose.model('User', UserSchema);
