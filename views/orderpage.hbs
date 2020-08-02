@@ -3,7 +3,7 @@
 <head>
     <title> Orders </title>
     <link rel="stylesheet" type="text/css" href="../public/css/style1.css">
-    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="../public/css/bootstrap.css">
     <script defer src="https://friconix.com/cdn/friconix.js"> </script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -13,9 +13,44 @@
 
 <body style="background-color: rgb(247, 242, 242);">
 
+    {{>header-admin}}
+
+    <div class="col-sm-2 sidenav">
+        <div class="content-sidenav">
+            <div class="card-body text-center">
+                <div class="cards" >
+                    <div class="card-body">
+                      <h4 class="card-title">Filter</h4>
+                        <div class = "media-text">
+                            <p class="card-text">Deliver Status</p>
+                            <select style="border:solid; background-color: rgba(126, 125, 125, 0); cursor:pointer">
+                                <option value="">Shipped Out</option>
+                                <option>Ongoing</option>
+                            </select>
+                        </div>  
+                      <p class="card-text">Payment Status</p>
+                        <div class = "media-text">
+                        <select style="border:solid; background-color: rgba(126, 125, 125, 0); cursor:pointer">
+                            <option value="">Paid</option>
+                            <option>COD</option>
+                        </select>
+                        </div>  
+                      <p class="card-text">Date</p> 
+                      <form action="">
+                        <input type="date" id="date" name="birthdaydate">
+                      </form>
+                      <span class="input-group-btn filterbtn">
+                        <button class="btn btn-primary" type="button">Filter</button>
+                    </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
         <div class="card-columns">
             <div class="card-body text-center">
-                <div class="card" style="width:400px">
+                <div class="card" style="width:300px">
                     <img class="card-img-top" src={{product_img}} alt="Card image">
                     <div class="card-body">
                       <h4 class="card-title">{{Order_Number}}</h4>
@@ -30,7 +65,7 @@
             </div>
             
             <div class="card-body text-center">
-                <div class="card" style="width:400px">
+                <div class="card" style="width:300px">
                     <img class="card-img-top" src={{product_img}} alt="Card image">
                     <div class="card-body">
                       <h4 class="card-title">{{Order_Number}}</h4>
@@ -45,7 +80,7 @@
             </div>
 
             <div class="card-body text-center">
-                <div class="card" style="width:400px">
+                <div class="card" style="width:300px">
                     <img class="card-img-top" src={{product_img}} alt="Card image">
                     <div class="card-body">
                       <h4 class="card-title">{{Order_Number}}</h4>

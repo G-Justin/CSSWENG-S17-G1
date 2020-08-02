@@ -74,7 +74,7 @@
   }
   
   .nav-head {
-    padding: 18px 0;
+    padding-top: 18px;
     background: #fff;
   }
   @media screen and (max-width: 768px) {
