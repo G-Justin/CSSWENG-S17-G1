@@ -13,7 +13,23 @@ if (port == null || port == "") {
 }
 
 
-hbs.registerPartials(__dirname + '/views/partials');
+app.engine('hbs',exphbs({
+	extname: 'hbs',
+	defaultView: 'main',
+	layoutsDir: __dirname + '/views/layouts/',
+	partialsDir: __dirname + '/views/partials/',
+	helpers: {
+        ifCond: function(v1, v2, options) {
+		  if(v1 === v2) {
+		    return options.fn(this);
+		  }
+		  return options.inverse(this);
+		},
+		json: function(context) {
+    		return JSON.stringify(context);
+		}
+    }
+}));
 
 app.set('view engine', 'hbs');
 app.use(express.urlencoded({extended: true}));
@@ -29,3 +45,4 @@ app.listen(port, function() {
     console.log('App listening at port ' + port);
 });
 
+app.set('view engine', 'hbs');
