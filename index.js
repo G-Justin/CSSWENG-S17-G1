@@ -12,7 +12,7 @@ if (port == null || port == "") {
     port = 3001;
 }
 
-
+app.set('view engine', 'hbs');
 app.engine('hbs',exphbs({
 	extname: 'hbs',
 	defaultView: 'main',
@@ -31,13 +31,11 @@ app.engine('hbs',exphbs({
     }
 }));
 
-app.set('view engine', 'hbs');
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname,'public')));
 app.use('/', routes);
-
 app.use(express.static('public'));
-app.use(express.static('views'));
+
 
 database.connect();
 
@@ -45,4 +43,3 @@ app.listen(port, function() {
     console.log('App listening at port ' + port);
 });
 
-app.set('view engine', 'hbs');
