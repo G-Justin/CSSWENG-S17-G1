@@ -39,7 +39,19 @@ app.get('/admin', loginController.getLogin);
 app.post('/admin', loginController.postLogin);
 
 const orderpageController = require('../controller/orderpageController.js');
-app.get('/admin/orders', orderpageController.getOrderpage)
+app.get('/admin/orders', orderpageController.getOrderpage);
+
+app.get('/', function(req, res) {
+    res.render('home', { title: 'Home' });
+});
+
+app.get('/production', (request, response) => {
+      response.render('production');
+});
+
+app.get('/inventory', (request, response) => {
+      response.render('inventory');
+});
 
 
 
