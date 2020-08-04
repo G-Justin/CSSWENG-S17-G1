@@ -37,7 +37,7 @@ const loginController = {
                 
                 //login success
                 req.session.user = usernameResult.username;
-                res.redirect('/admin/orders');
+                res.redirect('/admin');
             });
         });
 

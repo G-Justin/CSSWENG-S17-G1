@@ -12,16 +12,29 @@ if (port == null || port == "") {
     port = 3001;
 }
 
-
-hbs.registerPartials(__dirname + '/views/partials');
-
 app.set('view engine', 'hbs');
+app.engine('hbs',exphbs({
+	extname: 'hbs',
+	defaultView: 'main',
+	layoutsDir: __dirname + '/views/layouts/',
+	partialsDir: __dirname + '/views/partials/',
+	helpers: {
+        ifCond: function(v1, v2, options) {
+		  if(v1 === v2) {
+		    return options.fn(this);
+		  }
+		  return options.inverse(this);
+		},
+		json: function(context) {
+    		return JSON.stringify(context);
+		}
+    }
+}));
+
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname,'public')));
 app.use('/', routes);
-
 app.use(express.static('public'));
-app.use(express.static('views'));
 
 database.connect();
 
