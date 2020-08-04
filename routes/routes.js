@@ -69,6 +69,10 @@ app.get('/admin/inventory', (request, res) => {
     res.render('admin/inventory',  { title: 'Inventory Dashboard' });
 });
 
+app.get('/admin/cart', (request, res) => {
+    res.render('admin/cart',  { title: 'Cart Dashboard' });
+});
+
 
 
 module.exports = app;
