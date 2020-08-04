@@ -45,6 +45,8 @@ app.get('/login', function(req, res) {
     });
 })
 
+app.post('/login', loginController.postLogin);
+
 //app.get('/admin', loginController.getLogin);
 //app.post('/admin', loginController.postLogin);
 
