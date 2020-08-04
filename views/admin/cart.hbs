@@ -1,46 +1,73 @@
+<script>
+	$('#popup').on('click', function(){
+      $('#link_to_modal_popup').trigger('click');
+});
+</script>
+
 <div class="mt-5 row">
 	<div class="container-fluid">
+		<h5 style = "text-align: center;">ORDER NUMBER</h5>
 		<div class="row">
-			<div class="col-md-8" style="background-color: rgba(228, 227, 227, 0.507);">
-				<h5 class="card-title pb-2"><a href="/admin/cart">Sample Order Number</h5>
-				<div class="card w-75">
+			<div class="col-md-6" style="background-color: rgba(228, 227, 227, 0.507)">
+				<br><h5 class="card-title pb-2" style="text-align: center;">Customer Details</h5>
+				<div class="card w-50 h-auto" style = "margin:auto">
 					<div class="card-body">
-						<h5 class="card-title">{{Face_Mask_Name}}</h5>
-						<p class="card-text">{{Size}}</p>
-						<p class="card-text">{{Quantity}}</p>
-						<a href="#" class="btn btn-primary">Button</a>
+						<p class="card-text">Orderdate: {{orderDate}}</p>
+						<p class="card-text">Firstname: {{firstname}}</p>
+						<p class="card-text">Lastname: {{lastname}}</p>
+						<p class="card-text">Contact #: {{contactNo}}</p>
+						<p class="card-text">Email: {{email}}</p>
+						<p class="card-text">Address: {{address}}</p>
+						<p class="card-text">Payment Mode: {{paymentMode}}</p>
+						<p class="card-text">Payment Date: {{paymentDate}}</p>
+						<p class="card-text">Delivery Mode: {{deliveryMode}}</p>
+						<p class="card-text">Delivery Date: {{deliveryDate}}</p>
+						<p class="card-text">Total Item: {{totalItems}}</p>
+						<p class="card-text">Base Price: {{basePrice}}</p>
+						<p class="card-text">Orders: </p>
 					</div>
 				</div>
-				<br>
-				<div class="card w-75">
-					<div class="card-body">
-						<h5 class="card-title">{{Face_Mask_Name}}</h5>
-						<p class="card-text">{{Size}}</p>
-						<p class="card-text">{{Quantity}}</p>
-						<a href="#" class="btn btn-primary">Button</a>
-					</div>
-				</div>
-				<div class="card w-75">
-					<div class="card-body">
-						<h5 class="card-title">{{Face_Mask_Name}}</h5>
-						<p class="card-text">{{Size}}</p>
-						<p class="card-text">{{Quantity}}</p>
-						<a href="#" class="btn btn-primary">Button</a>
-					</div>
-				</div>
-				<div class="card w-75">
-					<div class="card-body">
-						<h5 class="card-title">{{Face_Mask_Name}}</h5>
-						<p class="card-text">{{Size}}</p>
-						<p class="card-text">{{Quantity}}</p>
-						<a href="#" class="btn btn-primary">Button</a>
+				
+				<br><h5 class="card-title pb-2" style="text-align: center;">Status</h5>
+				<div class="card w-50 h-auto" style = "margin:auto">
+					<div class="card-body" style="text-align: center;">
+						<p class="card-text">Delivery Status: {{deliveryStatus}}</p>
+						<p class="card-text">Payment Status: {{paymentStatus}}</p>
+						<br><a href="#" class="btn btn-primary" style = "background-color: rgb(52, 58, 64); color:white">Void</a>	
 					</div>
 				</div>
 			</div>
 
+			
+		<div class="col-md-6" style="background-color: rgba(228, 227, 227, 0.507);float:left" >
+				<br><h5 class="card-title pb-2" style="text-align: center;">Order Details</h5>
+				<div class="card w-50 h-auto" style = "margin:auto">
+					<div class="card-body">
+						<p class="card-text">Product:</p>
+						<p class="card-text">S: {{smallAmount}}</p>
+						<p class="card-text">M: {{mediumAmount}}</p>
+						<p class="card-text">L: {{largeAmount}}</p>
+						<p class="card-text">XL: {{extraLargeAmount}}</p>
+						<p class="card-text">Total price: {{price}}</p>
+					</div>
+				</div>
 
-			<div class="col-md-4">this should be a sidebar, contains: details of the customer,
-				the shipping fee, total price, ship button</div>
+				<br><h5 class="card-title pb-2" style="text-align: center;">Deficit Details</h5>
+				<div class="card w-50 h-auto" style = "margin:auto">
+					<div class="card-body" style="text-align: center;">
+						<p class="card-text">Small:{{smallDeficit}}</p>
+						<p class="card-text">Medium: {{mediumDeficit}}</p>
+						<p class="card-text">Large: {{largeDeficit}}</p>
+						<p class="card-text">Extra Large: {{extraLargeDeficit}}</p>
+					</div>
+				</div>
+				<div class="card-body" style="text-align: center;">
+					<br><a href="/admin/production" target = "_blank" class="btn btn-primary" style = "background-color: rgb(52, 58, 64); color:white">Check Production</a>		
+				</div>
+				
+			</div>
 		</div>
 	</div>
+
+</div>
 </div>
