@@ -1,7 +1,24 @@
 
     <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
     <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
-    
+
+    <style>
+         .dataTables_length select{
+            background-color: rgb(52, 58, 64);
+            color:White;
+        }
+         .btn{
+             background-color: rgb(52, 58, 64);
+             color: white;
+         }
+         .btn:hover{
+             opacity: 95%;
+             background-color: rgb(52, 58, 64);
+         }
+        .btn.btn-primary:focus {
+            background-color:rgb(52, 58, 64) ;
+        }
+    </style>
      
     <script>
         var currPage = 0;
@@ -64,7 +81,7 @@
             });      
             $('#addRow').on( 'click', function () {
                 table.row.add( [
-                    '<button id = "btnC" data-toggle="modal" data-target="#myModal" style = "width:100px;min-height:15px"></button>','','','','','','','','','','','','','',''
+                    '<button id = "btnC" class = "btn btn-primary" data-toggle="modal" data-target="#myModal" style = "width:100px;min-height:15px"></button>','','','','','','','','','','','','','',''
                 ] ).draw( false );
                 document.getElementById('btnC').id = 'btnC'+count;
                 $('#btnC'+count).click( function () {
@@ -141,7 +158,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('ICON')">ICON</button></td>
+                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('ICON')" class = "btn btn-primary">ICON</button></td>
                     <td>Style 1</td>
                     <td>2</td>
                     <td>0</td>
@@ -158,7 +175,7 @@
                     <td>13</td>
                 </tr>
                 <tr>
-                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('PGE')">PGE</button></td>
+                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('PGE')" class = "btn btn-primary">PGE</button></td>
                     <td>Style 1</td>
                     <td>2</td>
                     <td>2</td>
@@ -175,7 +192,7 @@
                     <td>15</td>
                 </tr>
                 <tr>
-                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('Car27')">Car27</button></td>
+                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('Car27')" class = "btn btn-primary">Car27</button></td>
                     <td>Style 1</td>
                     <td>5</td>
                     <td>2</td>
@@ -192,7 +209,7 @@
                     <td>18</td>
                 </tr>
                 <tr>
-                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('SKINTN62')">SKINTN62</button></td>
+                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('SKINTN62')" class = "btn btn-primary">SKINTN62</button></td>
                     <td>Style 1</td>
                     <td>5</td>
                     <td>2</td>
@@ -209,7 +226,7 @@
                     <td>12</td>
                 </tr>
                 <tr>
-                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('PPINK33')">PPINK33</button></td>
+                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('PPINK33')" class = "btn btn-primary">PPINK33</button></td>
                     <td>Style 1</td>
                     <td>5</td>
                     <td>2</td>
@@ -226,7 +243,7 @@
                     <td>2</td>
                 </tr>
                 <tr>
-                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('ICON')">ICON</button></td>
+                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('ICON')" class = "btn btn-primary">ICON</button></td>
                     <td>Style 2</td>
                     <td>1</td>
                     <td>1</td>
@@ -243,24 +260,7 @@
                     <td>2</td>
                 </tr>
                 <tr>
-                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('BLACK')">BLACK</button></td>
-                    <td>Style 2</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>1</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>1</td>
-                    <td>3</td>
-                </tr>
-                <tr>
-                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('CAR27')">CAR27</button></td>
+                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('BLACK')" class = "btn btn-primary">BLACK</button></td>
                     <td>Style 2</td>
                     <td>1</td>
                     <td>1</td>
@@ -277,7 +277,7 @@
                     <td>3</td>
                 </tr>
                 <tr>
-                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('GRN63')">GRN63</button></td>
+                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('CAR27')" class = "btn btn-primary">CAR27</button></td>
                     <td>Style 2</td>
                     <td>1</td>
                     <td>1</td>
@@ -294,7 +294,7 @@
                     <td>3</td>
                 </tr>
                 <tr>
-                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('LGRAY36')">LGRAY36</button></td>
+                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('GRN63')" class = "btn btn-primary">GRN63</button></td>
                     <td>Style 2</td>
                     <td>1</td>
                     <td>1</td>
@@ -311,7 +311,24 @@
                     <td>3</td>
                 </tr>
                 <tr>
-                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('BLACK')">BLACK</button></td>
+                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('LGRAY36')" class = "btn btn-primary">LGRAY36</button></td>
+                    <td>Style 2</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('BLACK')" class = "btn btn-primary">BLACK</button></td>
                     <td>Style 2</td>
                     <td>1</td>
                     <td>1</td>
