@@ -28,46 +28,26 @@ app.use((req, res, next) => { //LOGOUT / BREAK COOKIE
     next();
 });
 
-//return;
-
 const loginController = require('../controller/loginController.js');
-
+app.get('/login', loginController.getLogin);
+app.post('/login', loginController.postLogin);
 app.get('/logout', function(req, res) {
     req.logout;
     req.session.destroy(function(err) { });
     res.redirect('/login');
 });
 
-app.get('/login', function(req, res) {
-    res.render('login',{
-        title: 'Log In',
-        layout: 'auth'
-    });
-})
+const ordersController = require('../controller/ordersController.js');
+app.get('/admin/orders', ordersController.getOrderpage);
 
-app.post('/login', loginController.postLogin);
+const dashboardController = require('../controller/dashboardController.js');
+app.get('/admin', dashboardController.getDashboard);
 
-//app.get('/admin', loginController.getLogin);
-//app.post('/admin', loginController.postLogin);
+const productionController = require('../controller/productionController.js');
+app.get('/admin/production', productionController.getProductionPage);
 
-const orderpageController = require('../controller/orderpageController.js');
-//app.get('/admin/orders', orderpageController.getOrderpage);
-
-app.get('/admin', function(req, res) {
-    res.render('admin/dashboard', { title: 'Admin Dashboard' });
-});
-
-app.get('/admin/orders', function(req, res) {
-    res.render('admin/orders', { title: 'Order Dashboard' });
-});
-
-app.get('/admin/production', (request, res) => {
-    res.render('admin/production', { title: 'Production Dashboard' });
-});
-
-app.get('/admin/inventory', (request, res) => {
-    res.render('admin/inventory',  { title: 'Inventory Dashboard' });
-});
+const inventoryController = require('../controller/inventoryController.js');
+app.get('/admin/inventory', inventoryController.getInventoryPage);
 
 app.get('/admin/cart', (request, res) => {
     res.render('admin/cart',  { title: 'Cart Dashboard' });
