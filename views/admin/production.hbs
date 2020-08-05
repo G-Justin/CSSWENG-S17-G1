@@ -1,6 +1,12 @@
     <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
     <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
+    <style>
+        #table_id_length select{
+            background-color: rgb(52, 58, 64);
+            color:White;
+        }
     
+    </style>
     <script>
         $(document).ready(function() {
             var table =  $('#table_id').DataTable();
@@ -21,7 +27,7 @@
 
             $('#addRow').on( 'click', function () {
                 table.row.add( [
-                    '','','','','','','','','','','<select><option value="IP">In process</option><option value="Done">Done</option><option value="Cancelled">Cancelled</option><option value="Sewing">Sewing</option><option value="Cutting">Cutting</option></select>',''
+                    '','','','','','','','','','','<select class="btn btn-primary" style="background-color:rgb(52, 58, 64)"><option value="IP">In process</option><option value="Done">Done</option><option value="Cancelled">Cancelled</option><option value="Sewing">Sewing</option><option value="Cutting">Cutting</option></select>',''
                 ] ).draw( false );
             });
         });
@@ -31,7 +37,7 @@
         <table id="table_id" class="table-responsive" width="100%">
             <thead>
                 <tr>
-                    <th>Date Endoded</th>
+                    <th>Date Encoded</th>
                     <th>Jo/Batch Number</th>
                     <th>Style</th>
                     <th>Description</th>
@@ -58,7 +64,7 @@
                     <td>1</td>
                     <td>9</td>
                     <td>
-                        <select>
+                        <select class="btn btn-primary" style = "background-color: rgb(52, 58, 64)">
                             <option value="IP">In process</option>
                             <option value="Done">Done</option>
                             <option value="Cancelled">Cancelled</option>
@@ -80,7 +86,7 @@
                     <td>3</td>
                     <td>12</td>
                     <td>
-                        <select>
+                        <select class="btn btn-primary" style = "background-color: rgb(52, 58, 64)">
                             <option value="IP">In process</option>
                             <option value="Done">Done</option>
                             <option value="Cancelled">Cancelled</option>
@@ -102,7 +108,7 @@
                     <td>1</td>
                     <td>11</td>
                     <td>
-                        <select>
+                        <select class="btn btn-primary" style = "background-color: rgb(52, 58, 64)">
                             <option value="IP">In process</option>
                             <option value="Done">Done</option>
                             <option value="Cancelled">Cancelled</option>
@@ -124,7 +130,7 @@
                     <td>0</td>
                     <td>1</td>
                     <td>
-                        <select>
+                         <select class="btn btn-primary" style = "background-color: rgb(52, 58, 64)">
                             <option value="IP">In process</option>
                             <option value="Done">Done</option>
                             <option value="Cancelled">Cancelled</option>
@@ -146,7 +152,7 @@
                     <td>1</td>
                     <td>3</td>
                     <td>
-                        <select>
+                        <select class="btn btn-primary" style = "background-color: rgb(52, 58, 64)">
                             <option value="IP">In process</option>
                             <option value="Done">Done</option>
                             <option value="Cancelled">Cancelled</option>
