@@ -53,6 +53,10 @@ app.post('/login', loginController.postLogin);
 const orderpageController = require('../controller/orderpageController.js');
 //app.get('/admin/orders', orderpageController.getOrderpage);
 
+app.get('/cart', function(req, res) {
+    res.render('customer/cart', {title: 'Cart'});
+});
+
 app.get('/admin', function(req, res) {
     res.render('admin/dashboard', { title: 'Admin Dashboard' });
 });
