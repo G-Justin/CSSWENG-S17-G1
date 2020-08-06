@@ -32,65 +32,6 @@
         </div>
     </div>
 
-    <div class="col-sm-12 col-md-4">
-        <div class="card mb-4">
-        	<div class="card-body text-center">
-            	<img src="/assets/boymask.png" width="100" height="100" class="rounded-10 d-inline-block align-top mb-1" alt="Logo">
-            	<h5 class="card-title pb-2"><a href="/admin/cart">Sample Order Number</a></h5>
-				<p class="card-text">Shipping Fee: <input type="number"></p>
-				<a href="/#" class="card-link bg-pill pl-2 pr-2 pt-1 pb-1 rounded">To Pay</a>
-            	<a href="/#" class="card-link bg-pill pl-2 pr-2 pt-1 pb-1 rounded">Ongoing</a>
-          	</div>
-        </div>
-    </div>
-
-    <div class="col-sm-12 col-md-4">
-        <div class="card mb-4">
-        	<div class="card-body text-center">
-            	<img src="/assets/boymask.png" width="100" height="100" class="rounded-10 d-inline-block align-top mb-1" alt="Logo">
-            	<h5 class="card-title pb-2">Sample Order</h5>
-            	<a href="/#" class="card-link bg-pill pl-2 pr-2 pt-1 pb-1 rounded">Ship Out</a>
-          	</div>
-        </div>
-    </div>
-
-    <div class="col-sm-12 col-md-4">
-        <div class="card mb-4">
-        	<div class="card-body text-center">
-            	<img src="/assets/boymask.png" width="100" height="100" class="rounded-10 d-inline-block align-top mb-1" alt="Logo">
-            	<h5 class="card-title pb-2">Sample Order</h5>
-            	<a href="/#" class="card-link bg-pill pl-2 pr-2 pt-1 pb-1 rounded">Ship Out</a>
-          	</div>
-        </div>
-    </div>
-
-    <div class="col-sm-12 col-md-4">
-        <div class="card mb-4">
-        	<div class="card-body text-center">
-            	<img src="/assets/boymask.png" width="100" height="100" class="rounded-10 d-inline-block align-top mb-1" alt="Logo">
-            	<h5 class="card-title pb-2">Sample Order</h5>
-            	<a href="/#" class="card-link bg-pill pl-2 pr-2 pt-1 pb-1 rounded">Ship Out</a>
-          	</div>
-        </div>
-    </div>
-
-    <div class="col-sm-12 col-md-4">
-        <div class="card mb-4">
-        	<div class="card-body text-center">
-            	<img src="/assets/boymask.png" width="100" height="100" class="rounded-10 d-inline-block align-top mb-1" alt="Logo">
-            	<h5 class="card-title pb-2">Sample Order</h5>
-            	<a href="/#" class="card-link bg-pill pl-2 pr-2 pt-1 pb-1 rounded">Ship Out</a>
-          	</div>
-        </div>
-    </div>
-
-    <div class="col-sm-12 col-md-4">
-        <div class="card mb-4">
-        	<div class="card-body text-center">
-            	<img src="/assets/boymask.png" width="100" height="100" class="rounded-10 d-inline-block align-top mb-1" alt="Logo">
-            	<h5 class="card-title pb-2">Sample Order</h5>
-            	<a href="/#" class="card-link bg-pill pl-2 pr-2 pt-1 pb-1 rounded">Ship Out</a>
-          	</div>
-        </div>
-    </div>
-</div>
+    {{#each orderCards}}
+        {{> orderCard}}
+    {{/each}}

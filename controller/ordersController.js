@@ -1,3 +1,5 @@
+const Order = require('../model/order.js');
+
 const ordersController = {
     getOrderpage: function(req, res) {
         if (!(req.session.user && req.cookies.user_sid)) {
@@ -5,10 +7,18 @@ const ordersController = {
             return;
         }
 
-        res.render('admin/orders', {
-            title: 'Facemustph | Orders',
-            layout: 'main'
-        })
+        Order.find({})
+        .select('_id firstname lastname paymentStatus deliveryStatus')
+        .lean()
+        .exec(function (err, results) {
+            res.render('admin/orders', {
+                title: 'Facemustph | Orders',
+                layout: 'main',
+
+                orderCards: results
+            });
+        });
+        
     }
 }
 
