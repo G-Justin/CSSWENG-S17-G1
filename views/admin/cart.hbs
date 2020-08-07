@@ -49,22 +49,14 @@
 						<p class="card-text">S: {{smallAmount}}</p>
 						<p class="card-text">M: {{mediumAmount}}</p>
 						<p class="card-text">L: {{largeAmount}}</p>
-						<p class="card-text">XL: {{extraLargeAmount}}</p>
+						<p class="card-text">XL: {{extraLargeAmount}}</p><br>
+						<p class="card-text">Deficit Status: </p><br>
 						<label for "ship">Shipping Fee: </label>
 						<input type="text" id="ship"> <button style = "background-color: rgb(52, 58, 64); color:white">ok</button>
-						<p class="card-text">Total price: {{price}}</p>
+						<br><br><p class="card-text">Total price: {{price}}</p>
 					</div>
 				</div>
 
-				<br><h5 class="card-title pb-2" style="text-align: center;">Deficit Details</h5>
-				<div class="card w-50 h-auto" style = "margin:auto">
-					<div class="card-body">
-						<p class="card-text">Small:{{smallDeficit}}</p>
-						<p class="card-text">Medium: {{mediumDeficit}}</p>
-						<p class="card-text">Large: {{largeDeficit}}</p>
-						<p class="card-text">Extra Large: {{extraLargeDeficit}}</p>
-					</div>
-				</div>
 				<div class="card-body" style="text-align: center;">
 					<br><a href="/admin/inventory" target = "_blank" class="btn btn-primary" style = "background-color: rgb(52, 58, 64); color:white">Check Inventory</a>		
 				</div>
