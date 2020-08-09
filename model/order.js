@@ -2,7 +2,8 @@ var mongoose = require('mongoose');
 
 var OrderSchema = new mongoose.Schema({
     orderDate: {
-        type: Date
+        type: Date,
+        default: Date.now
     },
     firstname: {
         type: String,
@@ -23,15 +24,17 @@ var OrderSchema = new mongoose.Schema({
     },
     deliveryStatus: {
         type: String,
-        enum: ['NOT DELIVERED', 'DELIVERED']
+        enum: ['ONGOING', 'DELIVERED'],
+        default: 'ONGOING'
     },
     paymentStatus: {
         type: String,
-        enum: ['NOT PAID', 'PAID']
+        enum: ['TO PAY', 'PAID'],
+        default: 'TO PAY'
     },
     paymentMode: {
         type: String
-        //might be an enum
+        
     },
     paymentDate: {
         type: Date
@@ -39,16 +42,23 @@ var OrderSchema = new mongoose.Schema({
     deliveryMode: {
         type: String,
     },
-    deliveredDate: {
+    deliveryDate: {
         type: Date
     },
     totalItems: {
         type: Number,
-        min: 0
+        min: 0,
+        default: 0
     },
     basePrice: {
         type: Number,
-        min: 0
+        min: 0,
+        default: 0
+    },
+    shippingFee: {
+        type: Number,
+        min: 0,
+        default: 0
     },
     items:[{
         type: mongoose.Schema.Types.ObjectId,

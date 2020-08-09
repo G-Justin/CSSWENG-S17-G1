@@ -39,6 +39,7 @@ app.get('/logout', function(req, res) {
 
 const ordersController = require('../controller/ordersController.js');
 app.get('/admin/orders', ordersController.getOrderpage);
+app.get('/admin/orders/filter', ordersController.getFilteredOrderPage);
 
 const dashboardController = require('../controller/dashboardController.js');
 app.get('/admin', dashboardController.getDashboard);
