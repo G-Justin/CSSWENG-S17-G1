@@ -36,7 +36,7 @@ let newOrder = new Order({
     contactNo: '09292',
     email: 'test@yahoo',
     address: 'test city',
-    deliveryDate: new Date("2020-08-08"),
+    deliveryDate: new Date("2021-08-08"),
     basePrice: 1600,
     totalPrice: 1600,
     shippingFee: 0

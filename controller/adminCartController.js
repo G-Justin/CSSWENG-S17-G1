@@ -25,10 +25,7 @@ const adminCartController = {
             let orderResultItems = orderResult.orderItems;
             let orderItems = new Array();
 
-            console.log(orderResult.orderItems.length);
-            console.log(orderResultItems[0].product);
             for (let i = 0; i < orderResultItems.length; i++) {
-                console.log(i)
                 Product.findById(orderResultItems[i].product)
                 .exec((err, productResult) => {
                     let smallDeficit = productResult.smallAvailable <  orderResultItems[i].smallAmount ? (orderResultItems[i].smallAmount - productResult.smallAvailable) : 0;
@@ -50,10 +47,9 @@ const adminCartController = {
                         extraLargeDeficit: extraLargeDeficit
                     };
 
-                    console.log(orderItem);
                     orderItems.push(orderItem);
                 });
-            }
+            }  
 
             let details = {
                 orderDate: orderResult.orderDate,
