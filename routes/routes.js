@@ -50,6 +50,8 @@ app.get('/admin/production', productionController.getProductionPage);
 const inventoryController = require('../controller/inventoryController.js');
 app.get('/admin/inventory', inventoryController.getInventoryPage);
 
+const adminCartController = require('../controller/adminCartController.js');
+app.get('/admin/orders/:_id', adminCartController.getOrder);
 app.get('/admin/cart', (request, res) => {
     res.render('admin/cart',  { title: 'Cart Dashboard' });
 });

@@ -1,3 +1,6 @@
+const Order = require('../model/order.js');
+const Order = require('../model/order.js');
+
 const helper = {
     ifCond: function(v1, v2, options) {
         if(v1 === v2) {

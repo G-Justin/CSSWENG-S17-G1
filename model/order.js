@@ -37,13 +37,15 @@ var OrderSchema = new mongoose.Schema({
         
     },
     paymentDate: {
-        type: Date
+        type: Date,
+        default: null
     },
     deliveryMode: {
         type: String,
     },
     deliveryDate: {
-        type: Date
+        type: Date,
+        default: null
     },
     totalItems: {
         type: Number,
@@ -60,7 +62,12 @@ var OrderSchema = new mongoose.Schema({
         min: 0,
         default: 0
     },
-    items:[{
+    totalPrice: {
+        type: Number,
+        min: 0,
+        default: 0
+    },
+    orderItems:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'OrderItem'
     }]

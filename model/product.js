@@ -9,6 +9,10 @@ var ProductSchema = new mongoose.Schema({
         type: String,
         trim: true
     }, 
+    price: {
+        type: Number,
+        min: 0
+    },
     smallInventory: {
         type: Number,
         min: 0
@@ -70,6 +74,10 @@ var ProductSchema = new mongoose.Schema({
         min: 0
     },
     largeDeficit: {
+        type: Number,
+        min: 0
+    },
+    extraLargeDeficit: {
         type: Number,
         min: 0
     }
