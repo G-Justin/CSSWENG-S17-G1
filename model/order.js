@@ -24,8 +24,8 @@ var OrderSchema = new mongoose.Schema({
     },
     deliveryStatus: {
         type: String,
-        enum: ['ONGOING', 'DELIVERED'],
-        default: 'ONGOING'
+        enum: ['PROCESSING', 'DELIVERING', 'DELIVERED'],
+        default: 'PROCESSING'
     },
     paymentStatus: {
         type: String,
