@@ -19,25 +19,25 @@
 				<br><h5 class="card-title pb-2" style="text-align: center;">Customer Details</h5>
 				<div class="card w-50 h-auto" style = "margin:auto">
 					<div class="card-body">
-						<p class="card-text">Orderdate: {{orderDate}}</p>
-						<p contenteditable="TRUE" class="card-text">Firstname: {{firstname}}</p>
-						<p contenteditable="TRUE" class="card-text">Lastname: {{lastname}}</p>
-						<p contenteditable="TRUE" class="card-text">Contact #: {{contactNo}}</p>
-						<p contenteditable="TRUE" class="card-text">Email: {{email}}</p>
-						<p contenteditable="TRUE" class="card-text">Address: {{address}}</p>
-						<p contenteditable="TRUE" class="card-text">Payment Mode: {{paymentMode}}</p>
-						<p contenteditable="TRUE" class="card-text">Payment Date: {{paymentDate}}</p>
-						<p contenteditable="TRUE" class="card-text">Delivery Mode: {{deliveryMode}}</p>
-						<p contenteditable="TRUE" class="card-text">Delivery Date: {{deliveryDate}}</p>
-						<p class="card-text">Total Item: {{totalItems}}</p>
+						<p class="card-text"><b>Orderdate:</b> {{orderDate}}</p>
+						<p contenteditable="TRUE" class="card-text"><b>Firstname:</b> {{firstname}}</p>
+						<p contenteditable="TRUE" class="card-text"><b>Lastname:</b> {{lastname}}</p>
+						<p contenteditable="TRUE" class="card-text"><b>Contact #:</b> {{contactNo}}</p>
+						<p contenteditable="TRUE" class="card-text"><b>Email:</b> {{email}}</p>
+						<p contenteditable="TRUE" class="card-text"><b>Address:</b> {{address}}</p>
+						<p contenteditable="TRUE" class="card-text"><b>Payment Mode:</b> {{paymentMode}}</p>
+						<p contenteditable="TRUE" class="card-text"><b>Payment Date:</b> {{paymentDate}}</p>
+						<p contenteditable="TRUE" class="card-text"><b>Delivery Mode:</b> {{deliveryMode}}</p>
+						<p contenteditable="TRUE" class="card-text"><b>Delivery Date:</b> {{deliveryDate}}</p>
+						<p class="card-text"><b>Total Item:</b> {{totalItems}}</p>
 					</div>
 				</div>
 				
 				<br><h5 class="card-title pb-2" style="text-align: center;">Status</h5>
 				<div class="card w-50 h-auto" style = "margin:auto">
 					<div class="card-body">
-						<p class="card-text">Delivery Status: <select class="browser-default custom-select"><option value="ONGOING">ONGOING</option><option value="DELIVERED">DELIVERED</option><option value="{{deliveryStatus}}" disabled selected hidden>{{deliveryStatus}}</option></select></p>
-						<p class="card-text">Payment Status: <select class="browser-default custom-select"><option value="TO PAY">TO PAY</option><option value="PAID">PAID</option><option value="{{paymentStatus}}" disabled selected hidden>{{paymentStatus}}</option></select></p>
+						<p class="card-text"><b>Delivery Status:</b> <select class="browser-default custom-select"><option value="ONGOING">ONGOING</option><option value="DELIVERED">DELIVERED</option><option value="{{deliveryStatus}}" disabled selected hidden>{{deliveryStatus}}</option></select></p>
+						<p class="card-text"><b>Payment Status:</b> <select class="browser-default custom-select"><option value="TO PAY">TO PAY</option><option value="PAID">PAID</option><option value="{{paymentStatus}}" disabled selected hidden>{{paymentStatus}}</option></select></p>
 					</div>
 				</div>
 				<div class="card-body" style="text-align: center;">
@@ -55,10 +55,10 @@
 
 		<br><div class="card h-auto" style = "margin:auto; width:275px">
 					<div class="card-body">
-					<label for "ship">Shipping Fee: {{shippingFee}}</label>
+					<label for "ship"><b>Shipping Fee:</b> {{shippingFee}}</label>
 							<input type="text" id="ship"> <button style = "background-color: rgb(52, 58, 64); color:white">ok</button>
-							<br><br><p class="card-text">Base Price: {{basePrice}} </p>
-							<p class="card-text">Total price: {{totalPrice}}</p>
+							<br><br><p class="card-text"><b>Base Price:</b> {{basePrice}} </p>
+							<p class="card-text"><b>Total price:</b> {{totalPrice}}</p>
 					</div>
 				</div>
 				<div class="card-body" style="text-align: center;">
