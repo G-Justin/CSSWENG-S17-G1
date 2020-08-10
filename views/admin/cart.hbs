@@ -4,30 +4,36 @@
 });
 </script>
 
+<style>
+	label{
+		font-weight: bold;
+	}
+</style>
+
 <div class="mt-5 row">
 	<div class="container-fluid">
 		<h5 style = "text-align: center;">ORDER NUMBER</h5>
 		<div class="row">
 			<div class="col-md-6" style="background-color: rgba(228, 227, 227, 0.507)"id="left">
 				<br><h5 class="card-title pb-2" style="text-align: center;">Customer Details</h5>
-				<div class="card w-50 h-auto" style = "margin:auto">
+				<div class="card h-auto" style = "margin:auto; width:275px">
 					<div class="card-body">
-						<p class="card-text"><b>Orderdate:</b> {{orderDate}}</p>
-						<p contenteditable="TRUE" class="card-text"><b>Firstname:</b> {{firstname}}</p>
-						<p contenteditable="TRUE" class="card-text"><b>Lastname:</b> {{lastname}}</p>
-						<p contenteditable="TRUE" class="card-text"><b>Contact #:</b> {{contactNo}}</p>
-						<p contenteditable="TRUE" class="card-text"><b>Email:</b> {{email}}</p>
-						<p contenteditable="TRUE" class="card-text"><b>Address:</b> {{address}}</p>
-						<p contenteditable="TRUE" class="card-text"><b>Payment Mode:</b> {{paymentMode}}</p>
-						<p contenteditable="TRUE" class="card-text"><b>Payment Date:</b> {{paymentDate}}</p>
-						<p contenteditable="TRUE" class="card-text"><b>Delivery Mode:</b> {{deliveryMode}}</p>
-						<p contenteditable="TRUE" class="card-text"><b>Delivery Date:</b> {{deliveryDate}}</p>
+						<label for = "orderdate">Orderdate: </label><p contenteditable="TRUE" spellcheck="FALSE" id="orderdate" >{{orderDate}}</p>
+						<label for = "firstname">Firstname: </label> <p contenteditable="TRUE" spellcheck="FALSE" id="firstname" style = "display: inline">{{firstname}}</p><br>
+						<label for = "lastname">Lastname: </label> <p contenteditable="TRUE" spellcheck="FALSE" id="lastname" style = "display: inline">{{lastname}}</p><br>
+						<label for = "contact">Contact #: </label> <p contenteditable="TRUE" spellcheck="FALSE" id="contact" style = "display: inline">{{contactNo}}</p><br>
+						<label for = "email">Email: </label> <p contenteditable="TRUE" spellcheck="FALSE" id="email" style = "display: inline">{{email}}</p><br>
+						<label for = "address">Address: </label> <p contenteditable="TRUE" spellcheck="FALSE" id="address" style = "display: inline">{{address}}</p><br>
+						<label for = "payMode">Payment Mode: </label> <p contenteditable="TRUE" spellcheck="FALSE" id="payMode" style = "display: inline">{{paymentMode}}</p><br>
+						<label for = "payDate">Payment Date: </label> <p contenteditable="TRUE" spellcheck="FALSE"id="payDate" style = "display: inline">{{paymentDate}}</p><br>
+						<label for = "deliMode">Delivery Mode: </label> <p contenteditable="TRUE" spellcheck="FALSE" id="deliMode" style = "display: inline">{{deliveryMode}}</p><br>
+						<label for = "deliDate">Delivery Date: </label> <p contenteditable="TRUE" spellcheck="FALSE" id="deliDate">{{deliveryDate}}</p>
 						<p class="card-text"><b>Total Item:</b> {{totalItems}}</p>
 					</div>
 				</div>
 				
 				<br><h5 class="card-title pb-2" style="text-align: center;">Status</h5>
-				<div class="card w-50 h-auto" style = "margin:auto">
+				<div class="card h-auto" style = "margin:auto; width:275px">
 					<div class="card-body">
 						<p class="card-text"><b>Delivery Status:</b> <select class="browser-default custom-select"><option value="PROCESSING">PROCESSING</option><option value="DELIVERING">DELIVERING</option><option value="DELIVERED">DELIVERED</option><option value="{{deliveryStatus}}" disabled selected hidden>{{deliveryStatus}}</option></select></p>
 						<p class="card-text"><b>Payment Status:</b> <select class="browser-default custom-select"><option value="TO PAY">TO PAY</option><option value="PAID">PAID</option><option value="{{paymentStatus}}" disabled selected hidden>{{paymentStatus}}</option></select></p>
