@@ -4,24 +4,31 @@
 });
 </script>
 
+<style>
+	.col-md-6{
+		margin:0;
+	}
+</style>
+
+
 <div class="mt-5 row">
 	<div class="container-fluid">
 		<h5 style = "text-align: center;">ORDER NUMBER</h5>
 		<div class="row">
-			<div class="col-md-6" style="background-color: rgba(228, 227, 227, 0.507)">
+			<div class="col-md-6" style="background-color: rgba(228, 227, 227, 0.507)"id="left">
 				<br><h5 class="card-title pb-2" style="text-align: center;">Customer Details</h5>
 				<div class="card w-50 h-auto" style = "margin:auto">
 					<div class="card-body">
 						<p class="card-text">Orderdate: {{orderDate}}</p>
-						<p class="card-text">Firstname: {{firstname}}</p>
-						<p class="card-text">Lastname: {{lastname}}</p>
-						<p class="card-text">Contact #: {{contactNo}}</p>
-						<p class="card-text">Email: {{email}}</p>
-						<p class="card-text">Address: {{address}}</p>
-						<p class="card-text">Payment Mode: {{paymentMode}}</p>
-						<p class="card-text">Payment Date: {{paymentDate}}</p>
-						<p class="card-text">Delivery Mode: {{deliveryMode}}</p>
-						<p class="card-text">Delivery Date: {{deliveryDate}}</p>
+						<p contenteditable="TRUE" class="card-text">Firstname: {{firstname}}</p>
+						<p contenteditable="TRUE" class="card-text">Lastname: {{lastname}}</p>
+						<p contenteditable="TRUE" class="card-text">Contact #: {{contactNo}}</p>
+						<p contenteditable="TRUE" class="card-text">Email: {{email}}</p>
+						<p contenteditable="TRUE" class="card-text">Address: {{address}}</p>
+						<p contenteditable="TRUE" class="card-text">Payment Mode: {{paymentMode}}</p>
+						<p contenteditable="TRUE" class="card-text">Payment Date: {{paymentDate}}</p>
+						<p contenteditable="TRUE" class="card-text">Delivery Mode: {{deliveryMode}}</p>
+						<p contenteditable="TRUE" class="card-text">Delivery Date: {{deliveryDate}}</p>
 						<p class="card-text">Total Item: {{totalItems}}</p>
 					</div>
 				</div>
@@ -29,27 +36,36 @@
 				<br><h5 class="card-title pb-2" style="text-align: center;">Status</h5>
 				<div class="card w-50 h-auto" style = "margin:auto">
 					<div class="card-body">
-						<p class="card-text">Delivery Status: {{deliveryStatus}}</p>
-						<p class="card-text">Payment Status: {{paymentStatus}}</p>
+						<p class="card-text">Delivery Status: <select class="browser-default custom-select"><option>{{deliveryStatus}}</option><option>DELIVERED</option></select></p>
+						<p class="card-text">Payment Status: <select class="browser-default custom-select"><option>{{paymentStatus}}</option><option>PAID</option></select></p>
 					</div>
 				</div>
 				<div class="card-body" style="text-align: center;">
-					<br><a href="#" class="btn btn-primary" style = "background-color: rgb(52, 58, 64); color:white">Void</a>	
+					<a href="#" class="btn btn-primary" style = "background-color: rgb(52, 58, 64); color:white; display:inline-block">Confirm Changes</a>
+					<a href="#" class="btn btn-primary" style = "background-color: rgb(52, 58, 64); color:white">Void</a>	
 				</div>
 			</div>
 
+			<div class="col-md-6" style="background-color: rgba(228, 227, 227, 0.507);float:left" >
 			{{#each orderItems}}
 				{{> orderItem}}
 			{{/each}}
 
-				<label for "ship">Shipping Fee: {{shippingFee}}</label>
-						<input type="text" id="ship"> <button style = "background-color: rgb(52, 58, 64); color:white">ok</button>
-						<br><br><p class="card-text">Base Price: {{basePrice}} </p>
-						<br><br><p class="card-text">Total price: {{totalPrice}}</p>
+
+		<br><div class="card h-auto" style = "margin:auto; width:275px">
+					<div class="card-body">
+					<label for "ship">Shipping Fee: {{shippingFee}}</label>
+							<input type="text" id="ship"> <button style = "background-color: rgb(52, 58, 64); color:white">ok</button>
+							<br><br><p class="card-text">Base Price: {{basePrice}} </p>
+							<p class="card-text">Total price: {{totalPrice}}</p>
+					</div>
+				</div>
 				<div class="card-body" style="text-align: center;">
 					<br><a href="/admin/inventory" target = "_blank" class="btn btn-primary" style = "background-color: rgb(52, 58, 64); color:white">Check Inventory</a>		
 				</div>
+			</div>
 				
+						
 			</div>
 		</div>
 	</div>
