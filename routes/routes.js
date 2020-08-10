@@ -52,6 +52,7 @@ app.get('/admin/inventory', inventoryController.getInventoryPage);
 
 const adminCartController = require('../controller/adminCartController.js');
 app.get('/admin/orders/:_id', adminCartController.getOrder);
+app.post('/admin/orders/updateShippingFee', adminCartController.updateShippingFee)
 app.get('/admin/cart', (request, res) => {
     res.render('admin/cart',  { title: 'Cart Dashboard' });
 });

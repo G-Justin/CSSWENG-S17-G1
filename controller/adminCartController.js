@@ -52,6 +52,7 @@ const adminCartController = {
             }  
 
             let details = {
+                _id: orderResult._id,
                 orderDate: orderResult.orderDate,
                 firstname: orderResult.firstname,
                 lastname: orderResult.lastname,
@@ -76,9 +77,40 @@ const adminCartController = {
             };
 
             res.render('admin/cart', details);
+        })
+    },
+
+    updateShippingFee: function(req, res) {
+        let _id = sanitize(req.body.shippingFeeCartId);
+        let shippingFee = Number(sanitize(req.body.shippingFeeInput));
+        let js = req.body.js;
+
+        Order.findById(_id)
+        .select('totalPrice shippingFee')
+        .exec((err, orderResult) => {
+            if (!orderResult) {
+                console.log('did not get cart id to update shipping fee');
+                return;
+            }
+
+            let totalPrice = (orderResult.totalPrice - orderResult.shippingFee) + shippingFee;
+
+            Order.updateOne({_id: _id}, {shippingFee: shippingFee, totalPrice: totalPrice})
+            .then((a) => {
+                let data = {
+                    shippingFee: shippingFee,
+                    totalPrice: totalPrice
+                };
+
+                if (js) {
+                    res.send(data);
+                } else {
+                    res.redirect('/admin/orders/' + _id);
+                }
+                
+            })
             
         })
-
     }
 };
 

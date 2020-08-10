@@ -48,10 +48,13 @@
 
 		<br><div class="card h-auto" style = "margin:auto; width:275px">
 					<div class="card-body">
-					<label for "ship"><b>Shipping Fee:</b> {{shippingFee}}</label>
-							<input type="text" id="ship"> <button style = "background-color: rgb(52, 58, 64); color:white">ok</button>
-							<br><br><p class="card-text"><b>Base Price:</b> {{basePrice}} </p>
-							<p class="card-text"><b>Total price:</b> {{totalPrice}}</p>
+					<p id="shippingFee" name="shippingFee" class="card-text"><b>Shipping Fee:</b> {{shippingFee}}</p>
+						<form name="shippingFeeForm" id="shippingFeeForm" method="POST" action="/admin/orders/updateShippingFee">
+							<input type="number" id="shippingFeeInput" name="shippingFeeInput"> <button id="shipping-fee-btn" name="shipping-fee-btn" type="submit" style = "background-color: rgb(52, 58, 64); color:white">SAVE</button>
+							<textarea id="shippingFeeCartId" name="shippingFeeCartId" readonly="readonly" style="display: none;">{{_id}}</textarea>
+						</form>
+							<br><br><p id="basePrice" name="basePrice" class="card-text"><b>Base Price:</b> {{basePrice}} </p>
+							<p id="totalPrice" name="totalPrice" class="card-text"><b>Total price:</b> {{totalPrice}}</p>
 					</div>
 				</div>
 				<div class="card-body" style="text-align: center;">
