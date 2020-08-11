@@ -3,11 +3,15 @@ const Order = require('../model/order.js');
 const OrderItem = require('../model/orderitem.js');
 const Product = require('../model/product.js');
 const orderitem = require('../model/orderitem.js');
+
+const moment = require('moment');
 const async = require('async');
 const database = require('../model/database.js');
 const ordersController = require('./ordersController.js');
+
 const { deleteMany } = require('../model/order.js');
 const { response } = require('../routes/routes.js');
+
 const adminCartController = {
     getOrder: function(req, res) {
         if (!(req.session.user && req.cookies.user_sid)) {
@@ -268,6 +272,11 @@ function updateDeliveryStatusHelper(_id, res, deliveryDate, js, deliveryStatus, 
 
 
 function parseDate(s) {
+    console.log(s);
+    if (!(moment(s, 'YYYY-MM-DD', true).isValid())) {
+        return null;
+    }
+
     if (s == null) {
         return null;
     }

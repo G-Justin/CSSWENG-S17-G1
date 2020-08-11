@@ -36,7 +36,7 @@
 						<form method="POST" action="/admin/orders/updateDeliveryStatus">
 							<textarea id="updateStatusId" name="updateStatusId" readonly="readonly" style="display: none;">{{_id}}</textarea>
 							<p class="card-text"><b>Edit Delivery Status:</b> <select id="deliveryStatus" name="deliveryStatus" class="browser-default custom-select"><option value="PROCESSING">PROCESSING</option><option value="DELIVERING">DELIVERING</option><option value="DELIVERED">DELIVERED</option><option value="{{deliveryStatus}}" hidden="hidden" selected="selected">{{deliveryStatus}}</option></select></p>
-							<label class="card-text">Delivery Date: {{deliveryDate}} <input type="date" id="deliveryDate" name="deliveryDate" required></label> 
+							<label class="card-text">Delivery Date: {{deliveryDate}} <input type="date" id="deliveryDate" name="deliveryDate"></label> 
 							<p class="card-text" style="display: none;">Order has deficit. Cannot deliver.</p> 
 							<button class="btn btn-primary" type="submit" style = "background-color: rgb(52, 58, 64); color:white; display:inline-block">SAVE</a>
 						</form>
@@ -49,7 +49,7 @@
 						<form method="POST" action="/admin/orders/updatePaymentStatus">
 							<textarea id="updateStatusId" name="updateStatusId" readonly="readonly" style="display: none;">{{_id}}</textarea>
 							<p class="card-text"><b>Payment Status: </b> <select id="paymentStatus" name="paymentStatus" class="browser-default custom-select"><option value="TO PAY">TO PAY</option><option value="PAID">PAID</option><option value="{{paymentStatus}}" hidden="hidden" selected="selected">{{paymentStatus}}</option></select></p>
-							<label class="card-text">Payment Date: {{paymentDate}} <input type="date" id="paymentDate" name="paymentDate" required></label> 
+							<label class="card-text">Payment Date: {{paymentDate}} <input type="date" id="paymentDate" name="paymentDate"></label> 
 							<button class="btn btn-primary" type="submit" style = "background-color: rgb(52, 58, 64); color:white; display:inline-block">SAVE</a>
 						</form>
 						

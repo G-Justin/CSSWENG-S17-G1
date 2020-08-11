@@ -25,6 +25,7 @@
     "express-handlebars": "^5.1.0",
     "express-session": "^1.17.1",
     "hbs": "^4.1.1",
+    "moment": "^2.27.0",
     "mongo-sanitize": "^1.1.0",
     "mongodb": "^3.5.9",
     "mongoose": "^5.9.26"
