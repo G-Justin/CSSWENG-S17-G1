@@ -60,7 +60,7 @@ const adminCartController = {
                 function(value1, done) {
                     let details = {
                         _id: orderResult._id,
-                        orderDate: orderResult.orderDate,
+                        orderDate: formatDate(orderResult.orderDate),
                         firstname: orderResult.firstname,
                         lastname: orderResult.lastname,
                         contactNo: orderResult.contactNo,
