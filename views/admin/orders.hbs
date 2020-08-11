@@ -4,7 +4,7 @@
     margin-right: 20px;
   }
   .media-text #btn{
-      margin:0;
+      margin-right: -20px;
   }
   .filter_bar{
     background-color: white;
@@ -21,7 +21,7 @@
   <div class="filter_bar">
         <h4 class="title" style="text-align: center; margin-top:10px;">Filter</h4><hr>
           <form mehtod="get" action="/admin/orders/filter">
-            <div class = "media-text">
+            <div class = "media-text" id="input">
               <label for "deliveryStatus">Delivery Status</label><br>
                 <select id="deliveryStatus" class = "browser-default custom-select" name="deliveryStatus" style="width: 200px; border:solid; background-color: rgba(126, 125, 125, 0); cursor:pointer;">
                   <option value="DELIVERED">DELIVERED</option>
@@ -29,23 +29,23 @@
                   <option value="PROCESSING">PROCESSING</option>
                 </select>
             </div>
-            <div class = "media-text">
+            <div class = "media-text" id="input">
               <label for "paymentStatus">Payment Status</label><br>
               <select id="paymentStatus" class = "browser-default custom-select" name="paymentStatus" style="width: 200px; border:solid; background-color: rgba(126, 125, 125, 0); cursor:pointer;">
                 <option value="PAID">PAID</option>
                 <option value="TO PAY">TO PAY</option>
               </select>
             </div>
-            <div class = "media-text">
+            <div class = "media-text" id="input">
             <label for "dateStart">Start Date</label><br>
               <input type="date" id="dateStart" name="dateStart" required>
 					  </div>
-            <div class = "media-text">
+            <div class = "media-text" id="input">
             <label for "dateEnd">End Date</label><br>
               <input type="date" id="dateEnd" name="dateEnd" required>
             </div>     
     </div><br>
-    <div class = "media-text" style="margin-bottom:10px;"><button class="btn btn-primary"  id="btn" type="submit">Filter</button></div>
+    <div class = "media-text" style="margin-bottom:10px;"><button class="btn btn-primary"  id="btn" type="submit">Apply Filter</button></div>
     </form>
   </div>
 
