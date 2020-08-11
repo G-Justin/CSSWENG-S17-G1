@@ -4,29 +4,29 @@
   <div class="col-sm-12 col-md-4">
     <div class="card mb-4">
       <div class="card-body text-center">
-        <h4 class="card-title">Filter</h4>
+        <h4 class="card-title">Filter</h4><hr>
           <form mehtod="get" action="/admin/orders/filter">  
             <div class = "media-text">
-              <p class="card-text">Deliver Status</p>
-                <select id="deliveryStatus" name="deliveryStatus" style="border:solid; background-color: rgba(126, 125, 125, 0); cursor:pointer">
+              <label for "deliveryStatus">Delivery Status</label><br>
+                <select id="deliveryStatus" class = "browser-default custom-select" name="deliveryStatus" style="width: 200px; border:solid; background-color: rgba(126, 125, 125, 0); cursor:pointer">
                   <option value="DELIVERED">DELIVERED</option>
                   <option value="DELIVERING">DELIVERING</option>
                   <option value="PROCESSING">PROCESSING</option>
                 </select>
-            </div>  
-            <p class="card-text">Payment Status</p>
+            </div><br>
+            <label for "paymentStatus">Payment Status</label>
               <div class = "media-text">
-                <select id="paymentStatus" name="paymentStatus" style="border:solid; background-color: rgba(126, 125, 125, 0); cursor:pointer">
+                <select id="paymentStatus" class = "browser-default custom-select" name="paymentStatus" style="width: 200px; border:solid; background-color: rgba(126, 125, 125, 0); cursor:pointer">
                   <option value="PAID">PAID</option>
                   <option value="TO PAY">TO PAY</option>
                 </select>
-              </div>  
-            <p class="card-text">Date Start</p> 
+              </div><br>
+            <label for "dateStart">Order Date</label><br>
               <input type="date" id="dateStart" name="dateStart" required>
-					  <br>
-            <p class="card-text">Date End</p> 
+					  <br><br>
+            <label for "dateEnd">Delivery Date</label><br>
               <input type="date" id="dateEnd" name="dateEnd" required>
-					  <br>
+					  <br><br>
               <span class="input-group-btn filterbtn">
                 <button class="btn btn-primary" type="submit">Filter</button>
               </span>
