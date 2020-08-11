@@ -148,11 +148,21 @@ const adminCartController = {
                 return;
             default: 
             return;
-        }
+        }  
+    },
     
-        
-        
-        
+    updatePaymentStatus: function(req, res) {
+        let _id = sanitize(req.body.updateStatusId);
+        let paymentStatus = sanitize(req.body.paymentStatus);
+        let paymentDate = parseDate(sanitize(req.body.paymentDate));
+        let js = req.body.js;
+
+        Order.updateOne({_id: _id}, {
+            paymentStatus: paymentStatus,
+            paymentDate: paymentDate
+        }).then((a) => {
+            res.redirect('/admin/orders/' + _id)
+        })
     }
 };
 function someTest() {
