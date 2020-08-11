@@ -37,83 +37,85 @@ let newOrder = new Order({
     email: 'test@yahoo',
     address: 'test city',
     deliveryStatus: 'PROCESSING',
+    orderDate: new Date('2020-08-08'),
     deliveryDate: new Date("2021-08-08"),
     basePrice: 1600,
     totalPrice: 1600,
     shippingFee: 0
 });
 
-database.insertOne(Order, newOrder, (flag) => {
+let newProduct = new Product({
+    style: 'STYLE 2', 
+    color: 'BLACK',
+    price: 100,
+    smallInventory: 10,
+    mediumInventory: 5,
+    largeInventory: 5,
+    extraLargeInventory: 5,
+    smallSold: 0,
+    mediumSold: 0,
+    largeSold: 0,
+    extraLargeSold: 0,
+    smallAvailable: 0,
+    mediumAvailable: 5,
+    largeAvailable: 5,
+    extraLargeAvailable: 5,
+    totalAvailable: 20,
+    smallDeficit: 5, 
+    mediumDeficit: 0,
+    largeDeficit: 0, 
+    extraLargeDeficit: 0
+});
 
-    let newProduct = new Product({
-        style: 'STYLE 2', 
-        color: 'BLACK',
-        price: 100,
-        smallInventory: 10,
-        mediumInventory: 5,
-        largeInventory: 5,
-        extraLargeInventory: 5,
-        smallSold: 0,
-        mediumSold: 0,
-        largeSold: 0,
-        extraLargeSold: 0,
-        smallAvailable: 0,
-        mediumAvailable: 5,
-        largeAvailable: 5,
-        extraLargeAvailable: 5,
-        totalAvailable: 20,
-        smallDeficit: 5, 
-        mediumDeficit: 0,
-        largeDeficit: 0, 
-        extraLargeDeficit: 0
-    });
+let newProduct2 = new Product({
+    style: 'STYLE 1', 
+    color: 'CAR27',
+    price: 100,
+    smallInventory: 10,
+    mediumInventory: 5,
+    largeInventory: 5,
+    extraLargeInventory: 5,
+    smallSold: 0,
+    mediumSold: 0,
+    largeSold: 0,
+    extraLargeSold: 0,
+    smallAvailable: 0,
+    mediumAvailable: 5,
+    largeAvailable: 5,
+    extraLargeAvailable: 5,
+    totalAvailable: 20,
+    smallDeficit: 0, 
+    mediumDeficit: 0,
+    largeDeficit: 0, 
+    extraLargeDeficit: 0
+});
+
+let newOrderItem = new OrderItem({
+    parentOrder: newOrder._id,
+    product: newProduct._id,
+    smallAmount: 10,
+    mediumAmount: 5, 
+    largeAmount: 0, 
+    extraLargeAmount: 0,
+    price: 1500
+});
+
+johnOrders.push(newOrderItem._id);
+let newOrderItem2 = new OrderItem({
+    parentOrder: newOrder._id,
+    product: newProduct2._id,
+    smallAmount: 1,
+    mediumAmount: 0, 
+    largeAmount: 0, 
+    extraLargeAmount: 0,
+    price: 100
+});
+johnOrders.push(newOrderItem2._id);
+database.insertOne(Order, newOrder, (flag) => {  
     database.insertOne(Product, newProduct, (flag) => {
-        let newProduct2 = new Product({
-            style: 'STYLE 1', 
-            color: 'CAR27',
-            price: 100,
-            smallInventory: 10,
-            mediumInventory: 5,
-            largeInventory: 5,
-            extraLargeInventory: 5,
-            smallSold: 0,
-            mediumSold: 0,
-            largeSold: 0,
-            extraLargeSold: 0,
-            smallAvailable: 0,
-            mediumAvailable: 5,
-            largeAvailable: 5,
-            extraLargeAvailable: 5,
-            totalAvailable: 20,
-            smallDeficit: 0, 
-            mediumDeficit: 0,
-            largeDeficit: 0, 
-            extraLargeDeficit: 0
-        });
-        database.insertOne(Product, newProduct2, (flag) => {
-            let newOrderItem = new OrderItem({
-                parentOrder: newOrder._id,
-                product: newProduct._id,
-                smallAmount: 10,
-                mediumAmount: 5, 
-                largeAmount: 0, 
-                extraLargeAmount: 0,
-                price: 1500
-            });
-            database.insertOne(OrderItem, newOrderItem, (flag) => {
-                johnOrders.push(newOrderItem._id);
-                let newOrderItem2 = new OrderItem({
-                    parentOrder: newOrder._id,
-                    product: newProduct2._id,
-                    smallAmount: 1,
-                    mediumAmount: 0, 
-                    largeAmount: 0, 
-                    extraLargeAmount: 0,
-                    price: 100
-                });
-                database.insertOne(OrderItem, newOrderItem2, (flag) => {
-                    johnOrders.push(newOrderItem2._id);
-    
+        database.insertOne(Product, newProduct2, (flag) => {  
+            database.insertOne(OrderItem, newOrderItem, (flag) => {   
+                database.insertOne(OrderItem, newOrderItem2, (flag) => {   
                     Order.updateOne({_id: newOrder._id}, {
                         $push: {orderItems: {$each: johnOrders}}
                     }).then((flag) => {
@@ -121,10 +123,70 @@ database.insertOne(Order, newOrder, (flag) => {
                     })
                 });
             });
-            
         });
     });
 });
+
+let newOrder2 = new Order({
+    firstname: 'Lucifer',
+    lastname: 'Angel of Light',
+    contactNo: '666',
+    email: 'toevilforu@roblox.com',
+    address: '9th Circle of Hell',
+    deliveryStatus: 'PROCESSING',
+    paymentStatus: 'TO PAY',
+    orderDate: new Date('2020-07-01'),
+    basePrice: 100,
+    totalPrice: 433,
+    shippingFee: 333
+});
+
+let luciferItem = new OrderItem({
+    parentOrder: newOrder2._id,
+    product: newProduct2._id,
+    smallAmount: 0,
+    mediumAmount: 1, 
+    largeAmount: 0, 
+    extraLargeAmount: 0,
+    price: 100
+})
+
+database.insertOne(Order, newOrder2, (flag) => {
+    database.insertOne(OrderItem, luciferItem, (flag) => {
+        Order.updateOne({_id: newOrder2._id}, {$push: {orderItems: luciferItem._id}}).then();
+    })
+})
+
+let newOrder3 = new Order({
+    firstname: 'Jennifer',
+    lastname: 'Ureta',
+    contactNo: '8700',
+    email: 'jennifer.ureta@dlsu.edu',
+    address: 'somewhere in manila idk',
+    deliveryStatus: 'PROCESSING',
+    paymentStatus: 'TO PAY',
+    orderDate: new Date('2020-06-01'),
+    paymentDate: new Date('2020-08-10'),
+    basePrice: 100,
+    totalPrice: 200000000000100,
+    shippingFee: 20000000000000,
+});
+
+let uretaItem = new OrderItem({
+    parentOrder: newOrder3._id,
+    product: newProduct2._id,
+    smallAmount: 0,
+    mediumAmount: 1, 
+    largeAmount: 0, 
+    extraLargeAmount: 0,
+    price: 100
+});
+database.insertOne(Order, newOrder3, (flag) => {
+    database.insertOne(OrderItem, uretaItem, (flag) => {
+        Order.updateOne({_id: newOrder3._id}, {$push: {orderItems: uretaItem._id}}).then();
+    })
+})
+
 
 
 

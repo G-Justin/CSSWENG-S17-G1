@@ -272,7 +272,6 @@ function updateDeliveryStatusHelper(_id, res, deliveryDate, js, deliveryStatus, 
 
 
 function parseDate(s) {
-    console.log(s);
     if (!(moment(s, 'YYYY-MM-DD', true).isValid())) {
         return null;
     }

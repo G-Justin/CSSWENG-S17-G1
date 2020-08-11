@@ -1,7 +1,8 @@
 const Order = require('../model/order.js');
 const sanitize = require('mongo-sanitize');
+const { filter } = require('async');
 
-const CARD_SELECT = '_id firstname lastname paymentStatus deliveryStatus deliveryDate';
+const CARD_SELECT = '_id firstname lastname paymentStatus deliveryStatus orderDate';
 
 const ordersController = {
     getOrderpage: function(req, res) {
@@ -47,10 +48,11 @@ const ordersController = {
         .select(CARD_SELECT)
         .lean()
         .exec(function(err, results) {
+            console.log(results)
             let filteredOrders = new Array();
            
             for (let i = 0; i < results.length; i++) {
-                let dateCopy = results[i].deliveryDate;
+                let dateCopy = results[i].orderDate;
                 dateCopy.setHours(12, 0, 0, 0);
 
                 if (dateCopy >= dateStart && dateCopy <= dateEnd) {
