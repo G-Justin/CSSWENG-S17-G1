@@ -1,40 +1,56 @@
+<style>
+  .media-text{
+    float:left;
+    margin-right: 20px;
+  }
+  .media-text #btn{
+      margin:0;
+  }
+  .filter_bar{
+    background-color: white;
+    margin:auto;
+    justify-content: center;
+  }
+  .card{
+    text-align: center;
+  }
+</style>
 
-
-<div class="mt-5 row">
-  <div class="col-sm-12 col-md-4">
-    <div class="card mb-4">
-      <div class="card-body text-center">
-        <h4 class="card-title">Filter</h4><hr>
-          <form mehtod="get" action="/admin/orders/filter">  
+<br>
+<div class="card">
+  <div class="filter_bar">
+        <h4 class="title" style="text-align: center; margin-top:10px;">Filter</h4><hr>
+          <form mehtod="get" action="/admin/orders/filter">
             <div class = "media-text">
               <label for "deliveryStatus">Delivery Status</label><br>
-                <select id="deliveryStatus" class = "browser-default custom-select" name="deliveryStatus" style="width: 200px; border:solid; background-color: rgba(126, 125, 125, 0); cursor:pointer">
+                <select id="deliveryStatus" class = "browser-default custom-select" name="deliveryStatus" style="width: 200px; border:solid; background-color: rgba(126, 125, 125, 0); cursor:pointer;">
                   <option value="DELIVERED">DELIVERED</option>
                   <option value="DELIVERING">DELIVERING</option>
                   <option value="PROCESSING">PROCESSING</option>
                 </select>
-            </div><br>
-            <label for "paymentStatus">Payment Status</label>
-              <div class = "media-text">
-                <select id="paymentStatus" class = "browser-default custom-select" name="paymentStatus" style="width: 200px; border:solid; background-color: rgba(126, 125, 125, 0); cursor:pointer">
-                  <option value="PAID">PAID</option>
-                  <option value="TO PAY">TO PAY</option>
-                </select>
-              </div><br>
+            </div>
+            <div class = "media-text">
+              <label for "paymentStatus">Payment Status</label><br>
+              <select id="paymentStatus" class = "browser-default custom-select" name="paymentStatus" style="width: 200px; border:solid; background-color: rgba(126, 125, 125, 0); cursor:pointer;">
+                <option value="PAID">PAID</option>
+                <option value="TO PAY">TO PAY</option>
+              </select>
+            </div>
+            <div class = "media-text">
             <label for "dateStart">Start Date</label><br>
               <input type="date" id="dateStart" name="dateStart" required>
-					  <br><br>
+					  </div>
+            <div class = "media-text">
             <label for "dateEnd">End Date</label><br>
               <input type="date" id="dateEnd" name="dateEnd" required>
-					  <br><br>
-              <span class="input-group-btn filterbtn">
-                <button class="btn btn-primary" type="submit">Filter</button>
-              </span>
-          </form>    
-      </div>
+            </div>     
+    </div><br>
+    <div class = "media-text" style="margin-bottom:10px;"><button class="btn btn-primary"  id="btn" type="submit">Filter</button></div>
+    </form>
   </div>
-</div>
 
+<div class="mt-5 row">
     {{#each orderCards}}
         {{> orderCard}}
     {{/each}}
+</div>
