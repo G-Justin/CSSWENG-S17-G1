@@ -6,6 +6,8 @@ const orderitem = require('../model/orderitem.js');
 const async = require('async');
 const database = require('../model/database.js');
 const ordersController = require('./ordersController.js');
+const { deleteMany } = require('../model/order.js');
+const { response } = require('../routes/routes.js');
 const adminCartController = {
     getOrder: function(req, res) {
         if (!(req.session.user && req.cookies.user_sid)) {
@@ -162,6 +164,17 @@ const adminCartController = {
             paymentDate: paymentDate
         }).then((a) => {
             res.redirect('/admin/orders/' + _id)
+        })
+    },
+
+    voidOrder: function(req, res) {
+        let _id = sanitize(req.body.voidId);
+
+        Order.deleteOne({_id: _id})
+        .then((a) => {
+            OrderItem.deleteMany({parentOrder: _id}).then((a) => {
+                res.redirect('/admin/orders');
+            })
         })
     }
 };

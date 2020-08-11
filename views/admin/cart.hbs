@@ -56,7 +56,11 @@
 					</div>
 				</div>
 				<div class="card-body" style="text-align: center;">
-					<a href="#" class="btn btn-primary" style = "background-color: rgb(52, 58, 64); color:white">Void</a>	
+					<form method="POST" action="/admin/orders/void">
+						<textarea id="voidId" name="voidId" readonly="readonly" style="display: none;">{{_id}}</textarea>
+						<button type="submit" class="btn btn-primary" style = "background-color: rgb(52, 58, 64); color:white">Void</button>	
+					</form>
+					
 				</div>
 			</div>
 

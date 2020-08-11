@@ -92,6 +92,7 @@ database.insertOne(Order, newOrder, (flag) => {
         });
         database.insertOne(Product, newProduct2, (flag) => {
             let newOrderItem = new OrderItem({
+                parentOrder: newOrder._id,
                 product: newProduct._id,
                 smallAmount: 10,
                 mediumAmount: 5, 
@@ -102,6 +103,7 @@ database.insertOne(Order, newOrder, (flag) => {
             database.insertOne(OrderItem, newOrderItem, (flag) => {
                 johnOrders.push(newOrderItem._id);
                 let newOrderItem2 = new OrderItem({
+                    parentOrder: newOrder._id,
                     product: newProduct2._id,
                     smallAmount: 1,
                     mediumAmount: 0, 

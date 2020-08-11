@@ -1,6 +1,9 @@
 var mongoose = require('mongoose');
 
 var OrderItemSchema = new mongoose.Schema({
+    parentOrder: {
+        type: mongoose.Schema.Types.ObjectId
+    },
     product: {
         type: mongoose.Schema.Types.ObjectId,
     },
