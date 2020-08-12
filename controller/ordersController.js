@@ -3,7 +3,7 @@ const Order = require('../model/order.js');
 const sanitize = require('mongo-sanitize');
 const { filter } = require('async');
 
-const CARD_SELECT = '_id firstname lastname paymentStatus deliveryStatus orderDate';
+const CARD_SELECT = '_id paymentStatus deliveryStatus orderDate';
 
 const ordersController = {
     getOrderpage: function(req, res) {
