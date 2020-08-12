@@ -1,3 +1,4 @@
+const moment = require('moment');
 const Order = require('../model/order.js');
 const sanitize = require('mongo-sanitize');
 const { filter } = require('async');
@@ -43,6 +44,7 @@ const ordersController = {
 
         let dateStart = parseDate(sanitize(req.query.dateStart));
         let dateEnd = parseDate(sanitize(req.query.dateEnd));
+        let hasDateQuery = dateStart != null && dateEnd != null;
 
         Order.find(filters)
         .select(CARD_SELECT)
@@ -52,12 +54,17 @@ const ordersController = {
             let filteredOrders = new Array();
            
             for (let i = 0; i < results.length; i++) {
-                let dateCopy = results[i].orderDate;
-                dateCopy.setHours(12, 0, 0, 0);
+                if (hasDateQuery) {
+                    let dateCopy = results[i].orderDate;
+                    dateCopy.setHours(12, 0, 0, 0);
 
-                if (dateCopy >= dateStart && dateCopy <= dateEnd) {
+                    if (dateCopy >= dateStart && dateCopy <= dateEnd) {
+                        filteredOrders.push(results[i]);
+                    }
+                } else {
                     filteredOrders.push(results[i]);
                 }
+                
             }
 
             res.render('admin/orders', {
@@ -71,11 +78,18 @@ const ordersController = {
 }
 
 function parseDate(s) {
+    if (!(moment(s, 'YYYY-MM-DD', true).isValid())) {
+        return null;
+    }
+
+    if (s == null) {
+        return null;
+    }
     var b = s.split(/\D/);
     let date = new Date(b[0], --b[1], b[2]);
     date.setHours(12, 0, 0, 0);
 
     return date;
-  }
+}
 
 module.exports = ordersController;
