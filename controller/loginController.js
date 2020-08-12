@@ -50,8 +50,8 @@ const loginController = {
 function renderLogin(res, err) {
     res.render('login', {
         title: 'Login',
-        layout: 'auth'
-        //showError: err
+        layout: 'auth',
+        fail: err
     });
 }
 
