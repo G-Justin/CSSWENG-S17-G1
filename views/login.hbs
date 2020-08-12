@@ -39,7 +39,10 @@
                         <input type="password" class="form-control" name="loginPassword" id="loginPassword"
                                 placeholder="Password" required>
                     </div>
-                    <div class="text-danger">{{error_message}}</div>
+
+                    {{#if fail}}
+                    <div class="text-danger">Incorrect Login Information</div>
+                    {{/if}}
                 </div>
                 <div class="row row-submit">
                     <div class="col-xs-12" style="margin:auto;">
