@@ -31,6 +31,7 @@ let johnOrders = new Array();
 
 //hell (synchronous)
 let newOrder = new Order({
+    //orderNumber: Math.floor(100000000 + Math.random() * 900000000),
     firstname: 'John',
     lastname: 'Santos',
     contactNo: '09292',
@@ -128,6 +129,7 @@ database.insertOne(Order, newOrder, (flag) => {
 });
 
 let newOrder2 = new Order({
+    //orderDate: Math.floor(100000000 + Math.random() * 900000000),
     firstname: 'Lucifer',
     lastname: 'Angel of Light',
     contactNo: '666',
@@ -158,6 +160,7 @@ database.insertOne(Order, newOrder2, (flag) => {
 })
 
 let newOrder3 = new Order({
+    //orderNumber: Math.floor(100000000 + Math.random() * 900000000),
     firstname: 'Jennifer',
     lastname: 'Ureta',
     contactNo: '8700',

@@ -1,6 +1,10 @@
 var mongoose = require('mongoose');
 
 var OrderSchema = new mongoose.Schema({
+    orderNumber: {
+        type: Number,
+        unique: true
+    },
     orderDate: {
         type: Date,
         default: Date.now

@@ -3,9 +3,17 @@ $(document).ready(function(){
         e.preventDefault();
         e.stopImmediatePropagation();
         $('#shipping-fee-btn').prop('disabled', true);
+        $('#shippingFeeError').text('');  
 
         let shippingFeeInput = $('#shippingFeeInput').val();
         if (shippingFeeInput == "") {
+            $('#shipping-fee-btn').prop('disabled', false);
+            return;
+        }
+
+        if (shippingFeeInput >= (Number.MAX_SAFE_INTEGER - 10) || shippingFeeInput < 0) {
+            $('#shippingFeeError').text('Invalid shipping fee amount');   
+            $('#shipping-fee-btn').prop('disabled', false);
             return;
         }
         let shippingFeeCartId = $('#shippingFeeCartId').val();
@@ -17,7 +25,7 @@ $(document).ready(function(){
 
             $('#shipping-fee-btn').prop('disabled', false);
         });
-    }) 
+    });
 
 
 

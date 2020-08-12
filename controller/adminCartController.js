@@ -100,6 +100,11 @@ const adminCartController = {
         let _id = sanitize(req.body.shippingFeeCartId);
         let shippingFee = Number(sanitize(req.body.shippingFeeInput));
         let js = req.body.js;
+        
+        if (shippingFee < 0) {
+            res.redirect('/admin/orders/' + _id);
+            return;
+        }
 
         Order.findById(_id)
         .select('totalPrice shippingFee')
@@ -110,6 +115,10 @@ const adminCartController = {
             }
 
             let totalPrice = (orderResult.totalPrice - orderResult.shippingFee) + shippingFee;
+            if (totalPrice >= (Number.MAX_SAFE_INTEGER - 10)) {
+                res.redirect('/admin/orders/' + _id);
+                return;
+            }
 
             Order.updateOne({_id: _id}, {shippingFee: shippingFee, totalPrice: totalPrice})
             .then((a) => {
