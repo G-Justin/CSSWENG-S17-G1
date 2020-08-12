@@ -20,9 +20,8 @@
         </div>  
     </div>
     <div class="container">
-        <div class="content">
+        <div class="content control-group warning">
             <form id="login-form" name="login-form" method="POST" class="form-login"><br><br>
-                
                 <div class="row">
                     <div class="col-xs-12" style="margin:auto;">
                         <label for="loginUsername" class="for-forms">
@@ -40,12 +39,14 @@
                         <input type="password" class="form-control" name="loginPassword" id="loginPassword"
                                 placeholder="Password" required>
                     </div>
+                    <div class="text-danger">{{error_message}}</div>
                 </div>
                 <div class="row row-submit">
                     <div class="col-xs-12" style="margin:auto;">
                         <button type="submit" class="btn btn-block btn-red logging" name="loginSubmit" id="loginSubmit" style="margin:0">LOG IN</button>
                     </div>
                 </div> 
+
             </form>
             <div class="row">
                 <div class="col-xs-12" style="margin:auto;">
