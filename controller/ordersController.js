@@ -37,16 +37,32 @@ const ordersController = {
             return;
         }
 
-        let filters = {
-            deliveryStatus: sanitize(req.query.deliveryStatus),
-            paymentStatus: sanitize(req.query.paymentStatus),
-        };
+        let deliveryQueries = new Array();
+        let paymentQueries = new Array();
+
+        let deliveryStatus = sanitize(req.query.deliveryStatus);
+        if (deliveryStatus == 'SELECT') {
+            deliveryQueries.push('PROCESSING', 'DELIVERING', 'DELIVERED');
+        } else {
+            deliveryQueries.push(deliveryStatus);
+        }
+
+
+        let paymentStatus = sanitize(req.query.paymentStatus);
+        if (paymentStatus == 'SELECT') {
+            paymentQueries.push('TO PAY', 'PAID');
+        } else {
+            paymentQueries.push(paymentStatus);
+        }
 
         let dateStart = parseDate(sanitize(req.query.dateStart));
         let dateEnd = parseDate(sanitize(req.query.dateEnd));
         let hasDateQuery = dateStart != null && dateEnd != null;
 
-        Order.find(filters)
+        Order.find({
+            deliveryStatus: {$in: deliveryQueries},
+            paymentStatus: {$in : paymentQueries}
+        })
         .select(CARD_SELECT)
         .lean()
         .exec(function(err, results) {
