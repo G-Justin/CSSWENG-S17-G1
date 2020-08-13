@@ -171,8 +171,8 @@ let newOrder3 = new Order({
     orderDate: new Date('2020-06-01'),
     paymentDate: new Date('2020-08-10'),
     basePrice: 100,
-    totalPrice: 200000000000100,
-    shippingFee: 20000000000000,
+    totalPrice: 500,
+    shippingFee: 400,
 });
 
 let uretaItem = new OrderItem({
