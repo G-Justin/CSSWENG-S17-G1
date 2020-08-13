@@ -7,6 +7,7 @@ let bcrypt = require('bcrypt');
 const ordersController = require('./controller/ordersController.js');
 database.connect();
 
+Order.collection.drop();
 let username = 'username';
 let password = 'password';
 database.deleteMany(Order, (flag) => {});
@@ -112,21 +113,6 @@ let newOrderItem2 = new OrderItem({
     price: 100
 });
 johnOrders.push(newOrderItem2._id);
-database.insertOne(Order, newOrder, (flag) => {  
-    database.insertOne(Product, newProduct, (flag) => {
-        database.insertOne(Product, newProduct2, (flag) => {  
-            database.insertOne(OrderItem, newOrderItem, (flag) => {   
-                database.insertOne(OrderItem, newOrderItem2, (flag) => {   
-                    Order.updateOne({_id: newOrder._id}, {
-                        $push: {orderItems: {$each: johnOrders}}
-                    }).then((flag) => {
-                        console.log(flag)
-                    })
-                });
-            });
-        });
-    });
-});
 
 let newOrder2 = new Order({
     //orderDate: Math.floor(100000000 + Math.random() * 900000000),
@@ -151,12 +137,6 @@ let luciferItem = new OrderItem({
     largeAmount: 0, 
     extraLargeAmount: 0,
     price: 100
-})
-
-database.insertOne(Order, newOrder2, (flag) => {
-    database.insertOne(OrderItem, luciferItem, (flag) => {
-        Order.updateOne({_id: newOrder2._id}, {$push: {orderItems: luciferItem._id}}).then();
-    })
 })
 
 let newOrder3 = new Order({
@@ -184,6 +164,33 @@ let uretaItem = new OrderItem({
     extraLargeAmount: 0,
     price: 100
 });
+
+
+database.insertOne(Order, newOrder, (flag) => {  
+    database.insertOne(Product, newProduct, (flag) => {
+        database.insertOne(Product, newProduct2, (flag) => {  
+            database.insertOne(OrderItem, newOrderItem, (flag) => {   
+                database.insertOne(OrderItem, newOrderItem2, (flag) => {   
+                    Order.updateOne({_id: newOrder._id}, {
+                        $push: {orderItems: {$each: johnOrders}}
+                    }).then((flag) => {
+                        console.log(flag)
+                    })
+                });
+            });
+        });
+    });
+});
+
+
+
+database.insertOne(Order, newOrder2, (flag) => {
+    database.insertOne(OrderItem, luciferItem, (flag) => {
+        Order.updateOne({_id: newOrder2._id}, {$push: {orderItems: luciferItem._id}}).then();
+    })
+})
+
+
 database.insertOne(Order, newOrder3, (flag) => {
     database.insertOne(OrderItem, uretaItem, (flag) => {
         Order.updateOne({_id: newOrder3._id}, {$push: {orderItems: uretaItem._id}}).then();
