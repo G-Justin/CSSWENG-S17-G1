@@ -4,7 +4,6 @@ const OrderItem = require('./model/orderitem.js');
 const database = require('./model/database.js');
 let User = require('./model/user.js');
 let bcrypt = require('bcrypt');
-const ordersController = require('./controller/ordersController.js');
 database.connect();
 
 Order.collection.drop();
