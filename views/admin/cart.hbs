@@ -75,7 +75,7 @@
 					<div class="card-body">
 					<p id="shippingFee" name="shippingFee" class="card-text"><b>Shipping Fee:</b> {{shippingFee}}</p>
 						<form name="shippingFeeForm" id="shippingFeeForm" method="POST" action="/admin/orders/updateShippingFee">
-							<input type="number" id="shippingFeeInput" name="shippingFeeInput"> <button id="shipping-fee-btn" name="shipping-fee-btn" type="submit" style = "background-color: rgb(52, 58, 64); color:white">SAVE</button>
+							<input type="number" id="shippingFeeInput" name="shippingFeeInput"> <button id="shipping-fee-btn" class="btn btn-primary" name="shipping-fee-btn" type="submit" style = "background-color: rgb(52, 58, 64); color:white; width:40px;height:30px;margin-bottom:5px;padding:0">✓</button>
 							<textarea id="shippingFeeCartId" name="shippingFeeCartId" readonly="readonly" style="display: none;">{{_id}}</textarea>
 						</form>
 							<br><br><p id="basePrice" name="basePrice" class="card-text"><b>Base Price:</b> {{basePrice}} </p>
