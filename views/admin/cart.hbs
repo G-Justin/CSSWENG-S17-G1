@@ -4,71 +4,91 @@
 });
 </script>
 
+<style>
+	label{
+		font-weight: bold;
+	}
+</style>
+
 <div class="mt-5 row">
 	<div class="container-fluid">
 		<h5 style = "text-align: center;">ORDER NUMBER</h5>
 		<div class="row">
-			<div class="col-md-6" style="background-color: rgba(228, 227, 227, 0.507)">
+			<div class="col-md-6" style="background-color: rgba(228, 227, 227, 0.507)"id="left">
 				<br><h5 class="card-title pb-2" style="text-align: center;">Customer Details</h5>
-				<div class="card w-50 h-auto" style = "margin:auto">
+				<div class="card h-auto" style = "margin:auto; width:275px">
 					<div class="card-body">
-						<p class="card-text">Orderdate: {{orderDate}}</p>
-						<p class="card-text">Firstname: {{firstname}}</p>
-						<p class="card-text">Lastname: {{lastname}}</p>
-						<p class="card-text">Contact #: {{contactNo}}</p>
-						<p class="card-text">Email: {{email}}</p>
-						<p class="card-text">Address: {{address}}</p>
-						<p class="card-text">Payment Mode: {{paymentMode}}</p>
-						<p class="card-text">Payment Date: {{paymentDate}}</p>
-						<p class="card-text">Delivery Mode: {{deliveryMode}}</p>
-						<p class="card-text">Delivery Date: {{deliveryDate}}</p>
-						<p class="card-text">Total Item: {{totalItems}}</p>
-						<p class="card-text">Base Price: {{basePrice}}</p>
-						<p class="card-text">Orders: </p>
+						<label for = "orderDate">Order date: </label> <p id="orderDate" style = "display: inline">{{orderDate}}</p><br>
+						<label for = "firstname">Firstname: </label> <p id="firstname" style = "display: inline">{{firstname}}</p><br>
+						<label for = "lastname">Lastname: </label> <p id="lastname" style = "display: inline">{{lastname}}</p><br>
+						<label for = "contact">Contact #: </label> <p  id="contact" style = "display: inline">{{contactNo}}</p><br>
+						<label for = "email">Email: </label> <p  id="email" style = "display: inline">{{email}}</p><br>
+						<label for = "address">Address: </label> <p  id="address" style = "display: inline">{{address}}</p><br>
+						<label for = "payMode">Payment Mode: </label> <p  id="payMode" style = "display: inline">{{paymentMode}}</p><br>
+						<label for = "deliMode">Delivery Mode: </label> <p  id="deliMode" style = "display: inline">{{deliveryMode}}</p><br>
+						<p class="card-text"><b>Total Item:</b> {{totalItems}}</p>
 					</div>
 				</div>
 				
-				<br><h5 class="card-title pb-2" style="text-align: center;">Status</h5>
-				<div class="card w-50 h-auto" style = "margin:auto">
+				<br><h5 class="card-title pb-2" style="text-align: center;">Delivery Status</h5>
+				<div class="card h-auto" style = "margin:auto; width:275px">
 					<div class="card-body">
-						<p class="card-text">Delivery Status: {{deliveryStatus}}</p>
-						<p class="card-text">Payment Status: {{paymentStatus}}</p>
+						<form method="POST" action="/admin/orders/updateDeliveryStatus">
+							<textarea id="updateStatusId" name="updateStatusId" readonly="readonly" style="display: none;">{{_id}}</textarea>
+							<p class="card-text"><b>Edit Delivery Status:</b> <select id="deliveryStatus" name="deliveryStatus" class="browser-default custom-select"><option value="PROCESSING">PROCESSING</option><option value="DELIVERING">DELIVERING</option><option value="DELIVERED">DELIVERED</option><option value="{{deliveryStatus}}" hidden="hidden" selected="selected">{{deliveryStatus}}</option></select></p>
+							<label class="card-text">Delivery Date: {{deliveryDate}} <input type="date" id="deliveryDate" name="deliveryDate" style="width:100%"></label> 
+							<p class="card-text" style="display: none;">Order has deficit. Cannot deliver.</p> 
+							<button class="btn btn-primary" type="submit" style = "background-color: rgb(52, 58, 64); color:white;margin-left:85.615px">SAVE</a>
+						</form>
+						
+					</div>
+				</div>
+				<br><h5 class="card-title pb-2" style="text-align: center;">Payment Status</h5>
+				<div class="card h-auto" style = "margin:auto; width:275px">
+					<div class="card-body">
+						<form method="POST" action="/admin/orders/updatePaymentStatus">
+							<textarea id="updateStatusId" name="updateStatusId" readonly="readonly" style="display: none;">{{_id}}</textarea>
+							<p class="card-text"><b>Payment Status: </b> <select id="paymentStatus" name="paymentStatus" class="browser-default custom-select"><option value="TO PAY">TO PAY</option><option value="PAID">PAID</option><option value="{{paymentStatus}}" hidden="hidden" selected="selected">{{paymentStatus}}</option></select></p>
+							<label class="card-text">Payment Date: {{paymentDate}} <input type="date" id="paymentDate" name="paymentDate" style="width:100%"></label> 
+							<button class="btn btn-primary" type="submit" style = "background-color: rgb(52, 58, 64); color:white;margin-left:85.615px">SAVE</a>
+						</form>
+						
 					</div>
 				</div>
 				<div class="card-body" style="text-align: center;">
-					<br><a href="#" class="btn btn-primary" style = "background-color: rgb(52, 58, 64); color:white">Void</a>	
+					<form method="POST" action="/admin/orders/void">
+						<textarea id="voidId" name="voidId" readonly="readonly" style="display: none;">{{_id}}</textarea><br><hr>
+						<button type="submit" class="btn btn-primary" style = "background-color: rgb(52, 58, 64); color:white">Void Order</button>	
+					</form>
+					
 				</div>
 			</div>
 
-			
-		<div class="col-md-6" style="background-color: rgba(228, 227, 227, 0.507);float:left" >
-				<br><h5 class="card-title pb-2" style="text-align: center;">Order Details</h5>
-				<div class="card w-50 h-auto" style = "margin:auto">
-					<div class="card-body">
-						<p class="card-text">Product:</p>
-						<p class="card-text">S: {{smallAmount}}</p>
-						<p class="card-text">M: {{mediumAmount}}</p>
-						<p class="card-text">L: {{largeAmount}}</p>
-						<p class="card-text">XL: {{extraLargeAmount}}</p>
-						<label for "ship">Shipping Fee: </label>
-						<input type="text" id="ship"> <button style = "background-color: rgb(52, 58, 64); color:white">ok</button>
-						<p class="card-text">Total price: {{price}}</p>
-					</div>
-				</div>
+			<div class="col-md-6" style="background-color: rgba(228, 227, 227, 0.507);float:left" >
+			<br><h5 class="card-title pb-2" style="text-align: center;">Order Details</h5>
+			{{#each orderItems}}
+				{{> orderItem}}
+			{{/each}}
 
-				<br><h5 class="card-title pb-2" style="text-align: center;">Deficit Details</h5>
-				<div class="card w-50 h-auto" style = "margin:auto">
+
+		<br><div class="card h-auto" style = "margin:auto; width:275px">
 					<div class="card-body">
-						<p class="card-text">Small:{{smallDeficit}}</p>
-						<p class="card-text">Medium: {{mediumDeficit}}</p>
-						<p class="card-text">Large: {{largeDeficit}}</p>
-						<p class="card-text">Extra Large: {{extraLargeDeficit}}</p>
+					<p id="shippingFee" name="shippingFee" class="card-text"><b>Shipping Fee:</b> {{shippingFee}}</p>
+						<form name="shippingFeeForm" id="shippingFeeForm" method="POST" action="/admin/orders/updateShippingFee">
+							<input type="number" id="shippingFeeInput" name="shippingFeeInput"> <button id="shipping-fee-btn" class="btn btn-primary" name="shipping-fee-btn" type="submit" style = "background-color: rgb(52, 58, 64); color:white; width:40px;height:30px;margin-bottom:5px;padding:0">✓</button>
+							<textarea id="shippingFeeCartId" name="shippingFeeCartId" readonly="readonly" style="display: none;">{{_id}}</textarea>
+						</form>
+							<br><br><p id="basePrice" name="basePrice" class="card-text"><b>Base Price:</b> {{basePrice}} </p>
+							<p id="totalPrice" name="totalPrice" class="card-text"><b>Total price:</b> {{totalPrice}}</p>
+							<div id="shippingFeeError" name="shippingFeeError" class="text-danger"></div>
 					</div>
 				</div>
 				<div class="card-body" style="text-align: center;">
 					<br><a href="/admin/inventory" target = "_blank" class="btn btn-primary" style = "background-color: rgb(52, 58, 64); color:white">Check Inventory</a>		
 				</div>
+			</div>
 				
+						
 			</div>
 		</div>
 	</div>
