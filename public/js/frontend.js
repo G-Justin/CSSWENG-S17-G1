@@ -21,7 +21,7 @@ $(document).ready(function(){
 
         $.post(url, {shippingFeeCartId: shippingFeeCartId, shippingFeeInput: shippingFeeInput, js: true}, (data) => {
             $('#shippingFee').html('<b>Shipping Fee: </b> ' + data.shippingFee);
-            $('#totalPrice').html('<b>Total price:</b>' + data.totalPrice);
+            $('#totalPrice').html('<b>Total price: </b>' + data.totalPrice);
 
             $('#shipping-fee-btn').prop('disabled', false);
         });
