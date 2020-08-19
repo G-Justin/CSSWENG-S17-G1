@@ -8,15 +8,19 @@
 	label{
 		font-weight: bold;
 	}
+	
 </style>
 
 <div class="mt-5 row">
 	<div class="container-fluid">
-		<h5 style = "text-align: center;">ORDER NUMBER {{_id}}</h5>
-		<div class="row">
-			<div class="col-md-6" style="background-color: rgba(228, 227, 227, 0.507)"id="left">
-				<br><h5 class="card-title pb-2" style="text-align: center;">Customer Details</h5>
-				<div class="card h-auto" style = "margin:auto; width:275px">
+		<h5 style = "text-align: center;">ORDER NUMBER {{_id}}</h5><br>
+		<form method="POST" action="/admin/orders/void"  style="display: flex; justify-content: center;">
+			<textarea id="voidId" name="voidId" readonly="readonly" style="display: none;">{{_id}}</textarea><br>
+			<button type="submit" class="btn btn-primary" style = "background-color: rgb(163, 47, 47); color:white">Void Order</button>	
+		</form><hr>
+		<div class="hi" style=" width:auto; margin:0">
+				<div class="card" style = "float:left; width:275px; height:424px; overflow:auto">
+					<br><h3 class="card-title" style="text-align: center;"> Customer Details</h3><hr>
 					<div class="card-body">
 						<label for = "orderDate">Order date: </label> <p id="orderDate" style = "display: inline">{{orderDate}}</p><br>
 						<label for = "firstname">Firstname: </label> <p id="firstname" style = "display: inline">{{firstname}}</p><br>
@@ -29,9 +33,8 @@
 						<p class="card-text"><b>Total Item:</b> {{totalItems}}</p>
 					</div>
 				</div>
-				
-				<br><h5 class="card-title pb-2" style="text-align: center;">Delivery Status</h5>
-				<div class="card h-auto" style = "margin:auto; width:275px">
+				<div class="card" style = "float: left; width:275px; height:424px;">
+					<br><h3 class="card-title" style="text-align: center;"> Delivery Details</h3><hr>
 					<div class="card-body">
 						<form method="POST" action="/admin/orders/updateDeliveryStatus">
 							<textarea id="updateStatusId" name="updateStatusId" readonly="readonly" style="display: none;">{{_id}}</textarea>
@@ -43,8 +46,9 @@
 						
 					</div>
 				</div>
-				<br><h5 class="card-title pb-2" style="text-align: center;">Payment Status</h5>
-				<div class="card h-auto" style = "margin:auto; width:275px">
+				
+				<div class="card" style = "float: left; width:275px; height:424px;">
+					<br><h3 class="card-title" style="text-align: center;"> Payment Details</h3><hr>
 					<div class="card-body">
 						<form method="POST" action="/admin/orders/updatePaymentStatus">
 							<textarea id="updateStatusId" name="updateStatusId" readonly="readonly" style="display: none;">{{_id}}</textarea>
@@ -55,23 +59,9 @@
 						
 					</div>
 				</div>
-				<div class="card-body" style="text-align: center;">
-					<form method="POST" action="/admin/orders/void">
-						<textarea id="voidId" name="voidId" readonly="readonly" style="display: none;">{{_id}}</textarea><br><hr>
-						<button type="submit" class="btn btn-primary" style = "background-color: rgb(52, 58, 64); color:white">Void Order</button>	
-					</form>
-					
-				</div>
-			</div>
 
-			<div class="col-md-6" style="background-color: rgba(228, 227, 227, 0.507);float:left" >
-			<br><h5 class="card-title pb-2" style="text-align: center;">Order Details</h5>
-			{{#each orderItems}}
-				{{> orderItem}}
-			{{/each}}
-
-
-		<br><div class="card h-auto" style = "margin:auto; width:275px">
+				<div class="card" style = "float:left; width:275px; height:424px; overflow:auto">
+					<br><h3 class="card-title" style="text-align: center;">Shipping Fees</h3><hr>
 					<div class="card-body">
 					<p id="shippingFee" name="shippingFee" class="card-text"><b>Shipping Fee:</b> {{shippingFee}}</p>
 						<form name="shippingFeeForm" id="shippingFeeForm" method="POST" action="/admin/orders/updateShippingFee">
@@ -83,15 +73,39 @@
 							<div id="shippingFeeError" name="shippingFeeError" class="text-danger"></div>
 					</div>
 				</div>
-				<div class="card-body" style="text-align: center;">
-					<br><a href="/admin/inventory" target = "_blank" class="btn btn-primary" style = "background-color: rgb(52, 58, 64); color:white">Check Inventory</a>		
-				</div>
-			</div>
-				
+			
+			
 						
 			</div>
 		</div>
-	</div>
+		</div><br><hr>
 
+		<div class="container-fluid">
+			<div class="mt-3 row" style="margin-bottom: 3%;">
+				<div class="row" style=" margin:auto">
+					<button id="button3" data-toggle="modal" data-target="#myModal2" class = "btn btn-primary" style = "background-color: rgb(52, 58, 64); color:white">Order Content</button>
+				</div>				
+			</div>
+		</div>
+
+<div id="myModal2" class="modal fade" role="dialog">
+        <div class="modal-dialog" id = "md1">
+			
+          <div class="modal-content">
+            <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
+              <h4 class="modal-title">Order content</h4>
+              <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+            </div>
+            <div class="modal-body" contenteditable="TRUE" spellcheck="FALSE">
+                {{#each orderItems}}
+				{{> orderItem}}
+			{{/each}}
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+			
+        </div>
 </div>
-</div>
+
