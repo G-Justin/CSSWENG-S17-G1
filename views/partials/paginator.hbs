@@ -1,5 +1,8 @@
-<select class="selectpicker single-chapter-select">
+<select id="paginator" name="paginator">
   {{#each selectOptions}}
-    <option value="{{pageLink}}">Page {{pageNo}}</option>
+    <option value="{{pageLink}}" {{#if isSelected}} selected {{/if}}>Page {{pageNo}}</option>
   {{/each}}
 </select>
+
+{{#if hasPrev}}<a href="{{prevPageLink}}" class="card-link bg-pill pl-2 pr-2 pt-1 pb-1 rounded">Previous Page</a>{{/if}}
+{{#if hasNext}}<a href="{{nextPageLink}}" class="card-link bg-pill pl-2 pr-2 pt-1 pb-1 rounded">Next Page</a>{{/if}}
