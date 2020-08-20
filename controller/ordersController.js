@@ -26,7 +26,14 @@ const ordersController = {
                 title: 'Facemustph | Orders',
                 layout: 'main',
 
-                orderCards: results
+                orderCards: results,
+
+                paginator: {
+                    limit: 10, // This key:value pair is required.
+                    defaultPage: 'posts', // This key:value pair defaults to 'posts' if not set.
+                    currentPage: 1, // This key:value pair is required.
+                    totalPages: 20, // This key:value pair is required.
+                }
             });
         });  
     },
