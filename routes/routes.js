@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const database = require('../model/database.js');
-
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -38,8 +37,7 @@ app.get('/logout', function(req, res) {
 });
 
 const ordersController = require('../controller/ordersController.js');
-app.get('/admin/orders', ordersController.getOrderpage);
-app.get('/admin/orders/filter', ordersController.getFilteredOrderPage);
+app.get('/admin/orders', ordersController.getFilteredOrderPage);
 
 const dashboardController = require('../controller/dashboardController.js');
 app.get('/admin', dashboardController.getDashboard);

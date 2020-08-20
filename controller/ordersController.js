@@ -2,61 +2,29 @@ const moment = require('moment');
 const Order = require('../model/order.js');
 const sanitize = require('mongo-sanitize');
 const { filter } = require('async');
+const { options } = require('../routes/routes.js');
 
 const CARD_SELECT = '_id paymentStatus deliveryStatus orderDate';
 
 const ordersController = {
-    getOrderpage: function(req, res) {
-        if (!(req.session.user && req.cookies.user_sid)) {
-            res.redirect('/login');
-            return;
-        }
-        
-        if (req.query.orderId != null) {
-            let orderId = req.query.orderId;
-            res.redirect('/admin/orders/' + orderId.trim());
-            return;
-        }
-
-        Order.find({})
-        .select(CARD_SELECT)
-        .lean()
-        .exec(function (err, results) {
-            res.render('admin/orders', {
-                title: 'Facemustph | Orders',
-                layout: 'main',
-
-                orderCards: results,
-
-                paginator: {
-                    limit: 10, // This key:value pair is required.
-                    defaultPage: 'posts', // This key:value pair defaults to 'posts' if not set.
-                    currentPage: 1, // This key:value pair is required.
-                    totalPages: 20, // This key:value pair is required.
-                }
-            });
-        });  
-    },
-
     getFilteredOrderPage: function(req, res) {
         if (!(req.session.user && req.cookies.user_sid)) {
             res.redirect('/login');
             return;
         }
-
+        console.log('getFiltered request')
         let deliveryQueries = new Array();
         let paymentQueries = new Array();
 
         let deliveryStatus = sanitize(req.query.deliveryStatus);
-        if (deliveryStatus == 'SELECT') {
+        if (deliveryStatus == 'SELECT' || deliveryStatus == null) {
             deliveryQueries.push('PROCESSING', 'DELIVERING', 'DELIVERED');
         } else {
             deliveryQueries.push(deliveryStatus);
         }
 
-
         let paymentStatus = sanitize(req.query.paymentStatus);
-        if (paymentStatus == 'SELECT') {
+        if (paymentStatus == 'SELECT' || paymentStatus == null) {
             paymentQueries.push('TO PAY', 'PAID');
         } else {
             paymentQueries.push(paymentStatus);
@@ -66,14 +34,20 @@ const ordersController = {
         let dateEnd = parseDate(sanitize(req.query.dateEnd));
         let hasDateQuery = dateStart != null && dateEnd != null;
 
+        let page = Number(sanitize(req.query.page));
+        if (page == null) {
+            page = 1;
+        }
+
         Order.find({
             deliveryStatus: {$in: deliveryQueries},
             paymentStatus: {$in : paymentQueries}
         })
         .select(CARD_SELECT)
+        .skip((page - 1) * 2)
+        .limit(2)
         .lean()
         .exec(function(err, results) {
-            console.log(results)
             let filteredOrders = new Array();
            
             for (let i = 0; i < results.length; i++) {
@@ -90,11 +64,23 @@ const ordersController = {
                 
             }
 
+            let selectOptions = new Array();
+            for (let i = 0; i < Math.ceil(filteredOrders.length / 2); i++) {
+                let no = i + 1;
+                let options = {
+                    pageLink: "/admin/orders?deliveryStatus=" + deliveryStatus + "&paymentStatus=" + paymentStatus + "&dateStart=" + req.query.dateStart + "&dateEnd=" + req.query.dateEnd + "&page=" + no,
+                    pageNo: no
+                };
+
+                selectOptions.push(options);
+            }
+
             res.render('admin/orders', {
                 title: 'Facemustph | Orders',
                 layout: 'main',
 
-                orderCards: filteredOrders
+                orderCards: filteredOrders,
+                selectOptions: selectOptions
             });  
         })
     }
