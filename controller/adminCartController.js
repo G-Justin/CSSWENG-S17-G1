@@ -5,7 +5,6 @@ const Product = require('../model/product.js');
 const orderitem = require('../model/orderitem.js');
 
 const moment = require('moment');
-const async = require('async');
 const database = require('../model/database.js');
 const ordersController = require('./ordersController.js');
 
@@ -32,67 +31,36 @@ const adminCartController = {
             let orderResultItems = orderResult.orderItems;
             let orderItems = new Array();
 
-            async.waterfall([
-                function(done) {
-                    for (let i = 0; i < orderResultItems.length; i++) {
-                        Product.findById(orderResultItems[i].product)
-                        .exec((err, productResult) => {
-                            let smallDeficit = productResult.smallAvailable <  orderResultItems[i].smallAmount ? (orderResultItems[i].smallAmount - productResult.smallAvailable) : 0;
-                            let mediumDeficit = productResult.mediumAvailable <  orderResultItems[i].mediumAmount ? (orderResultItems[i].mediumAmount - productResult.mediumAvailable) : 0;  
-                            let largeDeficit = productResult.largeAvailable <  orderResultItems[i].largeAmount ? (orderResultItems[i].largeAmount - productResult.largeAvailable) : 0;
-                            let extraLargeDeficit = productResult.extraLargeAvailable <  orderResultItems[i].extraLargeAmount ? (orderResultItems[i].extraLargeAmount - productResult.extraLargeAvailable) : 0;
-        
-                            let orderItem = {
-                                color: productResult.color,
-                                style: productResult.style,
-                                smallAmount: orderResultItems[i].smallAmount,
-                                mediumAmount: orderResultItems[i].mediumAmount,
-                                largeAmount: orderResultItems[i].largeAmount,
-                                extraLargeAmount: orderResultItems[i].extraLargeAmount,
-        
-                                smallDeficit: smallDeficit,
-                                mediumDeficit: mediumDeficit,
-                                largeDeficit: largeDeficit,
-                                extraLargeDeficit: extraLargeDeficit
-                            };
-        
-                            orderItems.push(orderItem);
-                        });
-                    }  
-                    done(null, '1st');
-                },
-                function(value1, done) {
-                    let details = {
-                        _id: orderResult._id,
-                        orderDate: formatDate(orderResult.orderDate),
-                        firstname: orderResult.firstname,
-                        lastname: orderResult.lastname,
-                        contactNo: orderResult.contactNo,
-                        email: orderResult.email,
-                        address: orderResult.address,
-                        paymentMode: orderResult.paymentMode,
-                        paymentDate: formatDate(orderResult.paymentDate),
-                        deliveryMode: orderResult.deliveryMode,
-                        deliveryDate: formatDate(orderResult.deliveryDate),
-                        totalItems: orderResult.orderItems.length,
-        
-                        deliveryStatus: orderResult.deliveryStatus,
-                        paymentStatus: orderResult.paymentStatus,
-                        shippingFee: orderResult.shippingFee,
-                        basePrice: orderResult.basePrice,
-                        totalPrice: orderResult.totalPrice,
-        
-                        orderItems: orderItems,
-        
-                        title: 'Customer Cart'
-                    };
-        
-                    res.render('admin/cart', details);
-                    done(null, 'value 2');
-                }
-            ], function (err) {
-                if (err) throw new Error(err);
-            });
+            getOrderItems(orderResultItems, orderItems).then((a) => {
+                let details = {
+                    _id: orderResult._id,
+                    orderDate: formatDate(orderResult.orderDate),
+                    firstname: orderResult.firstname,
+                    lastname: orderResult.lastname,
+                    contactNo: orderResult.contactNo,
+                    email: orderResult.email,
+                    address: orderResult.address,
+                    paymentMode: orderResult.paymentMode,
+                    paymentDate: formatDate(orderResult.paymentDate),
+                    deliveryMode: orderResult.deliveryMode,
+                    deliveryDate: formatDate(orderResult.deliveryDate),
+                    totalItems: orderResult.orderItems.length,
+    
+                    deliveryStatus: orderResult.deliveryStatus,
+                    paymentStatus: orderResult.paymentStatus,
+                    shippingFee: orderResult.shippingFee,
+                    basePrice: orderResult.basePrice,
+                    totalPrice: orderResult.totalPrice,
+    
+                    orderItems: orderItems,
+    
+                    title: 'Customer Cart'
+                };
+    
+                res.render('admin/cart', details);
+            })
+                
+            
         })
     },
 
@@ -191,6 +159,31 @@ const adminCartController = {
         })
     }
 };
+async function getOrderItems(orderResultItems, orderItems) {
+    for (let i = 0; i < orderResultItems.length; i++) {
+        let productResult = await Product.findOne(orderResultItems[i].product);
+        let smallDeficit = productResult.smallAvailable < orderResultItems[i].smallAmount ? (orderResultItems[i].smallAmount - productResult.smallAvailable) : 0;
+        let mediumDeficit = productResult.mediumAvailable < orderResultItems[i].mediumAmount ? (orderResultItems[i].mediumAmount - productResult.mediumAvailable) : 0;
+        let largeDeficit = productResult.largeAvailable < orderResultItems[i].largeAmount ? (orderResultItems[i].largeAmount - productResult.largeAvailable) : 0;
+        let extraLargeDeficit = productResult.extraLargeAvailable < orderResultItems[i].extraLargeAmount ? (orderResultItems[i].extraLargeAmount - productResult.extraLargeAvailable) : 0;
+
+        let orderItem = {
+            color: productResult.color,
+            style: productResult.style,
+            smallAmount: orderResultItems[i].smallAmount,
+            mediumAmount: orderResultItems[i].mediumAmount,
+            largeAmount: orderResultItems[i].largeAmount,
+            extraLargeAmount: orderResultItems[i].extraLargeAmount,
+            smallDeficit: smallDeficit,
+            mediumDeficit: mediumDeficit,
+            largeDeficit: largeDeficit,
+            extraLargeDeficit: extraLargeDeficit
+        };
+
+        orderItems.push(orderItem);
+    }
+}
+
 function someTest() {
     Product.find({})
     .select('smallAvailable')
