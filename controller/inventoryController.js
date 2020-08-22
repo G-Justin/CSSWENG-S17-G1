@@ -9,8 +9,8 @@ const inventoryController = {
             return;
         }
 
-        let style = sanitize(req.body.style);
-        let color = sanitize(req.body.color);
+        let style = sanitize(req.query.style);
+        let color = sanitize(req.query.color);
         let query = getQueries(style, color);
 
         let page = sanitize(req.query.page);
@@ -25,7 +25,7 @@ const inventoryController = {
             limit:1
         };
 
-        Product.paginate({}, options, function(err, results){
+        Product.paginate(query, options, function(err, results){
             if (!results) {
                 console.log('no products returned');
                 console.log(results)
@@ -59,9 +59,6 @@ const inventoryController = {
                 nextPageLink: nextPageLink
             })
         })
-
-
-        return;
     }
 }
 
@@ -69,21 +66,44 @@ module.exports = inventoryController;
 
 function getQueries(style, color) {
     let query = {};
-    if ((style === null || style === undefined || style.trim() == "") && (color !== null || color !== undefined || color.trim() != "")) {
+
+    if(isEmpty(style) && isEmpty(color)) {
+        return query;
+    }
+
+    if (isEmpty(style) && !isEmpty(color)) {
         query = { color: new RegExp(color, 'i') };
         return query;
     } 
     
-    if ((color === null || color === undefined || color.trim() == "") && (style !== null || style !== undefined || style.trim() != "")) {
+    if (isEmpty(color) && !isEmpty(style)) {
         query = { style: new RegExp(style, 'i') };
         return query;
     }
 
-    if ((color !== null || color !== undefined || color.trim() != "") && (style !== null || style !== undefined || style.trim() != "")) {
+    if (!isEmpty(color) && !isEmpty(style)) {
         query = { color: new RegExp(color, 'i'), style: new RegExp(style, 'i') };
         return query;
-    }
+    } 
      
-    query = {};
-    return query;
+}
+
+function isEmpty(input) {
+    if (input === null) {
+        return true;
+    }
+
+    if (input === undefined) {
+        return true;
+    }
+
+    if (input.trim() == "undefined") {
+        return true;
+    }
+
+    if (input.trim() == "") {
+        return true;
+    }
+
+    return false;
 }
