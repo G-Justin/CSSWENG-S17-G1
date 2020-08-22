@@ -19,8 +19,8 @@
 <br>
 <div class="card">
   <div class="filter_bar">
-    <br>
-          <form mehtod="get" action="/admin/orders/filter">
+        <h4 class="title" style="text-align: center; margin-top:10px;">Filter</h4><hr>
+          <form mehtod="get" action="/admin/orders">
             <div class = "media-text" id="input">
               <label for "deliveryStatus">Delivery Status</label><br>
                 <select id="deliveryStatus" class = "browser-default custom-select" name="deliveryStatus" style="width: 200px; border:solid; background-color: rgba(126, 125, 125, 0); cursor:pointer;">
@@ -56,3 +56,5 @@
         {{> orderCard}}
     {{/each}}
 </div>
+
+{{> paginator}}
