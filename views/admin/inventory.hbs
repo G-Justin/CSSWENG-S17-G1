@@ -73,47 +73,12 @@
 <div class="mt-5 row">
     <div class="col d-flex justify-content-center">
         <div class="col-sm-12 col-md-8">
-            <div class="col-sm-12 col-md-4" id="col">
-                <div class="card mb-4">
-                    <div class="card-header bg-dark text-light font-weight-bold">
-                        STYLE 1 - Light Gray
-                    </div>
-                    <div class="card-body border-bottom">
-                         <div class="card-body text-center">
-                            <img src="/assets/boymask.png" width="100" height="100" class=" p-1 rounded-10 d-inline-block align-top mb-1" alt="Logo">
-                            <a href="/admin/inventory/{{_id}}" class="card-link bg-pill pl-2 pr-2 pt-1 pb-1 rounded"> Available : 7{{availableNumber}}</a>
-                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-12 col-md-4" id="col">
-                <div class="card mb-4">
-                    <div class="card-header bg-dark text-light font-weight-bold">
-                        STYLE 2 - Light Gray 
-                    </div>
-                    <div class="card-body border-bottom">
-                         <div class="card-body text-center">
-                            <img src="/assets/boymask.png" width="100" height="100" class=" p-1 rounded-10 d-inline-block align-top mb-1" alt="Logo">
-                            <a href="/admin/inventory/{{_id}}" class="card-link bg-pill pl-2 pr-2 pt-1 pb-1 rounded"> Available : {{availableNumber}}</a>
-                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-12 col-md-4" id="col">
-                <div class="card mb-4">
-                    <div class="card-header bg-dark text-light font-weight-bold">
-                        UNO-PH
-                    </div>
-                    <div class="card-body border-bottom">
-                         <div class="card-body text-center">
-                            <img src="/assets/boymask.png" width="100" height="100" class=" p-1 rounded-10 d-inline-block align-top mb-1" alt="Logo">
-                            <a href="/admin/inventory/{{_id}}" class="card-link bg-pill pl-2 pr-2 pt-1 pb-1 rounded"> Available : {{availableColors}} 7</a>
-                         </div>
-                    </div>
-                </div>
-            </div>
+            {{#each products}}
+              {{> productCard}}
+            {{/each}}
         </div>
     </div>
 </div>
+
+
+{{> paginator}}

@@ -35,11 +35,9 @@ const ordersController = {
         let hasDateQuery = dateStart != null && dateEnd != null;
 
         let page = sanitize(req.query.page);
-        console.log("before " + page)
         if (page == null) {
             page = 1;
         }
-        console.log("after " + page)
 
         let options = {
             select: CARD_SELECT,

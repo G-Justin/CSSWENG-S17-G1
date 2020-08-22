@@ -3,6 +3,11 @@ let database = require('./model/database.js');
 let bcrypt = require('bcrypt');
 database.connect()
 
+User.find({}).exec((err, res) => {
+    console.log(res)
+})
+
+/*
 let username = 'username';
 let password = 'password';
 
@@ -19,5 +24,5 @@ bcrypt.hash(password, 10, function(err, hash) {
 
     /*database.findMany(User, {}, {}, (result) => {
         console.log(result);
-    })*/
-})
+    })
+}) */
