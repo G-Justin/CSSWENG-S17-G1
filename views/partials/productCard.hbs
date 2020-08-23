@@ -6,8 +6,97 @@
         <div class="card-body border-bottom">
              <div class="card-body text-center">
                 <img src="/assets/boymask.png" width="100" height="100" class=" p-1 rounded-10 d-inline-block align-top mb-1" alt="Logo">
-                <a href="/admin/inventory/{{_id}}" class="card-link bg-pill pl-2 pr-2 pt-1 pb-1 rounded"> Available : {{totalAvailable}}</a>
+                <a href="/admin/inventory/{{_id}}" class="btn btn-primary"> Available : {{totalAvailable}}</a>
+                <btn class="btn btn-primary" style="margin-top:1%; font-size:10px; float:left; width:50px; margin-left:1%;" data-toggle="modal" data-target="#modal_stock">Add Stock</btn>
+                <btn class="btn btn-primary" style="margin-top:1%; font-size:10px; float:left; width:70px; margin-left:1%;" data-toggle="modal" data-target="#modal_detail">View Detail</btn>
             </div>
         </div>
     </div>
+</div>
+
+<div id="modal_stock" class="modal fade" role="dialog">
+        <div class="modal-dialog" id = "md1">
+          <div class="modal-content" style="background-color: rgb(247, 242, 242); text-align:center">
+            <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
+              <h4 class="modal-title">Update Stock in Inventory</h4>
+              <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+            </div>
+            <div class="modal-body" style="overflow:auto margin:auto; text-align:center; margin-top:2%">
+                <label for="s">S: </label>
+                <input type="number" name="s" id="s" placeholder=" Enter Small Amount"><br>
+                <label for="m">M: </label>
+                <input type="number" name="m" id="m" placeholder=" Enter Medium Amount"><br>
+                <label for="l">L: </label>
+                <input type="number" name="l" id="l" placeholder=" Enter Large Amount"><br>
+                <label for="xl">XL: </label>
+                <input type="number" name="xl" id="xl" placeholder=" Enter Extra Large Amount"><br>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);">Confirm</button>
+               <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+</div>
+
+<div id="modal_detail" class="modal fade" role="dialog" style="padding:0;margin:0">
+        <div class="modal-dialog" id = "md1" style="min-width:80%;">
+          <div class="modal-content" style="background-color: rgb(247, 242, 242);">
+            <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
+              <h4 class="modal-title">Product Details</h4>
+              <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+            </div>
+            <div class="modal-body" style="overflow-y:auto">
+                <table class="table table-striped" style="text-align: center;">
+                    <thead>
+                        <tr>
+                            <th>Color</th>
+                            <th>Style</th>
+                            <th>Price</th>
+                            <th>Small</th>
+                            <th>Medium</th>
+                            <th>Large</th>
+                            <th>Extra Large</th>
+                            <th>Total Available</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{color}}</td>
+                            <td>{{style}}</td>
+                            <td>{{price}}</td>
+                            <td>{{smallInventory}}</td>
+                            <td>{{mediumInventory}}</td>
+                            <td>{{largeInventory}}</td>
+                            <td>{{extraLargeInventory}}</td>
+                            <td>{{totalAvailable}}</td>
+                        </tr>
+                    </tbody>
+                </table><br><br>
+                <h4 style="text-align: center;">Deficit</h4>
+                <table class="table table-striped" style="text-align: center;">
+                    <thead>
+                        <tr>
+                            <th>Small</th>
+                            <th>Medium</th>
+                            <th>Large</th>
+                            <th>Extra Large</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{smallDeficit}}</td>
+                            <td>{{mediumDeficit}}</td>
+                            <td>{{largeDeficit}}</td>
+                            <td>{{extraLargeDeficit}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
 </div>
