@@ -1,14 +1,27 @@
-<div class="col-sm-12 col-md-4" id="col">
-    <div class="card mb-4">
+<script>
+      $('#table1').DataTable({
+            });
+      function hide(){
+          $('#modal_detail').modal('hide')
+      }
+      function show(){
+        $("#modal_detail").modal('show')
+      }
+</script>
+
+<div class="container-flex" id="col" style="justify-content: center;">
+    <div class="card mb-4" style="min-width:250px">
         <div class="card-header bg-dark text-light font-weight-bold">
             {{style}} - {{color}}
         </div>
         <div class="card-body border-bottom">
              <div class="card-body text-center">
-                <img src="/assets/boymask.png" width="100" height="100" class=" p-1 rounded-10 d-inline-block align-top mb-1" alt="Logo">
+                <img src="/assets/boymask.png" width="100" height="100" class=" p-1 rounded-10 d-inline-block align-top mb-1" alt="Logo"><br>
                 <a href="/admin/inventory/{{_id}}" class="btn btn-primary"> Available : {{totalAvailable}}</a>
-                <btn class="btn btn-primary" style="margin-top:1%; font-size:10px; float:left; width:50px; margin-left:1%;" data-toggle="modal" data-target="#modal_stock">Add Stock</btn>
-                <btn class="btn btn-primary" style="margin-top:1%; font-size:10px; float:left; width:70px; margin-left:1%;" data-toggle="modal" data-target="#modal_detail">View Detail</btn>
+                <div class = "card-footer" style="margin-top:5%">
+                    <btn class="btn btn-primary" style="font-size:12px" data-toggle="modal" data-target="#modal_stock">Add Stock</btn>
+                    <btn class="btn btn-primary" style="font-size:12px" data-toggle="modal" data-target="#modal_detail">View Detail</btn>
+                </div>
             </div>
         </div>
     </div>
@@ -95,8 +108,54 @@
                 
             </div>
             <div class="modal-footer">
+               <button id="Icon" data-toggle="modal" data-target="#modal_daily" class = "btn btn-primary" onClick="hide()">Daily Production Record</button>
                <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
 </div>
+
+<div id="modal_daily" class="modal fade" role="dialog" style="padding:0;margin:0">
+        <div class="modal-dialog" id = "md1" style="min-width:80%;">
+          <div class="modal-content" style="background-color: rgb(247, 242, 242);">
+            <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
+              <h4 class="modal-title">Product Details</h4>
+              <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+            </div>
+            <div class="modal-body" style="overflow-y:auto">
+                
+                <h4 style="text-align: center;">Daily Production Record</h4>
+                <table class="table table-striped" id="table1" style="text-align: center;">
+                    <thead>
+                        <tr>
+                            <th>Date Enconded</th>
+                            <th>Style</th>
+                            <th>Color</th>
+                            <th>S</th>
+                            <th>M</th>
+                            <th>L</th>
+                            <th>XL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            
+                        </tr>
+                    </tbody>
+                </table>
+                
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal" onClick="show()">Close</button>
+            </div>
+          </div>
+        </div>
+</div>
+
