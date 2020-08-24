@@ -18,9 +18,9 @@
              <div class="card-body text-center">
                 <img src="/assets/boymask.png" width="100" height="100" class=" p-1 rounded-10 d-inline-block align-top mb-1" alt="Logo"><br>
                 <a href="/admin/inventory/{{_id}}" class="btn btn-primary"> Available : {{totalAvailable}}</a>
-                <div class = "card-footer" style="margin-top:5%">
-                    <btn class="btn btn-primary" style="font-size:12px" data-toggle="modal" data-target="#modal_stock">Add Stock</btn>
-                    <btn class="btn btn-primary" style="font-size:12px" data-toggle="modal" data-target="#modal_detail">View Detail</btn>
+                <div class = "card-footer" style="margin-top:5%;padding:1">
+                    <btn class="btn btn-primary" style="font-size:9px" data-toggle="modal" data-target="#modal_stock">Add Stock</btn>
+                    <btn class="btn btn-primary" style="font-size:9px" data-toggle="modal" data-target="#modal_detail">View Detail</btn>
                 </div>
             </div>
         </div>
@@ -28,7 +28,7 @@
 </div>
 
 <div id="modal_stock" class="modal fade" role="dialog">
-        <div class="modal-dialog" id = "md1">
+        <div class="modal-dialog" id = "md2">
           <div class="modal-content" style="background-color: rgb(247, 242, 242); text-align:center">
             <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
               <h4 class="modal-title">Update Stock in Inventory</h4>
@@ -53,7 +53,7 @@
 </div>
 
 <div id="modal_detail" class="modal fade" role="dialog" style="padding:0;margin:0">
-        <div class="modal-dialog" id = "md1" style="min-width:80%;">
+        <div class="modal-dialog" id = "md3" style="min-width:80%;">
           <div class="modal-content" style="background-color: rgb(247, 242, 242);">
             <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
               <h4 class="modal-title">Product Details</h4>
@@ -116,7 +116,7 @@
 </div>
 
 <div id="modal_daily" class="modal fade" role="dialog" style="padding:0;margin:0">
-        <div class="modal-dialog" id = "md1" style="min-width:80%;">
+        <div class="modal-dialog" id = "md4" style="min-width:80%;">
           <div class="modal-content" style="background-color: rgb(247, 242, 242);">
             <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
               <h4 class="modal-title">Product Details</h4>
