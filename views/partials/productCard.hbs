@@ -1,6 +1,12 @@
 <script>
-      $('#table1').DataTable({
-            });
+    var num = 0;
+    function dt (){
+      if (num == 0){ //to convert the table into datatable once only
+        $('#table1').DataTable({ //page returns an error if we tries to convert datatable into datatable
+                }); // we can choose not to implement datatable anymore
+        }
+        num++;
+    }
       function hide(){
           $('#modal_detail').modal('hide')
       }
@@ -108,7 +114,7 @@
                 
             </div>
             <div class="modal-footer">
-               <button id="Icon" data-toggle="modal" data-target="#modal_daily" class = "btn btn-primary" onClick="hide()">Daily Production Record</button>
+               <button id="Icon" data-toggle="modal" data-target="#modal_daily" class = "btn btn-primary" onClick="hide(),dt()">Daily Production Record</button>
                <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">Close</button>
             </div>
           </div>
@@ -139,7 +145,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td></td>
+                            <td>dummyDate</td>
                             <td></td>
                             <td></td>
                             <td></td>
