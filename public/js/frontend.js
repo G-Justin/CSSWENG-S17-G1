@@ -33,10 +33,70 @@ $(document).ready(function(){
             window.location = url; // redirect
         }
         return false;
-      })
+      });
+
+    $('#newProductBtn').click(function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $('#newProductError').text("");
+
+        let style = $('#newProductStyle').val();
+        let color = $('#newProductColor').val();
+        let price = $('#newProductPrice').val();
+        let s = $('#newProductS').val();
+        let m = $('#newProductM').val();
+        let l = $('#newProductL').val();
+        let xl = $('#newProductXl').val();
+
+        if (price > (Number.MAX_SAFE_INTEGER - 10)) {
+            $('#newProductError').text("Price input too large!");
+            return;
+        }
+
+        if (s > (Number.MAX_SAFE_INTEGER - 10)) {
+            $('#newProductError').text("S input too large!");
+            return;
+        }
+
+        if (m > (Number.MAX_SAFE_INTEGER - 10)) {
+            $('#newProductError').text("M input too large!");
+            return;
+        }
+
+        if (l > (Number.MAX_SAFE_INTEGER - 10)) {
+            $('#newProductError').text("L input too large!");
+            return;
+        }
+
+        if (xl > (Number.MAX_SAFE_INTEGER - 10)) {
+            $('#newProductError').text("XL input too large!");
+            return;
+        }
 
 
+        if ($.trim(style).length < 1 || $.trim(color).length < 1 || s == "" || m == "" || l == "" || xl == "") {
+            $('#newProductError').text("All fields required!");
+            return;
+        }
 
+        if ($.trim(style).length > 16) {
+            $('#newProductError').text("Style should only be a maximum of 16 characters!");
+            return;
+        }
 
+        if ($.trim(color).length > 16) {
+            $('#newProductError').text("Color should only be a maximum of 16 characters!");
+            return;
+        }
+
+        $.post("/admin/inventory/validateNewProduct", {style: style, color: color}, (data) => {
+            if (data) {
+                $('#newProductError').text("Product already exists in the inventory!")
+                return;
+            }
+
+            $('#newProductForm').submit();
+        })
+    }) 
 
 })

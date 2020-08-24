@@ -1,6 +1,7 @@
 const Product = require('../model/product.js');
 const sanitize = require('mongo-sanitize');
-const PAGE_LIMIT = 50;
+const { Mongoose } = require('mongoose');
+const PAGE_LIMIT = 10;
 
 const inventoryController = {
     getInventoryPage: function(req, res) {
@@ -22,7 +23,7 @@ const inventoryController = {
             //select: '_id totalAvailable style color',
             lean: true,
             page: page,
-            limit:1
+            limit: PAGE_LIMIT
         };
 
         Product.paginate(query, options, function(err, results){
@@ -58,6 +59,81 @@ const inventoryController = {
                 prevPageLink: prevPageLink,
                 nextPageLink: nextPageLink
             })
+        })
+    },
+
+    addProduct: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+
+        let style = sanitize(req.body.newProductStyle);
+        let color = sanitize(req.body.newProductColor);
+        let price = sanitize(req.body.newProductPrice);
+        let s = sanitize(req.body.newProductS);
+        let m = sanitize(req.body.newProductM);
+        let l = sanitize(req.body.newProductL);
+        let xl = sanitize(req.body.newProductXl);
+
+        console.log(style + " " + color + " " + s + " " + m + " " + l + " " + xl);
+
+        if (isEmpty(style) || isEmpty(color) || isEmpty(price) ||
+        isEmpty(s) || isEmpty(m) || isEmpty(l) || isEmpty(xl)) {
+            res.redirect('/admin/inventory');
+            return;
+        };
+
+        if (!isValidNumberInput(price) || !isValidNumberInput(s) || !isValidNumberInput(m) || !isValidNumberInput(l) || !isValidNumberInput(xl)) {
+            console.log("Stock and price inputs are invalid");
+            return;
+        }
+
+        style = style.trim().toUpperCase();
+        color = color.trim().toUpperCase();
+
+        Product.exists({style: style, color: color}, function(err, exists) {
+            if (exists) {
+                console.log("Product already exists: " + style + " " + color);
+                res.redirect('/admin/inventory');
+                return;
+            }
+
+            let product = {
+                style: style,
+                color: color,
+                price: price.trim().toUpperCase(),
+                s: s,
+                m: m,
+                l: l,
+                xl: xl,
+                totalAvailable: Number(s) + Number(m) + Number(l) + Number(xl)
+            };
+    
+            Product.create(product, function(err, result) {
+                if (!result) {
+                    console.log(err);
+                    return;
+                }
+    
+                console.log("Added new product: " + result);
+    
+                res.redirect('/admin/inventory');
+            })
+        })
+    },
+
+    validateNewProduct: function(req, res) {
+        let style = sanitize(req.body.style);
+        let color = sanitize(req.body.color);
+
+        let query = {
+            style: style.trim().toUpperCase(),
+            color: color.trim().toUpperCase()
+        };
+
+        Product.exists(query, function(err, result) {
+            res.send(result);
         })
     }
 }
@@ -106,4 +182,8 @@ function isEmpty(input) {
     }
 
     return false;
+}
+
+function isValidNumberInput(n) {
+    return Number(n) >= 0 && Number(n) < (Number.MAX_SAFE_INTEGER - 10);
 }

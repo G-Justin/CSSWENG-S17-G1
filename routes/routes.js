@@ -47,6 +47,8 @@ app.get('/admin/production', productionController.getProductionPage);
 
 const inventoryController = require('../controller/inventoryController.js');
 app.get('/admin/inventory', inventoryController.getInventoryPage);
+app.post('/admin/inventory/addProduct', inventoryController.addProduct);
+app.post('/admin/inventory/validateNewProduct', inventoryController.validateNewProduct);
 
 const adminCartController = require('../controller/adminCartController.js');
 app.get('/admin/orders/:_id', adminCartController.getOrder);
