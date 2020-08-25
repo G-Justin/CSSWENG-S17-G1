@@ -295,6 +295,34 @@ const inventoryController = {
             res.send(data);
         })
 
+    },
+
+    phaseOut: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+        
+        let _id = sanitize(req.body.phaseOutId);
+
+        Product.deleteOne({_id: _id}, function(err, result) {
+            if (!result) {
+                console.log(err);
+                res.redirect(req.get('referer'));
+                return;
+            }
+            console.log(result);
+            InventoryRecord.deleteMany({parentRecord: _id}, function(err, deleteResult) {
+                if (!deleteResult) {
+                    console.log(err)
+                    res.redirect(req.get('referer'));
+                    return;
+                }
+
+                res.redirect('/admin/inventory');
+                return;
+            })
+        })
     }
 }
 

@@ -125,7 +125,10 @@
                 
             </div>
             <div class="modal-footer">
-               
+               	<form method="POST" action="/admin/inventory/phaseOut"  style="display: flex; justify-content: center;">
+			        <textarea id="phaseOutId" name="phaseOutId" readonly="readonly" style="display: none;">{{_id}}</textarea><br>
+			        <button type="submit" class="btn btn-primary" style = "background-color: rgb(163, 47, 47); color:white">Phase out</button>	
+		        </form>
                <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">Close</button>
             </div>
           </div>
