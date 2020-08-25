@@ -43,7 +43,11 @@ const ordersController = {
             select: CARD_SELECT,
             lean: true,
             page: page,
-            limit: 2
+            limit: 2,
+
+            sort: {
+                orderDate: -1
+            }
         };
 
         dateStart = (dateStart == null) ? new Date(-8640000000000000) : dateStart;

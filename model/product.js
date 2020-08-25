@@ -2,6 +2,10 @@ var mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
 
 var ProductSchema = new mongoose.Schema({
+    dateCreated: {
+        type: Date,
+        default: Date.now
+    },
     style: {
         type: String,
         trim: true
@@ -81,7 +85,11 @@ var ProductSchema = new mongoose.Schema({
     extraLargeDeficit: {
         type: Number,
         min: 0
-    }
+    },
+    inventoryRecords: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'InventoryRecord'
+    }]
 });
 
 ProductSchema.plugin(mongoosePaginate);

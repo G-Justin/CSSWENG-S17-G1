@@ -3,15 +3,19 @@ const Product = require('./model/product.js');
 const OrderItem = require('./model/orderitem.js');
 const database = require('./model/database.js');
 let User = require('./model/user.js');
+const InventoryRecord = require('./model/inventoryRecord.js');
+
 let bcrypt = require('bcrypt');
 database.connect();
 
-Order.collection.drop();
+
+//Order.collection.drop();        //uncomment this line of code if experiencing a duplicate key error
 let username = 'username';
 let password = 'password';
 database.deleteMany(Order, (flag) => {});
 database.deleteMany(Product, (flag) => {});
 database.deleteMany(OrderItem, (flag) => {});
+database.deleteMany(InventoryRecord, (flag) => {});
 database.deleteMany(User, (flag) => {});
 
 bcrypt.hash(password, 10, function(err, hash) {
@@ -61,7 +65,7 @@ let newProduct = new Product({
     mediumAvailable: 5,
     largeAvailable: 5,
     extraLargeAvailable: 5,
-    totalAvailable: 20,
+    totalAvailable: 15,
     smallDeficit: 5, 
     mediumDeficit: 0,
     largeDeficit: 0, 
@@ -84,7 +88,7 @@ let newProduct2 = new Product({
     mediumAvailable: 5,
     largeAvailable: 5,
     extraLargeAvailable: 5,
-    totalAvailable: 20,
+    totalAvailable: 15,
     smallDeficit: 0, 
     mediumDeficit: 0,
     largeDeficit: 0, 

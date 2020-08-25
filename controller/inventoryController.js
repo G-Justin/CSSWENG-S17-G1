@@ -1,6 +1,8 @@
 const Product = require('../model/product.js');
+const InventoryRecord = require('../model/inventoryRecord.js');
 const sanitize = require('mongo-sanitize');
 const { Mongoose } = require('mongoose');
+const product = require('../model/product.js');
 const PAGE_LIMIT = 10;
 
 const inventoryController = {
@@ -20,10 +22,14 @@ const inventoryController = {
         }
 
         let options = {
-            //select: '_id totalAvailable style color',
+            populate: 'inventoryRecords',
             lean: true,
             page: page,
-            limit: PAGE_LIMIT
+            limit: PAGE_LIMIT,
+
+            sort: {
+                dateCreated: -1
+            }
         };
 
         Product.paginate(query, options, function(err, results){
@@ -44,6 +50,8 @@ const inventoryController = {
 
                 selectOptions.push(options);
             }
+
+            console.log(results.docs.inventoryRecords);
 
             let prevPageLink = results.hasPrevPage ? "/admin/inventory?style=" + style + "&color=" + color + "&page=" + results.prevPage : "";
             let nextPageLink = results.hasNextPage ? "/admin/inventory?style=" + style + "&color=" + color + "&page=" + results.nextPage : "";
@@ -89,6 +97,11 @@ const inventoryController = {
             return;
         }
 
+        if (s % 1 != 0 || m % 1 != 0 || l % 1 != 0 || xl % 1 != 0) {
+            console.log('numbers must be whole')
+            return;
+        }
+
         style = style.trim().toUpperCase();
         color = color.trim().toUpperCase();
 
@@ -103,10 +116,10 @@ const inventoryController = {
                 style: style,
                 color: color,
                 price: price.trim().toUpperCase(),
-                s: s,
-                m: m,
-                l: l,
-                xl: xl,
+                smallAvailable: s,
+                mediumAvailable: m,
+                largeAvailable: l,
+                extraLargeAvailable: xl,
                 totalAvailable: Number(s) + Number(m) + Number(l) + Number(xl)
             };
     
@@ -135,6 +148,153 @@ const inventoryController = {
         Product.exists(query, function(err, result) {
             res.send(result);
         })
+    },
+
+    updateStock: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+
+        let _id = sanitize(req.body.productId);
+        let s = Number(sanitize(req.body.updateStockS));
+        let m = Number(sanitize(req.body.updateStockM));
+        let l = Number(sanitize(req.body.updateStockL));
+        let xl = Number(sanitize(req.body.updateStockXL));
+        
+
+        if(!isValidStockUpdate(s) || !isValidStockUpdate(m) || !isValidStockUpdate(l) || !isValidStockUpdate(xl)) {
+            console.log('not valid stock update');
+            res.redirect(req.get('referer'));
+            return;
+        }
+
+        if (s % 1 != 0 || m % 1 != 0 || l % 1 != 0 || xl % 1 != 0) {
+            console.log('numbers must be whole')
+            return;
+        }
+
+        let totalIncrement = s + m + l + xl;
+        let smallInventory =  (s >= 0) ? s : 0;
+        let mediumInventory = (m >= 0) ? m : 0; 
+        let largeInventory = (l >= 0) ? l : 0;
+        let extraLargeInventory = (xl >= 0) ? xl : 0;
+
+        Product.findById(_id).exec(function(err, productResult) {
+            if (!productResult) {
+                console.log(err);
+                return;
+            }
+
+            productResult.smallAvailable = productResult.smallAvailable + s;
+            if (productResult.smallAvailable < 0) {
+                console.log('exceeds small zero');
+                res.redirect(req.get('referer'))
+                return;
+            }
+            productResult.mediumAvailable = productResult.mediumAvailable + m;
+            if (productResult.mediumAvailable < 0) {
+                console.log('exceeds m zero');
+                res.redirect(req.get('referer'))
+                return;
+            }
+            productResult.largeAvailable = productResult.largeAvailable + l;
+            if (productResult.largeAvailable < 0) {
+                console.log('exceeds small zero');
+                res.redirect(req.get('referer'))
+                return;
+            }
+            productResult.extraLargeAvailable = productResult.extraLargeAvailable + xl;
+            if (productResult.extraLargeAvailable < 0) {
+                console.log('exceeds xl zero');
+                res.redirect(req.get('referer'))
+                return;
+            }
+            productResult.totalAvailable =  productResult.smallAvailable + productResult.mediumAvailable + productResult.largeAvailable + productResult.extraLargeAvailable;
+            productResult.save();
+
+            let inventoryRecord = new InventoryRecord({
+                parentRecord: _id,
+                smallUpdate: s,
+                mediumUpdate: m,
+                largeUpdate: l,
+                extraLargeUpdate: xl
+            });
+
+            InventoryRecord.create(inventoryRecord, function(err, result) {
+                if (!result) {
+                    console.log(err);
+                    return;
+                }
+
+                Product.update({_id: _id}, {
+                    $push : {inventoryRecords: inventoryRecord._id}
+                }).then((a) => {
+                    console.log("Added record: " + result);
+                    res.redirect(req.get('referer'))
+                })
+            })
+        })
+    },
+
+    validateStockUpdate: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+
+        let _id = sanitize(req.body._id);
+        let s = Number(sanitize(req.body.s));
+        let m = Number(sanitize(req.body.m));
+        let l = Number(sanitize(req.body.l));
+        let xl = Number(sanitize(req.body.xl));
+        
+        if(!isValidStockUpdate(s) || !isValidStockUpdate(m) || !isValidStockUpdate(l) || !isValidStockUpdate(xl)) {
+            console.log('not valid stock update');
+            res.redirect(req.get('referer'));
+            return;
+        }
+
+        let data = {
+            isValid: false,
+            msg: ''
+        }
+
+        Product.findById(_id).exec(function(err, productResult) {
+            if (!productResult) {
+                data.msg = 'No product found with given id';
+                res.send(data);
+                return;
+            }
+
+            if ((productResult.smallAvailable + s) < 0) {
+                data.msg = "Invalid subtraction: Current small stock is " + productResult.smallAvailable;
+                res.send(data);
+                return;
+            }
+
+            if ((productResult.mediumAvailable + m) < 0) {
+                data.msg = "Invalid subtraction: Current medium stock is " + productResult.mediumAvailable;
+                res.send(data);
+                return;
+            }
+
+            if ((productResult.largeAvailable + m) < 0) {
+                data.msg = "Invalid subtraction: Current large stock is " + productResult.largeAvailable;
+                res.send(data);
+                return;
+            }
+
+            if ((productResult.extraLargeAvailable + xl) < 0) {
+                data.msg = "Invalid subtraction: Current extra-large stock is " + productResult.extraLargeAvailable;
+                res.send(data);
+                return;
+            }
+
+            data.isValid = true;
+            res.send(data);
+        })
+
     }
 }
 
@@ -164,6 +324,10 @@ function getQueries(style, color) {
      
 }
 
+function isEmptyNumberInput(input) {
+    return input != "";
+}
+
 function isEmpty(input) {
     if (input === null) {
         return true;
@@ -186,4 +350,8 @@ function isEmpty(input) {
 
 function isValidNumberInput(n) {
     return Number(n) >= 0 && Number(n) < (Number.MAX_SAFE_INTEGER - 10);
+}
+
+function isValidStockUpdate(n) {
+    return Number(n) > (Number.MIN_SAFE_INTEGER + 10)  && Number(n) < (Number.MAX_SAFE_INTEGER - 10);
 }
