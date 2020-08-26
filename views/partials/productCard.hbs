@@ -1,25 +1,13 @@
 <script>
-    var num = 0;
-    function dt (){
-        /*
-        if ($.fn.DataTable.isDataTable("#table1")) {
-            $('#table1').DataTable().clear().destroy();   //doesnt work idk why
-        }
+     $(document).ready(function() {
+        if (!$.fn.DataTable.isDataTable('.table')){
 
-        $("#table1").DataTable({}); */
-        
-      if (num == 0){ //to convert the table into datatable once only
-        $('#table1').DataTable({ //page returns an error if we tries to convert datatable into datatable
-                }); // we can choose not to implement datatable anymore
+            $('.table').DataTable({ // instead of id, passes class instead
+                sDom: 'lrtip' // hides the search box
+            }); 
         }
-        num++; 
-    }
-      function hide(){
-          $('#modal_detail').modal('hide')
-      }
-      function show(){
-        $("#modal_detail").modal('show')
-      }
+    });
+
 </script>
 
 <div class="container-flex" id="col" style="justify-content: center;">
@@ -33,7 +21,7 @@
                  <btn class="btn btn-primary" data-toggle="modal" data-target="#modal_detail_{{_id}}">Available: {{totalAvailable}}</btn>
                 <div class = "card-footer" style="margin-top:5%;padding:1">
                     <btn class="btn btn-primary" style="font-size:9px" data-toggle="modal" data-target="#modal_stock_{{id}}">Add Stock</btn>
-                    <button id="Icon" style="font-size:9px" data-toggle="modal" data-target="#modal_daily_{{_id}}" class = "btn btn-primary" onClick="hide(),dt()">Log</button>
+                    <button id="Icon" style="font-size:9px" data-toggle="modal" data-target="#modal_daily_{{_id}}" class = "btn btn-primary">Log</button>
                 </div>
             </div>
         </div>
@@ -73,11 +61,15 @@
         <div class="modal-dialog" id = "md3" style="min-width:80%;">
           <div class="modal-content" style="background-color: rgb(247, 242, 242);">
             <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
-              <h4 class="modal-title">Product Details</h4>
+              <h4 class="modal-title">Product Details</h4>&nbsp;&nbsp;
+              <form method="POST" action="/admin/inventory/phaseOut"  style="display: flex; justify-content: center;">
+			        <textarea id="phaseOutId" name="phaseOutId" readonly="readonly" style="display: none;">{{_id}}</textarea><br>
+			        <button type="submit" class="btn btn-primary" style = "background-color: rgb(163, 47, 47); color:white; float:left">Phase out</button>	
+		        </form>
               <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
             </div>
             <div class="modal-body" style="overflow-y:auto">
-                <table class="table table-striped" style="text-align: center;">
+                <table class = "table table-striped" style="text-align:">
                     <thead>
                         <tr>
                             <th>Color</th>
@@ -103,8 +95,8 @@
                         </tr>
                     </tbody>
                 </table><br><br>
-                <h4 style="text-align: center;">Deficit</h4>
-                <table class="table table-striped" style="text-align: center;">
+                <h4 style="text-align: center;">Deficit</h4><hr>
+                <table style="text-align: center;width:100%">
                     <thead>
                         <tr>
                             <th>Small</th>
@@ -125,10 +117,7 @@
                 
             </div>
             <div class="modal-footer">
-               	<form method="POST" action="/admin/inventory/phaseOut"  style="display: flex; justify-content: center;">
-			        <textarea id="phaseOutId" name="phaseOutId" readonly="readonly" style="display: none;">{{_id}}</textarea><br>
-			        <button type="submit" class="btn btn-primary" style = "background-color: rgb(163, 47, 47); color:white">Phase out</button>	
-		        </form>
+               	
                <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">Close</button>
             </div>
           </div>
@@ -172,7 +161,7 @@
                 
             </div>
             <div class="modal-footer">
-               <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal" onClick="show()">Close</button>
+               <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
