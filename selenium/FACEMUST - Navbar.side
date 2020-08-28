@@ -1,0 +1,210 @@
+{
+  "id": "994f031b-bd3e-4242-89c2-a6e110936a1f",
+  "version": "2.0",
+  "name": "FACEMUST - Navbar",
+  "url": "http://localhost:3001/admin",
+  "tests": [{
+    "id": "249565b2-300f-4edc-a185-6b98acdb4bc4",
+    "name": "Production",
+    "commands": [{
+      "id": "bed587c7-6fd3-40b1-88c4-8b817ab6f3b4",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3001/admin",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "0b07d5c5-133b-4038-82f9-91ae22142d81",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1382x784",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b6227b0a-a5f8-46e5-b83b-e1e6cd937be6",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Production",
+      "targets": [
+        ["linkText=Production", "linkText"],
+        ["css=.nav-item:nth-child(4) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Production')]", "xpath:link"],
+        ["xpath=//div[@id='navbarSupportedContent']/ul/li[4]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/admin/production')]", "xpath:href"],
+        ["xpath=//li[4]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Production')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "4fbc3e46-be3e-4170-80e1-33de603f2b08",
+    "name": "Orders",
+    "commands": [{
+      "id": "ff50fbfe-6038-42d7-9bbe-b5c83955d7e5",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3001/admin",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "763a0305-e862-4055-ae36-86b1155392d2",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1382x784",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "2b0b5462-2b51-4785-848e-c68bfbafb5ff",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Orders",
+      "targets": [
+        ["linkText=Orders", "linkText"],
+        ["css=.nav-item:nth-child(2) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Orders')]", "xpath:link"],
+        ["xpath=//div[@id='navbarSupportedContent']/ul/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/admin/orders')]", "xpath:href"],
+        ["xpath=//li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Orders')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "e020216b-c766-45fa-9e3d-a82d7a0fd672",
+    "name": "Inventory",
+    "commands": [{
+      "id": "dde3672b-0462-454b-b8a0-1a20931da75e",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3001/admin",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c325b9ff-d330-4feb-8228-db39cef16633",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1382x784",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f7bafa42-76d8-47b4-88db-fa5dfd893d2e",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Inventory",
+      "targets": [
+        ["linkText=Inventory", "linkText"],
+        ["css=.nav-item:nth-child(3) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Inventory')]", "xpath:link"],
+        ["xpath=//div[@id='navbarSupportedContent']/ul/li[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/admin/inventory')]", "xpath:href"],
+        ["xpath=//li[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Inventory')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "3c6be2d3-b949-4eb9-8c04-d68f49d73bb4",
+    "name": "Home",
+    "commands": [{
+      "id": "a4e7d42b-8656-4996-a069-8ee43b1ca254",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3001/admin",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "db7bf87b-9375-4c21-b559-6e2229e763f4",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1382x784",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "fd912fe4-299e-4235-8011-1d8b646e4b70",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Home",
+      "targets": [
+        ["linkText=Home", "linkText"],
+        ["css=.nav-item:nth-child(1) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Home')]", "xpath:link"],
+        ["xpath=//div[@id='navbarSupportedContent']/ul/li/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '/admin')])[2]", "xpath:href"],
+        ["xpath=//li/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Home')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "a8f9f606-f9d0-40f7-8024-a24e35353e30",
+    "name": "Logo",
+    "commands": [{
+      "id": "3f59c4d3-6c60-455e-a5a4-c6192d6b0345",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3001/admin",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "eaa4e88e-a138-4592-ae9a-37262cefafdf",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1382x784",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f3607c67-896e-4489-bb05-f27134f390b0",
+      "comment": "",
+      "command": "click",
+      "target": "css=.navbar-brand > .d-inline-block",
+      "targets": [
+        ["css=.navbar-brand > .d-inline-block", "css:finder"],
+        ["xpath=//img", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "4da66592-1fc0-407c-8887-240ed657a02d",
+    "name": "Logout",
+    "commands": [{
+      "id": "e158934d-ccaf-4a71-8ded-fced8e58df29",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3001/admin",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "11cc80ab-d1d6-4382-91f4-9d4421426979",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1382x784",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "808cb884-c5d3-491a-bbda-770adada921b",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Logout",
+      "targets": [
+        ["linkText=Logout", "linkText"],
+        ["css=.nav-link:nth-child(2)", "css:finder"],
+        ["xpath=//a[contains(text(),'Logout')]", "xpath:link"],
+        ["xpath=//div[@id='navbarSupportedContent']/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/logout')]", "xpath:href"],
+        ["xpath=//div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Logout ')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "28119236-94f7-49d4-915c-be4fc0f43420",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": []
+  }],
+  "urls": ["http://localhost:3001/admin/orders"],
+  "plugins": []
+}
