@@ -67,21 +67,14 @@
         </div>
 </div>
 
-<br>
-<div class="card card-filter">
-  <div class="filter_bar">
-    <br><h4>Filter</h4><hr>
-          <form id="searchInventory" name="searchInventory" mehtod="get" action="/admin/inventory">
-            <div class = "media-text" id="input" style="margin:0">
-              <input type="text" name="style" id="style" placeholder=" Enter Style">
-            </div>
-            <div class = "media-text" id="input" style="margin:0">
-              <input type="text" name="color" id="color" placeholder=" Enter Color">
-            </div>
-            <div class = "media-text" style="margin-bottom:10px;"><button style="height:30px; margin:0; padding-top:0" class="btn btn-primary"  id="btn" type="submit">Search</button></div>
-    </div>
+<div class="jumbotron shadow p-4 text-center">
+    <h4>Filter</h4><hr>
+    <form class="form-inline mb-2 justify-content-center" id="searchInventory" name="searchInventory" mehtod="get" action="/admin/inventory">
+        <input class="form-control my-2" type="text" name="style" id="style" placeholder=" Enter Style">
+        <input class="form-control my-2 mx-sm-3" type="text" name="color" id="color" placeholder=" Enter Color">
+        <button class="btn btn-primary my-2" id="btn" type="submit">Search</button>
     </form>
-    <div id="adding_bar" style="margin-bottom: 2%; margin-top:2%"><button class="btn btn-primary" data-toggle="modal" data-target="#modal_add">Add New Product</button></div>
+    <button class="btn btn-primary" data-toggle="modal" data-target="#modal_add">Add New Product</button>
 </div>
 
 <div id="wrap"class="mt-5 row">
