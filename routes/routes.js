@@ -52,6 +52,7 @@ app.post('/admin/inventory/validateNewProduct', inventoryController.validateNewP
 app.post('/admin/inventory/updateStock', inventoryController.updateStock);
 app.post('/admin/inventory/validateStockUpdate', inventoryController.validateStockUpdate);
 app.post('/admin/inventory/phaseOut', inventoryController.phaseOut);
+app.get('/admin/inventory/phasedout', inventoryController.getPhasedOut);
 
 const adminCartController = require('../controller/adminCartController.js');
 app.get('/admin/orders/:_id', adminCartController.getOrder);

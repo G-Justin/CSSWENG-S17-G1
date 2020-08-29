@@ -18,6 +18,10 @@ var ProductSchema = new mongoose.Schema({
         type: Number,
         min: 0
     },
+    isPhasedOut: {
+        type: Boolean,
+        default: false
+    },
     smallInventory: {
         type: Number,
         min: 0

@@ -12,65 +12,16 @@ const inventoryController = {
             return;
         }
 
-        let style = sanitize(req.query.style);
-        let color = sanitize(req.query.color);
-        let query = getQueries(style, color);
-        let resultsMessage = getResultsMessage(style, color);
-        console.log(resultsMessage);
+        getInventory(req, res, false);
+    },
 
-        let page = sanitize(req.query.page);
-        if (page == null) {
-            page = 1;
+    getPhasedOut: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
         }
 
-        let options = {
-            populate: 'inventoryRecords',
-            lean: true,
-            page: page,
-            limit: PAGE_LIMIT,
-
-            sort: {
-                dateCreated: -1
-            }
-        };
-
-        Product.paginate(query, options, function(err, results){
-            if (!results) {
-                console.log('no products returned');
-                console.log(results)
-                return;
-            }
-            let selectOptions = new Array();
-            console.log(results.totalPages)
-            for (let i = 0; i < results.totalPages; i++) {
-                let no = i + 1;
-                let options = {
-                    pageLink: "/admin/inventory?style=" + style + "&color=" + color + "&page=" + no,
-                    pageNo: no,
-                    isSelected: (results.page == no),
-                };
-
-                selectOptions.push(options);
-            }
-
-            console.log(results.docs.inventoryRecords);
-
-            let prevPageLink = results.hasPrevPage ? "/admin/inventory?style=" + style + "&color=" + color + "&page=" + results.prevPage : "";
-            let nextPageLink = results.hasNextPage ? "/admin/inventory?style=" + style + "&color=" + color + "&page=" + results.nextPage : "";
-            res.render('admin/inventory', {
-                title: 'Inventory',
-
-                products: results.docs,
-                resultsMessage: resultsMessage,
-
-                //pagination
-                selectOptions: selectOptions,
-                hasPrev: results.hasPrevPage,
-                hasNext: results.hasNextPage,
-                prevPageLink: prevPageLink,
-                nextPageLink: nextPageLink
-            })
-        })
+        getInventory(req, res, true);
     },
 
     addProduct: function(req, res) {
@@ -313,48 +264,106 @@ const inventoryController = {
         
         let _id = sanitize(req.body.phaseOutId);
 
-        Product.deleteOne({_id: _id}, function(err, result) {
-            if (!result) {
+        Product.updateOne({_id: _id}, {
+            isPhasedOut: true
+        }, function(err, updateResult) {
+            if (!updateResult) {
                 console.log(err);
                 res.redirect(req.get('referer'));
                 return;
             }
-            console.log(result);
-            InventoryRecord.deleteMany({parentRecord: _id}, function(err, deleteResult) {
-                if (!deleteResult) {
-                    console.log(err)
-                    res.redirect(req.get('referer'));
-                    return;
-                }
 
-                res.redirect('/admin/inventory');
-                return;
-            })
+            res.redirect('/admin/inventory/phasedout')
         })
     }
 }
 
 module.exports = inventoryController;
 
-function getQueries(style, color) {
-    let query = {};
+function getInventory(req, res, isPhasedOut) {
+    let style = sanitize(req.query.style);
+    let color = sanitize(req.query.color);
+    let query = getQueries(style, color, isPhasedOut);
+    let resultsMessage = getResultsMessage(style, color);
+    let phasedOutUrlPiece = isPhasedOut ? "/phasedout" : "";
+
+    let page = sanitize(req.query.page);
+    if (page == null) {
+        page = 1;
+    }
+
+    let options = {
+        populate: 'inventoryRecords',
+        lean: true,
+        page: page,
+        limit: PAGE_LIMIT,
+
+        sort: {
+            dateCreated: -1
+        }
+    };
+
+    Product.paginate(query, options, function (err, results) {
+        if (!results) {
+            console.log('no products returned');
+            console.log(results);
+            return;
+        }
+
+        for (let i = 0; i < results.docs.length; i++) {
+            results.docs[i].notPhasedOut = !isPhasedOut;
+        }
+
+        let selectOptions = new Array();
+        for (let i = 0; i < results.totalPages; i++) {
+            let no = i + 1;
+            let options = {
+                pageLink: "/admin/inventory" + phasedOutUrlPiece + "?style=" + style + "&color=" + color + "&page=" + no,
+                pageNo: no,
+                isSelected: (results.page == no)
+            };
+
+            selectOptions.push(options);
+        }
+
+        let prevPageLink = results.hasPrevPage ? "/admin/inventory" + phasedOutUrlPiece + "?style=" + style + "&color=" + color + "&page=" + results.prevPage : "";
+        let nextPageLink = results.hasNextPage ? "/admin/inventory" + phasedOutUrlPiece + "?style=" + style + "&color=" + color + "&page=" + results.nextPage : "";
+        res.render('admin/inventory', {
+            title: 'Inventory',
+
+            products: results.docs,
+            resultsMessage: resultsMessage,
+            notPhasedOut: !isPhasedOut,
+
+            //pagination
+            selectOptions: selectOptions,
+            hasPrev: results.hasPrevPage,
+            hasNext: results.hasNextPage,
+            prevPageLink: prevPageLink,
+            nextPageLink: nextPageLink
+        });
+    });
+}
+
+function getQueries(style, color, isPhasedOut) {
+    let query = {isPhasedOut: isPhasedOut};
 
     if(isEmpty(style) && isEmpty(color)) {
         return query;
     }
 
     if (isEmpty(style) && !isEmpty(color)) {
-        query = { color: new RegExp(color, 'i') };
+        query = { color: new RegExp(color, 'i'), isPhasedOut: isPhasedOut };
         return query;
     } 
     
     if (isEmpty(color) && !isEmpty(style)) {
-        query = { style: new RegExp(style, 'i') };
+        query = { style: new RegExp(style, 'i'), isPhasedOut: isPhasedOut };
         return query;
     }
 
     if (!isEmpty(color) && !isEmpty(style)) {
-        query = { color: new RegExp(color, 'i'), style: new RegExp(style, 'i') };
+        query = { color: new RegExp(color, 'i'), style: new RegExp(style, 'i'), isPhasedOut: isPhasedOut };
         return query;
     } 
      
