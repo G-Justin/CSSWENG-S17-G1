@@ -111,7 +111,7 @@ $(document).ready(function(){
     }) 
 
     
-    $('.col-sm-12').on('click', '#updateStockBtn',  function(e) {
+    $('.col-sm-4').on('click', '#updateStockBtn',  function(e) {
         e.preventDefault();
         e.stopImmediatePropagation();
 
@@ -124,6 +124,11 @@ $(document).ready(function(){
         let l = $(this).parent().parent().find('div:nth-child(1)').find('input:nth-child(8)').val();
         let xl = $(this).parent().parent().find('div:nth-child(1)').find('input:nth-child(11)').val();
         
+        if (s == "" && m == "" && l == "" && xl == "") {
+            errorMsg.text("At least one update needed!");
+            return;
+        }
+
         if (s < MIN_INT || s > MAX_INT) {
             errorMsg.text("Invalid small stock input!");;
             return;

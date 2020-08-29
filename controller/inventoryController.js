@@ -162,6 +162,11 @@ const inventoryController = {
         let l = Number(sanitize(req.body.updateStockL));
         let xl = Number(sanitize(req.body.updateStockXL));
         
+        if (s == "" && m == "" && l == "" && xl == "") {
+            console.log("all update stock input fields are empty");
+            res.redirect(req.get('referer'));
+            return;
+        }
 
         if(!isValidStockUpdate(s) || !isValidStockUpdate(m) || !isValidStockUpdate(l) || !isValidStockUpdate(xl)) {
             console.log('not valid stock update');
