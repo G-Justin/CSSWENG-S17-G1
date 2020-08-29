@@ -15,6 +15,8 @@ const inventoryController = {
         let style = sanitize(req.query.style);
         let color = sanitize(req.query.color);
         let query = getQueries(style, color);
+        let resultsMessage = getResultsMessage(style, color);
+        console.log(resultsMessage);
 
         let page = sanitize(req.query.page);
         if (page == null) {
@@ -59,6 +61,7 @@ const inventoryController = {
                 title: 'Inventory',
 
                 products: results.docs,
+                resultsMessage: resultsMessage,
 
                 //pagination
                 selectOptions: selectOptions,
@@ -379,6 +382,22 @@ function isEmpty(input) {
     }
 
     return false;
+}
+
+function getResultsMessage(style, color) {
+    if (isEmpty(style) && isEmpty(color)) {
+        return " ";
+    }
+
+    if (isEmpty(style) && !isEmpty(color)) {
+        return "Displaying results for " + color;
+    }
+
+    if (!isEmpty(style) && isEmpty(color)) {
+        return "Displaying results for " + style;
+    }
+
+    return "Displaying results for " + style + " " + color;
 }
 
 function isValidNumberInput(n) {
