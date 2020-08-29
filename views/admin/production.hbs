@@ -1,172 +1,137 @@
-    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
-    <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
-    <style>
-        #table_id_length select{
-            background-color: rgb(52, 58, 64);
-            color:White;
-        }
-    
-    </style>
-    <script>
-        $(document).ready(function() {
-            var table =  $('#table_id').DataTable();
+<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
 
-             $('#table_id tbody').on( 'click', 'tr', function () {
-                if ($(this).hasClass('selected') ) {
-                    $(this).removeClass('selected');
-                }
-                else {
-                    table.$('tr.selected').removeClass('selected');
-                    $(this).addClass('selected');
-                }
-            } );
-        
-            $('#button').click( function () {
-                table.row('.selected').remove().draw( false );
-            });
+<style>
+  .media-text{
+    float:left;
+    margin-right: 20px;
+  }
+  .media-text #btn{
+      margin-right: -20px;
+  }
+  .filter_bar{
+    background-color: white;
+    margin:auto;
+    justify-content: center;
+  }
+  .card-filter{
+    text-align: center;
+  }
+  #col{
+    float:left
+  }
+  .modal label{
+    min-width:50px;
+  }
+  .modal input{
+    min-width:200px;
+  }
+</style>
 
-            $('#addRow').on( 'click', function () {
-                table.row.add( [
-                    '','','','','','','','','','','<select class="btn btn-primary" style="background-color:rgb(52, 58, 64)"><option value="IP">In process</option><option value="Done">Done</option><option value="Cancelled">Cancelled</option><option value="Sewing">Sewing</option><option value="Cutting">Cutting</option></select>',''
-                ] ).draw( false );
-            });
-        });
-    </script>
+<div id="wrap"class="mt-5 row justify-content-center">
+    <div class="col-sm-4 col-md-12">
+      <div class="card" style="width:100%; overflow-y:hidden">
+          <table style="text-align: center; table-layout:fixed; width: 1000px; margin:auto" class="table table-striped">
+              <thead>
+                  <th>Date Encoded</th>
+                  <th>Batch No</th>
+                  <th>Style</th>
+                  <th>Description</th>
+                  <th>Color</th>
+                  <th>TTL</th>
+                  <th>Status Update</th>
+                  <th>Acutal Output</th>
+              </thead>
+          </table>
+      </div><hr>
+      <div class="card" style="width:100%; overflow-y:hidden">
+          <table style="text-align: center; table-layout:fixed; width: 1000px; margin:auto; overflow-y:hidden">
+                  <td>2019-08-28</td>
+                  <td>1</td>
+                  <td>Style 2</td>
+                  <td>Duckbill Mask</td>
+                  <td>Pink</td>
+                  <td>30</td>
+                  <td>
+                      <select class="btn btn-primary" style = "background-color: rgb(52, 58, 64)">
+                            <option value="IP">In process</option>
+                            <option value="Cancelled">Cancelled</option>
+                            <option value="Sewing">Sewing</option>
+                            <option value="Cutting">Cutting</option>
+                        </select>
+                  </td>
+                  <td>29</td>
+          </table><br>
+          <div style="justify-content: center; display:flex">
+              <button class="btn btn-primary" data-toggle="modal" data-target="#modal_production">Production Details</button>&nbsp;
+              <button class="btn btn-primary" data-toggle="modal" data-target="#modal_actual">Input Actual Output</button>
+          </div>
+      </div>
+    </div>
+</div>
 
- <div  contenteditable="true" spellcheck="false" style = "margin-top:2%; width: 95%;margin-left: 2.5%;">
-        <table id="table_id" class="table-responsive" width="100%">
-            <thead>
-                <tr>
-                    <th>Date Encoded</th>
-                    <th>Jo/Batch Number</th>
-                    <th>Style</th>
-                    <th>Description</th>
-                    <th>Color</th>
+
+{{> paginator}}
+
+<div id="modal_actual" class="modal fade" role="dialog">
+        <div id="divtest" class="modal-dialog" id = "md2">
+          <div class="modal-content" style="background-color: rgb(247, 242, 242); text-align:center">
+            <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
+              <h4 class="modal-title">Input Actual Output</h4>
+              <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+            </div>
+            <form id="updateStockForm" name="updateStockForm" method="POST" action="/admin/inventory/updateStock">
+                <div class="modal-body" style="overflow:auto margin:auto; text-align:center; margin-top:2%">
+                    <label for="s">S: </label>
+                    <input type="number" name="updateStockS" id="updateStockS" placeholder=" Enter Small Amount"><br>
+                    <label for="m">M: </label>
+                    <input type="number" name="updateStockM" id="updateStockM" placeholder=" Enter Medium Amount"><br>
+                    <label for="l">L: </label>
+                    <input type="number" name="updateStockL" id="updateStockL" placeholder=" Enter Large Amount"><br>
+                    <label for="xl">XL: </label>
+                    <input type="number" name="updateStockXL" id="updateStockXL" placeholder=" Enter Extra Large Amount"><br>
+                    <div id="updateStockError" name="updateStockError" class="text-danger" style="text-align:center"></div>
+                </div>
+                <div class="modal-footer">
+                    <textarea readonly="readonly" id="productId" name="productId" style="display: none;">{{_id}}</textarea>
+                    <button type="submit" id="updateStockBtn" name="updateStockBtn" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);">Confirm</button>
+                    <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+          </div>
+        </div>
+</div>
+
+<div id="modal_production" class="modal fade" role="dialog">
+        <div id="divtest" class="modal-dialog" id = "md2">
+          <div class="modal-content" style="background-color: rgb(247, 242, 242); text-align:center">
+            <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
+              <h4 class="modal-title">Input Actual Output</h4>
+              <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+            </div>
+            <table class="table table-striped">
+                <thead>
                     <th>S</th>
                     <th>M</th>
                     <th>L</th>
                     <th>XL</th>
-                    <th>TTL</th>
-                    <th>Status update</th>
-                    <th>remarks</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>2020/01/01</td>
-                    <td>1</td>
-                    <td>S1</td>
-                    <td>Surgical Solid</td>
-                    <td>ICON - Purple</td>
-                    <td>3</td>
-                    <td>3</td>
-                    <td>2</td>
-                    <td>1</td>
-                    <td>9</td>
-                    <td>
-                        <select class="btn btn-primary" style = "background-color: rgb(52, 58, 64)">
-                            <option value="IP">In process</option>
-                            <option value="Done">Done</option>
-                            <option value="Cancelled">Cancelled</option>
-                            <option value="Sewing">Sewing</option>
-                            <option value="Cutting">Cutting</option>
-                        </select>
-                    </td>
+                    <th>Yardage</th>
+                    <th>Remarks</th>
+                </thead>
+                <tbody>
                     <td></td>
-                </tr>
-                <tr>
-                    <td>2020/01/05</td>
-                    <td>1</td>
-                    <td>S1</td>
-                    <td>Surgical Solid</td>
-                    <td>Angel BLue</td>
-                    <td>3</td>
-                    <td>3</td>
-                    <td>3</td>
-                    <td>3</td>
-                    <td>12</td>
-                    <td>
-                        <select class="btn btn-primary" style = "background-color: rgb(52, 58, 64)">
-                            <option value="IP">In process</option>
-                            <option value="Done">Done</option>
-                            <option value="Cancelled">Cancelled</option>
-                            <option value="Sewing">Sewing</option>
-                            <option value="Cutting">Cutting</option>
-                        </select>
-                    </td>
                     <td></td>
-                </tr>
-                <tr>
-                    <td>2020/01/25</td>
-                    <td>1</td>
-                    <td>S1</td>
-                    <td>Surgical PRINT</td>
-                    <td>PPINK</td>
-                    <td>5</td>
-                    <td>3</td>
-                    <td>2</td>
-                    <td>1</td>
-                    <td>11</td>
-                    <td>
-                        <select class="btn btn-primary" style = "background-color: rgb(52, 58, 64)">
-                            <option value="IP">In process</option>
-                            <option value="Done">Done</option>
-                            <option value="Cancelled">Cancelled</option>
-                            <option value="Sewing">Sewing</option>
-                            <option value="Cutting">Cutting</option>
-                        </select>
-                    </td>
                     <td></td>
-                </tr>
-                <tr>
-                    <td>2020/01/27</td>
-                    <td>1</td>
-                    <td>S1</td>
-                    <td>Surgical Solid</td>
-                    <td>Pale Pink</td>
-                    <td>1</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>1</td>
-                    <td>
-                         <select class="btn btn-primary" style = "background-color: rgb(52, 58, 64)">
-                            <option value="IP">In process</option>
-                            <option value="Done">Done</option>
-                            <option value="Cancelled">Cancelled</option>
-                            <option value="Sewing">Sewing</option>
-                            <option value="Cutting">Cutting</option>
-                        </select>
-                    </td>
                     <td></td>
-                </tr>
-                <tr>
-                    <td>2020/02/07</td>
-                    <td>1</td>
-                    <td>S2</td>
-                    <td>Duckbill Print</td>
-                    <td>LightGrey</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>2</td>
-                    <td>1</td>
-                    <td>3</td>
-                    <td>
-                        <select class="btn btn-primary" style = "background-color: rgb(52, 58, 64)">
-                            <option value="IP">In process</option>
-                            <option value="Done">Done</option>
-                            <option value="Cancelled">Cancelled</option>
-                            <option value="Sewing">Sewing</option>
-                            <option value="Cutting">Cutting</option>
-                        </select>
-                    </td>
                     <td></td>
-                </tr>
-               
-            </tbody>
-        </table>
-        <button id = "addRow" class = "btn btn-primary" style = "background-color: rgb(52, 58, 64); color:white">Add row</button>
-        <button id = "button" class = "btn btn-primary" style = "background-color: rgb(52, 58, 64); color:white">Delete Selected Row</button>
-    </div>
-</body>
-</html>
+                    <td contenteditable="true", spellcheck="false", data-placeholder="gi">Input a Remark</td>
+                </tbody>
+            </table>
+            <div class="modal-footer">
+                    <textarea readonly="readonly" id="productId" name="productId" style="display: none;">{{_id}}</textarea>
+                    <button type="submit" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);">Confirm</button>
+                    <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">Close</button>
+                </div>
+          </div>
+        </div>
+</div>
