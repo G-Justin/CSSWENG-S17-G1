@@ -77,14 +77,12 @@
     <button class="btn btn-primary" data-toggle="modal" data-target="#modal_add">Add New Product</button>
 </div>
 
-<div id="wrap"class="mt-5 row">
-    <div class="col d-flex justify-content-center">
-        <div class="col-sm-12 col-md-9">
-            {{#each products}}
-              {{> productCard}}
-            {{/each}}
-        </div>
+<div id="wrap"class="mt-5 row justify-content-center">
+  {{#each products}}
+    <div class="col-sm-4 col-md-4">
+      {{> productCard}}
     </div>
+  {{/each}}
 </div>
 
 

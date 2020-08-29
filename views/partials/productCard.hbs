@@ -10,23 +10,22 @@
 
 </script>
 
-<div class="container-flex" id="col" style="justify-content: center;">
-    <div class="card mb-4" style="min-width:250px">
-        <div class="card-header bg-dark text-light font-weight-bold">
-            {{style}} - {{color}}
+<div class="card mb-4" style="min-width:250px">
+    <div class="card-header bg-dark text-light font-weight-bold">
+        {{style}} - {{color}}
+    </div>
+    <div class="card-body border-bottom p-0 text-center">
+        <div class="justify-content-center">
+            <img src="/assets/boymask.png" width="100" height="100" class="rounded-10 my-3" alt="Logo">
         </div>
-        <div class="card-body border-bottom">
-             <div class="card-body text-center">
-                <img src="/assets/boymask.png" width="100" height="100" class=" p-1 rounded-10 d-inline-block align-top mb-1" alt="Logo"><br>
-                 <btn class="btn btn-primary" data-toggle="modal" data-target="#modal_detail_{{_id}}">Available: {{totalAvailable}}</btn>
-                <div class = "card-footer" style="margin-top:5%;padding:1">
-                    <btn class="btn btn-primary" style="font-size:9px" data-toggle="modal" data-target="#modal_stock_{{id}}">Add Stock</btn>
-                    <button id="Icon" style="font-size:9px" data-toggle="modal" data-target="#modal_daily_{{_id}}" class = "btn btn-primary">Log</button>
-                </div>
-            </div>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#modal_detail_{{_id}}">Available: {{totalAvailable}}</button>
+        <div class = "card-footer mt-3">
+            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_stock_{{id}}">Add Stock</button>
+            <button class="btn btn-primary btn-sm" id="Icon" data-toggle="modal" data-target="#modal_daily_{{_id}}">Log</button>
         </div>
     </div>
 </div>
+
 
 <div id="modal_stock_{{_id}}" class="modal fade" role="dialog">
         <div id="divtest" class="modal-dialog" id = "md2">
