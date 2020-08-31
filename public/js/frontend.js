@@ -111,7 +111,7 @@ $(document).ready(function(){
     }) 
 
     
-    $('.col-sm-4').on('click', '#updateStockBtn',  function(e) {
+    $('#productCardContainer').on('click', '#updateStockBtn',  function(e) {
         e.preventDefault();
         e.stopImmediatePropagation();
 
