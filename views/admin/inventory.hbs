@@ -69,14 +69,17 @@
   </div>
 {{/if}}
 <div class="jumbotron shadow p-4 text-center">
-    <h4>Filter</h4><hr>
+    <h4>Filter: Displaying <i>ALL</i> results</h4><hr>
     <form class="form-inline mb-2 justify-content-center" id="searchInventory" name="searchInventory" mehtod="get" action="#">
         <input class="form-control my-2" type="text" name="style" id="style" placeholder=" Enter Style">
         <input class="form-control my-2 mx-sm-3" type="text" name="color" id="color" placeholder=" Enter Color">
         <button class="btn btn-primary my-2" id="btn" type="submit">Search</button>
     </form>
     {{#if notPhasedOut}}
-    <button class="btn btn-primary" data-toggle="modal" data-target="#modal_add">Add New Product</button>
+      <button class="btn btn-primary" data-toggle="modal" data-target="#modal_add">Add New Product</button>
+      <a href="/admin/inventory/phasedOut"><button class="btn btn-primary">Check Phased Out Product</button></a>
+    {{else}}
+      <a href="/admin/inventory"><button class="btn btn-primary">Check Inventory</button></a>
     {{/if}}
 </div>
 
