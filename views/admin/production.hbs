@@ -12,7 +12,7 @@
   .filter_bar{
     background-color: white;
     margin:auto;
-    justify-content: center;
+    text-align: center;
   }
   .card-filter{
     text-align: center;
@@ -26,7 +26,47 @@
   .modal input{
     min-width:200px;
   }
+  .card{
+    text-align: center;
+  }
 </style>
+
+<div class="card" style="margin-top:3%">
+  <div class="filter_bar">
+    <br>
+          <form mehtod="get" action="/admin/orders">
+            <div class = "media-text" id="input">
+              <label for "description">Description</label><br>
+                <input id="description" name="description" type="text" placeholder=" Enter Description" required><br>
+            </div>
+            <div class = "media-text" id="input">
+              <label for "color">Color</label><br>
+                <input id="color" name="color" type="text" placeholder=" Enter Color" required><br>
+            </div>
+            <div class = "media-text" id="input">
+              <label for "deliveryStatus">Delivery Status</label><br>
+                <select id="deliveryStatus" class = "browser-default custom-select" name="deliveryStatus" style="width: 200px; border:solid; background-color: rgba(126, 125, 125, 0); cursor:pointer;">
+                  <option value="SELECT">[SELECT STATUS]</option>
+                  <option value="IN PROGRESS">In Progress</option>
+                  <option value="CANCELLED">Cancelled</option>
+                  <option value="SEWING">Sewing</option>
+                  <option value="CUTTING">Cutting</option>
+                  <option value="DONE" style="display:none">Done</option>
+                </select>
+            </div>
+            <div class = "media-text" id="input">
+            <label for "dateStart">Start Date</label><br>
+              <input type="date" id="dateStart" name="dateStart" >
+					  </div>
+            <div class = "media-text" id="input">
+            <label for "dateEnd">End Date</label><br>
+              <input type="date" id="dateEnd" name="dateEnd" >
+            </div>
+              
+    </div><br>
+    <div class = "media-text" style="margin-bottom:10px;"><button class="btn btn-primary"  id="btn" type="submit">Apply Filter</button></div>
+    </form>  
+  </div>
 
 <div id="wrap"class="mt-5 row justify-content-center">
     <div class="col-sm-4 col-md-12">
@@ -44,29 +84,11 @@
               </thead>
           </table>
       </div><hr>
-      <div class="card" style="width:100%; overflow-y:hidden">
-          <table style="text-align: center; table-layout:fixed; width: 1000px; margin:auto; overflow-y:hidden">
-                  <td>2019-08-28</td>
-                  <td>1</td>
-                  <td>Style 2</td>
-                  <td>Duckbill Mask</td>
-                  <td>Pink</td>
-                  <td>30</td>
-                  <td>
-                      <select class="btn btn-primary" style = "background-color: rgb(52, 58, 64)">
-                            <option value="IP">In process</option>
-                            <option value="Cancelled">Cancelled</option>
-                            <option value="Sewing">Sewing</option>
-                            <option value="Cutting">Cutting</option>
-                        </select>
-                  </td>
-                  <td>29</td>
-          </table><br>
-          <div style="justify-content: center; display:flex">
-              <button class="btn btn-primary" data-toggle="modal" data-target="#modal_production">Production Details</button>&nbsp;
-              <button class="btn btn-primary" data-toggle="modal" data-target="#modal_actual">Input Actual Output</button>
-          </div>
-      </div>
+
+      {{#each inventoryCards}}
+          {{> inventoryCard}}
+      {{/each}}
+      
     </div>
 </div>
 
