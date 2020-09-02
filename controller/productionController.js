@@ -9,8 +9,11 @@ const productionController = {
 
         let style = sanitize(req.query.style);
         let color = sanitize(req.query.color);
+        let description = sanitize(req.query.description);
         let statusQueries = new Array();
-        let status;
+        let statusQuery = sanitize(req.query.status);
+
+        
 
 
 

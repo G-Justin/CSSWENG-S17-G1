@@ -1,6 +1,8 @@
 const moment = require('moment');
 const Order = require('../model/order.js');
 const sanitize = require('mongo-sanitize');
+const { filter } = require('async');
+const { options } = require('../routes/routes.js');
 
 const CARD_SELECT = '_id paymentStatus deliveryStatus orderDate';
 
@@ -10,8 +12,7 @@ const ordersController = {
             res.redirect('/login');
             return;
         }
-
-
+        console.log('getFiltered request')
         let deliveryQueries = new Array();
         let paymentQueries = new Array();
 
