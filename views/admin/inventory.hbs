@@ -44,6 +44,8 @@
                     <input id="newProductStyle" name="newProductStyle" type="text" name="style" id="style" placeholder=" Enter Style" required><br>
                     <label for="color">Color: </label>
                     <input id="newProductColor" name="newProductColor" type="text" name="color" id="color" placeholder=" Enter Color" required><br>
+                    <label for="description">Desc: </label>
+                    <input id="newProductDescription" name="newProductDescription" type="text" name="description" id="description" placeholder=" Enter Description" required><br>
                     <label for="price">Price: </label>
                     <input max="9007199254740981" min="0" type="number" name="newProductPrice" id="newProductPrice" placeholder=" Enter Price" required><br>
                     <label for="s">S: </label>
@@ -73,6 +75,7 @@
     <form class="form-inline mb-2 justify-content-center" id="searchInventory" name="searchInventory" mehtod="get" action="#">
         <input class="form-control my-2" type="text" name="style" id="style" placeholder=" Enter Style">
         <input class="form-control my-2 mx-sm-3" type="text" name="color" id="color" placeholder=" Enter Color">
+        <input class="form-control my-2 mx-sm-3" type="text" name="description" id="description" placeholder=" Enter Description">
         <button class="btn btn-primary my-2" id="btn" type="submit">Search</button>
     </form>
     {{#if notPhasedOut}}
@@ -89,6 +92,10 @@
       {{> productCard}}
     </div>
   {{/each}}
+
+  {{#if noResults}}
+    <h4 class="col-sm-4 col-md-4">No results returned</h4><hr>
+  {{/if}}
 </div>
 
 

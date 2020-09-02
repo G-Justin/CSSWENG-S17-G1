@@ -14,6 +14,10 @@ var ProductSchema = new mongoose.Schema({
         type: String,
         trim: true
     }, 
+    description: {
+        type: String,
+        trim: true
+    },
     price: {
         type: Number,
         min: 0

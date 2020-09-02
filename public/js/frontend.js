@@ -47,6 +47,7 @@ $(document).ready(function(){
 
         let style = $('#newProductStyle').val();
         let color = $('#newProductColor').val();
+        let description = $('#newProductDescription').val();
         let price = $('#newProductPrice').val();
         let s = $('#newProductS').val();
         let m = $('#newProductM').val();
@@ -85,7 +86,7 @@ $(document).ready(function(){
         }
 
 
-        if ($.trim(style).length < 1 || $.trim(color).length < 1 || s == "" || m == "" || l == "" || xl == "") {
+        if ($.trim(style).length < 1 || $.trim(color).length < 1 || $.trim(description).length < 1 || s == "" || m == "" || l == "" || xl == "") {
             $('#newProductError').text("All fields required!");
             return;
         }
@@ -100,7 +101,12 @@ $(document).ready(function(){
             return;
         }
 
-        $.post("/admin/inventory/validateNewProduct", {style: style, color: color}, (data) => {
+        if ($.trim(description).length > 20) {
+            $('#newProductError').text("Description should only be a maximum of 20 characters!");
+            return;
+        }
+
+        $.post("/admin/inventory/validateNewProduct", {style: style, color: color, description: description}, (data) => {
             if (data) {
                 $('#newProductError').text("Product already exists in the inventory!")
                 return;

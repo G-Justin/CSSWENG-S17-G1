@@ -52,6 +52,7 @@ let newOrder = new Order({
 let newProduct = new Product({
     style: 'STYLE 2', 
     color: 'BLACK',
+    description: 'DUCKBILL SOLID',
     price: 100,
     smallInventory: 10,
     mediumInventory: 5,
@@ -75,6 +76,7 @@ let newProduct = new Product({
 let newProduct2 = new Product({
     style: 'STYLE 1', 
     color: 'CAR27',
+    description: 'DUCKBILL FLAT',
     price: 100,
     smallInventory: 10,
     mediumInventory: 5,

@@ -1,8 +1,6 @@
 const Product = require('../model/product.js');
 const InventoryRecord = require('../model/inventoryRecord.js');
 const sanitize = require('mongo-sanitize');
-const { Mongoose } = require('mongoose');
-const product = require('../model/product.js');
 const PAGE_LIMIT = 10;
 
 const inventoryController = {
@@ -32,15 +30,14 @@ const inventoryController = {
 
         let style = sanitize(req.body.newProductStyle);
         let color = sanitize(req.body.newProductColor);
+        let description = sanitize(req.body.newProductDescription);
         let price = sanitize(req.body.newProductPrice);
         let s = sanitize(req.body.newProductS);
         let m = sanitize(req.body.newProductM);
         let l = sanitize(req.body.newProductL);
         let xl = sanitize(req.body.newProductXl);
 
-        console.log(style + " " + color + " " + s + " " + m + " " + l + " " + xl);
-
-        if (isEmpty(style) || isEmpty(color) || isEmpty(price) ||
+        if (isEmpty(style) || isEmpty(color) || isEmpty(price) || isEmpty(description) ||
         isEmpty(s) || isEmpty(m) || isEmpty(l) || isEmpty(xl)) {
             res.redirect('/admin/inventory');
             return;
@@ -58,10 +55,17 @@ const inventoryController = {
 
         style = style.trim().toUpperCase();
         color = color.trim().toUpperCase();
+        description = description.trim().toUpperCase();
 
-        Product.exists({style: style, color: color}, function(err, exists) {
+        if (style.length > 16 || color.length > 16 || description.length > 20) {
+            console.log('style/color/description exceeds maximum allowed characters');
+            res.redirect(req.get('referer'));
+            return;
+        }
+
+        Product.exists({style: style, color: color, description: description}, function(err, exists) {
             if (exists) {
-                console.log("Product already exists: " + style + " " + color);
+                console.log("Product already exists: " + style + " " + color + " " + description);
                 res.redirect('/admin/inventory');
                 return;
             }
@@ -69,6 +73,7 @@ const inventoryController = {
             let product = {
                 style: style,
                 color: color,
+                description: description,
                 price: price.trim().toUpperCase(),
                 smallAvailable: s,
                 mediumAvailable: m,
@@ -93,10 +98,12 @@ const inventoryController = {
     validateNewProduct: function(req, res) {
         let style = sanitize(req.body.style);
         let color = sanitize(req.body.color);
+        let description = sanitize(req.body.description);
 
         let query = {
             style: style.trim().toUpperCase(),
-            color: color.trim().toUpperCase()
+            color: color.trim().toUpperCase(),
+            description: description.trim().toUpperCase()
         };
 
         Product.exists(query, function(err, result) {
@@ -132,12 +139,6 @@ const inventoryController = {
             console.log('numbers must be whole')
             return;
         }
-
-        let totalIncrement = s + m + l + xl;
-        let smallInventory =  (s >= 0) ? s : 0;
-        let mediumInventory = (m >= 0) ? m : 0; 
-        let largeInventory = (l >= 0) ? l : 0;
-        let extraLargeInventory = (xl >= 0) ? xl : 0;
 
         Product.findById(_id).exec(function(err, productResult) {
             if (!productResult) {
@@ -283,8 +284,9 @@ module.exports = inventoryController;
 function getInventory(req, res, isPhasedOut) {
     let style = sanitize(req.query.style);
     let color = sanitize(req.query.color);
-    let query = getQueries(style, color, isPhasedOut);
-    let resultsMessage = getResultsMessage(style, color);
+    let description = sanitize(req.query.description);
+    let query = getQueries(style, color, description, isPhasedOut);
+    let resultsMessage = getResultsMessage(style, color, description);
     let phasedOutUrlPiece = isPhasedOut ? "/phasedout" : "";
 
     let page = sanitize(req.query.page);
@@ -334,6 +336,7 @@ function getInventory(req, res, isPhasedOut) {
             products: results.docs,
             resultsMessage: resultsMessage,
             notPhasedOut: !isPhasedOut,
+            noResults: results.docs.length == 0,
 
             //pagination
             selectOptions: selectOptions,
@@ -345,10 +348,25 @@ function getInventory(req, res, isPhasedOut) {
     });
 }
 
-function getQueries(style, color, isPhasedOut) {
+function getQueries(style, color, description, isPhasedOut) {
     let query = {isPhasedOut: isPhasedOut};
 
-    if(isEmpty(style) && isEmpty(color)) {
+    if (!isEmpty(style)) {
+        query.style = new RegExp(style, 'i')
+    }
+
+    if (!isEmpty(color)) {
+        query.color = new RegExp(color, 'i')
+    }
+
+    if (!isEmpty(description)) {
+        query.description = new RegExp(description, 'i');
+    }
+
+    return query;
+    
+
+    if(isEmpty(style) && isEmpty(color) && isEmpty(description)) {
         return query;
     }
 
@@ -393,20 +411,16 @@ function isEmpty(input) {
     return false;
 }
 
-function getResultsMessage(style, color) {
-    if (isEmpty(style) && isEmpty(color)) {
-        return " ";
+function getResultsMessage(style, color, description) {
+    let styleMsg = !isEmpty(style) ? style : "";
+    let colorMsg = !isEmpty(color) ? color : "";
+    let descriptionMsg = !isEmpty(description) ? description : "";
+
+    if (styleMsg == "" && colorMsg == "" && description == "") {
+        return "";
     }
 
-    if (isEmpty(style) && !isEmpty(color)) {
-        return "Displaying results for " + color;
-    }
-
-    if (!isEmpty(style) && isEmpty(color)) {
-        return "Displaying results for " + style;
-    }
-
-    return "Displaying results for " + style + " " + color;
+    return styleMsg + " " + colorMsg + " " + descriptionMsg;
 }
 
 function isValidNumberInput(n) {
