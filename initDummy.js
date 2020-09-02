@@ -1,6 +1,7 @@
 const Order = require('./model/order.js');
 const Product = require('./model/product.js');
 const OrderItem = require('./model/orderitem.js');
+const JobOrder = require('./model/jobOrder.js');
 const database = require('./model/database.js');
 let User = require('./model/user.js');
 const InventoryRecord = require('./model/inventoryRecord.js');
@@ -17,6 +18,7 @@ database.deleteMany(Product, (flag) => {});
 database.deleteMany(OrderItem, (flag) => {});
 database.deleteMany(InventoryRecord, (flag) => {});
 database.deleteMany(User, (flag) => {});
+database.deleteMany(JobOrder, (flag) => {})
 
 bcrypt.hash(password, 10, function(err, hash) {
     let user = {
@@ -73,6 +75,22 @@ let newProduct = new Product({
     extraLargeDeficit: 0
 });
 
+let jobOrder = new JobOrder({
+    productId: newProduct._id,
+    batchNo: "1",
+    date: new Date('2020-09-01'),
+    style: newProduct.style,
+    color: newProduct.color,
+    description: newProduct.description,
+    remarks: "May be delayed",
+    yardage: 2,
+    smallOrder: 5,
+    mediumOrder: 5,
+    largeOrder: 5,
+    extraLargeOrder: 5,
+    totalOrders: 20,
+});
+
 let newProduct2 = new Product({
     style: 'STYLE 1', 
     color: 'CAR27',
@@ -95,6 +113,22 @@ let newProduct2 = new Product({
     mediumDeficit: 0,
     largeDeficit: 0, 
     extraLargeDeficit: 0
+});
+
+let jobOrder2 = new JobOrder({
+    productId: newProduct2._id,
+    batchNo: "1",
+    date: new Date('2020-08-01'),
+    style: newProduct2.style,
+    color: newProduct2.color,
+    description: newProduct2.description,
+    remarks: "May be early",
+    yardage: 2,
+    smallOrder: 5,
+    mediumOrder: 5,
+    largeOrder: 5,
+    extraLargeOrder: 5,
+    totalOrders: 20,
 });
 
 let newOrderItem = new OrderItem({
@@ -173,14 +207,22 @@ let uretaItem = new OrderItem({
 
 database.insertOne(Order, newOrder, (flag) => {  
     database.insertOne(Product, newProduct, (flag) => {
-        database.insertOne(Product, newProduct2, (flag) => {  
-            database.insertOne(OrderItem, newOrderItem, (flag) => {   
-                database.insertOne(OrderItem, newOrderItem2, (flag) => {   
-                    Order.updateOne({_id: newOrder._id}, {
-                        $push: {orderItems: {$each: johnOrders}}
-                    }).then((flag) => {
-                        console.log(flag)
-                    })
+        database.insertOne(JobOrder, jobOrder, (flag) => {
+
+        
+            database.insertOne(Product, newProduct2, (flag) => {  
+                database.insertOne(JobOrder, jobOrder2, (flag) => {
+
+                
+                    database.insertOne(OrderItem, newOrderItem, (flag) => {   
+                        database.insertOne(OrderItem, newOrderItem2, (flag) => {   
+                            Order.updateOne({_id: newOrder._id}, {
+                                $push: {orderItems: {$each: johnOrders}}
+                            }).then((flag) => {
+                                console.log(flag)
+                            })
+                        });
+                    });
                 });
             });
         });

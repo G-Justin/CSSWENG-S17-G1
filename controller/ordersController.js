@@ -32,7 +32,6 @@ const ordersController = {
 
         let dateStart = parseDate(sanitize(req.query.dateStart));
         let dateEnd = parseDate(sanitize(req.query.dateEnd));
-        let hasDateQuery = dateStart != null && dateEnd != null;
 
         let page = sanitize(req.query.page);
         if (page == null) {
@@ -52,8 +51,6 @@ const ordersController = {
 
         dateStart = (dateStart == null) ? new Date(-8640000000000000) : dateStart;
         dateEnd = (dateEnd == null) ? new Date(8640000000000000) : dateEnd;
-        console.log(dateStart.toISOString());
-        console.log(dateEnd.toISOString());
 
         let query= {
             deliveryStatus: {$in: deliveryQueries},
@@ -113,7 +110,6 @@ function parseDate(s) {
     let date = new Date(b[0], --b[1], b[2]);
 
     date.setHours(8, 0, 0, 0);
-ccccccccccccc
     return date;
 }
 
