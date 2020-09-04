@@ -116,6 +116,70 @@ $(document).ready(function(){
         })
     }) 
 
+    $('#newJobOrderBtn').click(function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $('#newJobOrderError').text('');
+
+        let batchNo = $('#newJobOrderBatchNo').val();
+        let style  =  $('#newJobOrderStyle').val();
+        let color =  $('#newJobOrderColor').val();
+        let description =  $('#newJobOrderDescription').val();
+        let smallOrder =  $('#newJobOrderSmall').val();
+        let mediumOrder = $('#newJobOrderMedium').val();
+        let largeOrder =  $('#newJobOrderLarge').val();
+        let extraLargeOrder = $('#newJobOrderExtraLarge').val();
+        let yardage =  $('#newJobOrderYardage').val();
+        let remarks =  $('#newJobOrderRemarks').val();
+
+        if (batchNo.trim() == "" || style.trim() == "" || color.trim() == "" || description.trim() == "" ||
+        smallOrder == "" || mediumOrder == "" || largeOrder == "" || extraLargeOrder == "") {
+            $('#newJobOrderError').text("All fields except optional ones required!");
+            return;
+        } 
+
+        if (smallOrder > MAX_INT || smallOrder < MIN_INT) {
+            $('#newJobOrderError').text("Invalid small amount!");
+            return;
+        }
+
+        if (mediumOrder > MAX_INT || mediumOrder < MIN_INT) {
+            $('#newJobOrderError').text("Invalid medium amount!");
+            return;
+        }
+
+        if (largeOrder > MAX_INT || mediumOrder < MIN_INT) {
+            $('#newJobOrderError').text("Invalid large amount!");
+            return;
+        }
+
+        if (extraLargeOrder > MAX_INT || mediumOrder < MIN_INT) {
+            $('#newJobOrderError').text("Invalid extra-large amount!");
+            return;
+        }
+
+        if (smallOrder % 1 != 0 || mediumOrder % 1 != 0 || largeOrder % 1 != 0 || extraLargeOrder % 1 != 0) {
+            $('#newJobOrderError').text("Orders must be in whole numbers!");
+            return;
+        }
+
+        $.post('/admin/production/validateNewJobOrder', {batchNo: batchNo, style: style, color: color, description: description}, (data) => {
+            if(data.jobOrderExists) {
+                $('#newJobOrderError').text("Job order with the same batch number already exists!");
+                return;
+            }
+
+            if (!data.productExists) {
+                $('#newJobOrderError').text("Product does not exist!");
+                return;
+            }
+
+
+
+            $('#newJobOrderForm').submit();
+        })
+    })
+
     
     $('#productCardContainer').on('click', '#updateStockBtn',  function(e) {
         e.preventDefault();

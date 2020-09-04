@@ -1,6 +1,8 @@
 const sanitize = require("mongo-sanitize");
 const JobOrder = require('../model/jobOrder.js');
+const Product = require('../model/product.js');
 const moment = require('moment');
+const { exists } = require("../model/product.js");
 
 const productionController = {
     getProductionPage: function(req, res) {
@@ -87,7 +89,125 @@ const productionController = {
                 nextPageLink: nextPageLink
             });
         })
-  
+    },
+
+    addJobOrder: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+
+        let batchNo = sanitize(req.body.newJobOrderBatchNo);
+        let style = sanitize(req.body.newJobOrderStyle);
+        let color = sanitize(req.body.newJobOrderColor)
+        let description = sanitize(req.body.newJobOrderDescription);
+        let smallOrder = sanitize(req.body.newJobOrderSmall);
+        let mediumOrder = sanitize(req.body.newJobOrderMedium);
+        let largeOrder = sanitize(req.body.newJobOrderLarge);
+        let extraLargeOrder = sanitize(req.body.newJobOrderExtraLarge);
+        let yardage = sanitize(req.body.newJobOrderYardage);
+        let remarks = sanitize(req.body.newJobOrderRemarks);
+
+        if (isEmpty(batchNo) || isEmpty(style) || isEmpty(color) || isEmpty(description) ||
+         isEmpty(smallOrder) || isEmpty(mediumOrder) || isEmpty(largeOrder) || isEmpty(extraLargeOrder)) {
+             console.log('empty fields');
+             res.redirect(req.get('referer'));
+             return;
+         }
+
+         if (isEmpty(yardage)) {
+             yardage = "";
+         }
+
+         if (isEmpty(remarks)) {
+             remarks = ""
+         }
+         if (!isValidJobOrderAmount(yardage) || !isValidJobOrderAmount(smallOrder) || !isValidJobOrderAmount(mediumOrder) ||
+         !isValidJobOrderAmount(largeOrder) || !isValidJobOrderAmount(extraLargeOrder)) {
+             console.log('not a valid job order input');
+             res.redirect(req.get('referer'));
+             return;
+         };
+
+         batchNo = batchNo.trim().toUpperCase();
+         style = style.trim().toUpperCase();
+         color = color.trim().toUpperCase();
+         description = description.trim().toUpperCase();
+         remarks = remarks.trim();
+
+         if (remarks.length > 80 || batchNo.length > 16 || style.length > 16 || color.length > 16 || description.length > 20) {
+            console.log('style/color/description exceeds maximum allowed characters');
+            res.redirect(req.get('referer'));
+            return;
+        }
+
+        JobOrder.exists({batchNo: batchNo, style: style, color: color, description: description}, function(err, jobOrderExists) {
+            if (jobOrderExists) {
+                console.log('job order exists already');
+                res.redirect(req.get('referer'));
+                return;
+            }
+
+            Product.findOne({style: style, color: color, description: description})
+            .exec((err, productResult) => {
+                if (!productResult) {
+                    console.log(err)
+                    res.redirect(req.get('referer'));
+                    return;
+                }
+
+                let date = new Date();
+                let jobOrder = new JobOrder({
+                    productId: productResult._id,
+                    date: date.toISOString(),
+                    batchNo: batchNo,
+                    style: style,
+                    color: color,
+                    description: description,
+                    smallOrder: smallOrder,
+                    mediumOrder: mediumOrder,
+                    largeOrder: largeOrder,
+                    extraLargeOrder: extraLargeOrder,
+                    yardage: yardage,
+                    remarks: remarks
+                });
+
+                JobOrder.create(jobOrder).then((a) => {
+                    res.redirect(req.get('referer'));
+                    return;
+                })
+
+            })
+        })
+        
+        
+    },
+
+    validateNewJobOrder: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+
+        let batchNo = sanitize(req.body.batchNo);
+        let style = sanitize(req.body.style);
+        let color = sanitize(req.body.color);
+        let description = sanitize(req.body.description);
+
+        style = style.trim().toUpperCase();
+        color = color.trim().toUpperCase();
+        description = description.toUpperCase();
+
+        JobOrder.exists({batchNo: batchNo, style: style, color: color, description: description}, function(err, jobOrderExists) {
+            Product.exists({style: style, color: color, description: description}, function(err, productExists) {
+                let data = {
+                    jobOrderExists: jobOrderExists,
+                    productExists: productExists
+                };
+
+                res.send(data);
+            })
+        })
         
     }
 }
@@ -116,6 +236,10 @@ function getResultsMessage(style, color, description, status, dateStart, dateEnd
     }
 
     return styleMsg + " " + colorMsg + " " + descriptionMsg + " " + statusMsg + dateMsg;
+}
+
+function isValidJobOrderAmount(n) {
+    return Number(n) >= 0 && Number(n) < (Number.MAX_SAFE_INTEGER - 10) && Number(n) % 1 == 0;
 }
 
 function isEmpty(input) {
