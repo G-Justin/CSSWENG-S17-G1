@@ -1,6 +1,7 @@
 const sanitize = require("mongo-sanitize");
 const JobOrder = require('../model/jobOrder.js');
 const Product = require('../model/product.js');
+const InventoryRecord = require('../model/inventoryRecord.js');
 const moment = require('moment');
 const { exists } = require("../model/product.js");
 
@@ -54,6 +55,7 @@ const productionController = {
                 res.redirect(req.get('referer'));
                 return;
             }
+            console.log(results)
 
             for (let i = 0; i < results.docs.length; i++) {
                 results.docs[i].date = formatDate(results.docs[i].date);
@@ -101,22 +103,18 @@ const productionController = {
         let style = sanitize(req.body.newJobOrderStyle);
         let color = sanitize(req.body.newJobOrderColor)
         let description = sanitize(req.body.newJobOrderDescription);
-        let smallOrder = sanitize(req.body.newJobOrderSmall);
-        let mediumOrder = sanitize(req.body.newJobOrderMedium);
-        let largeOrder = sanitize(req.body.newJobOrderLarge);
-        let extraLargeOrder = sanitize(req.body.newJobOrderExtraLarge);
-        let yardage = sanitize(req.body.newJobOrderYardage);
+        let smallOrder = Number(sanitize(req.body.newJobOrderSmall));
+        let mediumOrder = Number(sanitize(req.body.newJobOrderMedium));
+        let largeOrder = Number(sanitize(req.body.newJobOrderLarge));
+        let extraLargeOrder = Number(sanitize(req.body.newJobOrderExtraLarge));
+        let yardage = Number(sanitize(req.body.newJobOrderYardage));
         let remarks = sanitize(req.body.newJobOrderRemarks);
 
         if (isEmpty(batchNo) || isEmpty(style) || isEmpty(color) || isEmpty(description) ||
-         isEmpty(smallOrder) || isEmpty(mediumOrder) || isEmpty(largeOrder) || isEmpty(extraLargeOrder)) {
+         smallOrder == "" || mediumOrder == "" || largeOrder == "" || extraLargeOrder == "") {
              console.log('empty fields');
              res.redirect(req.get('referer'));
              return;
-         }
-
-         if (isEmpty(yardage)) {
-             yardage = "";
          }
 
          if (isEmpty(remarks)) {
@@ -168,6 +166,7 @@ const productionController = {
                     mediumOrder: mediumOrder,
                     largeOrder: largeOrder,
                     extraLargeOrder: extraLargeOrder,
+                    totalOrders: smallOrder + mediumOrder + largeOrder + extraLargeOrder,
                     yardage: yardage,
                     remarks: remarks
                 });
@@ -231,6 +230,80 @@ const productionController = {
             console.log(result)
             res.send(true);
         })
+      },
+
+      resolveJobOrder: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+
+        let _id = sanitize(req.body.resolveJobOrderId);
+        let productId = sanitize(req.body.resolveJobOrderProductId);
+        let smallOuput = Number(sanitize(req.body.resolveJobOrderSmallOutput));
+        let mediumOutput = Number(sanitize(req.body.resolveJobOrderMediumOutput));
+        let largeOutput = Number(sanitize(req.body.resolveJobOrderLargeOutput));
+        let extraLargeOutput = Number(sanitize(req.body.resolveJobOrderExtraLargeOutput));
+
+        if (smallOuput == "" && mediumOutput == "" && largeOutput == "" && extraLargeOutput == "") {
+            console.log("all actual output fields are empty");
+            res.redirect(req.get('referer'));
+            return;
+        }
+
+        if(!isValidJobOrderAmount(smallOuput) || !isValidJobOrderAmount(mediumOutput) || !isValidJobOrderAmount(largeOutput) || !isValidJobOrderAmount(extraLargeOutput)) {
+            console.log('not valid job order resolution');
+            res.redirect(req.get('referer'));
+            return;
+        }
+
+        JobOrder.updateOne({_id: _id}, {
+            smallOuput: smallOuput,
+            mediumOutput: mediumOutput,
+            largeOutput: largeOutput,
+            extraLargeOutput: extraLargeOutput,
+            totalOutput: smallOuput + mediumOutput + largeOutput + extraLargeOutput,
+            status: 'DONE',
+            isDone: true
+        }, (err, result) => {
+            if(!result) {
+                console.log(err);
+                res.redirect(req.get('referer'));
+                return;
+            }
+            
+            let inventoryRecord = new InventoryRecord({
+                parentRecord: productId,
+                smallUpdate: smallOuput,
+                mediumUpdate: mediumOutput,
+                largeUpdate: largeOutput,
+                extraLargeUpdate: extraLargeOutput
+            });
+
+            InventoryRecord.create(inventoryRecord, function(err, result) {
+                if (!result) {
+                    console.log(err);
+                    res.redirect(req.get('referer'));
+                    return;
+                }
+
+                Product.updateOne({_id: productId}, {
+                    $push: {inventoryRecords: inventoryRecord._id},
+                    $inc: {
+                        smallAvailable: smallOuput, 
+                        mediumAvailable: mediumOutput, 
+                        largeAvailable: largeOutput, 
+                        extraLargeAvailable: extraLargeOutput,
+                        totalAvailable: smallOuput + mediumOutput + largeOutput + extraLargeOutput}
+                }).then((a) => {
+                    res.redirect(req.get('referer'));
+                    return;
+                })
+            })
+            
+        })
+
+
       }
 }
 

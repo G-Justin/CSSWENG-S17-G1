@@ -28,7 +28,7 @@ var JobOrderSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['CUTTING', 'SEWING', 'PRINTING', 'WASHING', 'CANCELLED'],
+        enum: ['CUTTING', 'SEWING', 'PRINTING', 'WASHING', 'CANCELLED', 'DONE'],
         default: 'CUTTING'
     },
     isDone: {

@@ -180,6 +180,45 @@ $(document).ready(function(){
         })
     })
 
+    $('#jobOrderCardContainer').on('click', '#resolveJobOrderBtn', function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        let errorMsg = $(this).parent().parent().find('div:nth-child(1)').find('div:nth-child(15)');
+        errorMsg.text("");
+
+        let smallOutput = $(this).parent().parent().find('div:nth-child(1)').find('input:nth-child(4)').val();
+        let mediumOutput = $(this).parent().parent().find('div:nth-child(1)').find('input:nth-child(7)').val();
+        let largeOutput = $(this).parent().parent().find('div:nth-child(1)').find('input:nth-child(10)').val();
+        let extraLargeOutput = $(this).parent().parent().find('div:nth-child(1)').find('input:nth-child(13)').val();
+
+        if (smallOutput == "" && mediumOutput == "" && largeOutput == "" && extraLargeOutput == "") {
+            errorMsg.text("At least one output needed!");
+            return;
+        }
+
+        if (smallOutput < 0 || smallOutput > MAX_INT) {
+            errorMsg.text("Invalid small output!");
+            return;
+        }
+
+        if (mediumOutput < 0 || mediumOutput > MAX_INT) {
+            errorMsg.text("Invalid medium output!");
+            return;
+        }
+
+        if (largeOutput < 0 || largeOutput > MAX_INT) {
+            errorMsg.text("Invalid large output!");
+            return;
+        }
+
+        if (extraLargeOutput < 0 || extraLargeOutput > MAX_INT) {
+            errorMsg.text("Invalid extra large output!");
+            return;
+        }
+
+        $(this).parent().parent().submit();
+
+    })
     
     $('#productCardContainer').on('click', '#updateStockBtn',  function(e) {
         e.preventDefault();
