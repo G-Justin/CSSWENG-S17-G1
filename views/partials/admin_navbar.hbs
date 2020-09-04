@@ -11,13 +11,13 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-    <ul class="navbar-nav ml-auto">
+    <ul class="navbar-nav ml-auto" style="margin:auto">
           
-        <div class='row'>
+        {{!-- <div class='row'>
           <div class="col m-0 p-0">
-            <form method='get' action='/search'>
+            <form method='get' action='/admin/orders'>
               <li class='nav-item'>
-                <input type="text" class="form-control" id="searchItem" name= "searchItem" placeholder="Order Number" size="15%">
+                <input type="text" class="form-control" id="orderId" name= "orderId" placeholder="Order Number" size="15%" required>
               </li>
               </div>
               <li class = "nav-item">
@@ -26,7 +26,7 @@
                 </button>
               </li>
             </form>
-          </div>
+          </div> --}}
       <li class="nav-item">
         <a class="nav-link" href="/admin">Home</a>
       </li>
@@ -39,10 +39,10 @@
       <li class="nav-item">
         <a class="nav-link" href="/admin/production">Production</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/logout">Logout</a>
-      </li>
-
     </ul>
+
+
+    <a class="nav-link" href="/logout">Logout <i class='fas fa-door-open' style='font-size:24px'></i></a>
+   
   </div>
 </nav>

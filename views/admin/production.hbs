@@ -1,166 +1,162 @@
-    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
-    <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
-    
-    <script>
-        $(document).ready(function() {
-            var table =  $('#table_id').DataTable();
+<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
 
-             $('#table_id tbody').on( 'click', 'tr', function () {
-                if ($(this).hasClass('selected') ) {
-                    $(this).removeClass('selected');
-                }
-                else {
-                    table.$('tr.selected').removeClass('selected');
-                    $(this).addClass('selected');
-                }
-            } );
-        
-            $('#button').click( function () {
-                table.row('.selected').remove().draw( false );
-            });
+<style>
+  .media-text{
+    float:left;
+    margin-right: 20px;
+  }
+  .media-text #btn{
+      margin-right: -20px;
+  }
+  .filter_bar{
+    background-color: white;
+    margin:auto;
+    text-align: center;
+  }
+  .card-filter{
+    text-align: center;
+  }
+  #col{
+    float:left
+  }
+  .modal label{
+    min-width:100px;
+  }
+  .modal input{
+    min-width:200px;
+  }
+  .modal select{
+    min-width:200px;
+  }
+  .card{
+    text-align: center;
+  }
+  input{
+    width:150px;
+  }
+</style>
 
-            $('#addRow').on( 'click', function () {
-                table.row.add( [
-                    '','','','','','','','','','','<select><option value="IP">In process</option><option value="Done">Done</option><option value="Cancelled">Cancelled</option><option value="Sewing">Sewing</option><option value="Cutting">Cutting</option></select>',''
-                ] ).draw( false );
-            });
-        });
-    </script>
-
- <div  contenteditable="true" spellcheck="false" style = "margin-top:2%; width: 95%;margin-left: 2.5%;">
-        <table id="table_id" class="table-responsive" width="100%">
-            <thead>
-                <tr>
-                    <th>Date Endoded</th>
-                    <th>Jo/Batch Number</th>
-                    <th>Style</th>
-                    <th>Description</th>
-                    <th>Color</th>
-                    <th>S</th>
-                    <th>M</th>
-                    <th>L</th>
-                    <th>XL</th>
-                    <th>TTL</th>
-                    <th>Status update</th>
-                    <th>remarks</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>2020/01/01</td>
-                    <td>1</td>
-                    <td>S1</td>
-                    <td>Surgical Solid</td>
-                    <td>ICON - Purple</td>
-                    <td>3</td>
-                    <td>3</td>
-                    <td>2</td>
-                    <td>1</td>
-                    <td>9</td>
-                    <td>
-                        <select>
-                            <option value="IP">In process</option>
-                            <option value="Done">Done</option>
-                            <option value="Cancelled">Cancelled</option>
-                            <option value="Sewing">Sewing</option>
-                            <option value="Cutting">Cutting</option>
-                        </select>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>2020/01/05</td>
-                    <td>1</td>
-                    <td>S1</td>
-                    <td>Surgical Solid</td>
-                    <td>Angel BLue</td>
-                    <td>3</td>
-                    <td>3</td>
-                    <td>3</td>
-                    <td>3</td>
-                    <td>12</td>
-                    <td>
-                        <select>
-                            <option value="IP">In process</option>
-                            <option value="Done">Done</option>
-                            <option value="Cancelled">Cancelled</option>
-                            <option value="Sewing">Sewing</option>
-                            <option value="Cutting">Cutting</option>
-                        </select>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>2020/01/25</td>
-                    <td>1</td>
-                    <td>S1</td>
-                    <td>Surgical PRINT</td>
-                    <td>PPINK</td>
-                    <td>5</td>
-                    <td>3</td>
-                    <td>2</td>
-                    <td>1</td>
-                    <td>11</td>
-                    <td>
-                        <select>
-                            <option value="IP">In process</option>
-                            <option value="Done">Done</option>
-                            <option value="Cancelled">Cancelled</option>
-                            <option value="Sewing">Sewing</option>
-                            <option value="Cutting">Cutting</option>
-                        </select>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>2020/01/27</td>
-                    <td>1</td>
-                    <td>S1</td>
-                    <td>Surgical Solid</td>
-                    <td>Pale Pink</td>
-                    <td>1</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>1</td>
-                    <td>
-                        <select>
-                            <option value="IP">In process</option>
-                            <option value="Done">Done</option>
-                            <option value="Cancelled">Cancelled</option>
-                            <option value="Sewing">Sewing</option>
-                            <option value="Cutting">Cutting</option>
-                        </select>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>2020/02/07</td>
-                    <td>1</td>
-                    <td>S2</td>
-                    <td>Duckbill Print</td>
-                    <td>LightGrey</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>2</td>
-                    <td>1</td>
-                    <td>3</td>
-                    <td>
-                        <select>
-                            <option value="IP">In process</option>
-                            <option value="Done">Done</option>
-                            <option value="Cancelled">Cancelled</option>
-                            <option value="Sewing">Sewing</option>
-                            <option value="Cutting">Cutting</option>
-                        </select>
-                    </td>
-                    <td></td>
-                </tr>
-               
-            </tbody>
-        </table>
-        <button id = "addRow" class = "btn btn-primary" style = "background-color: rgb(52, 58, 64); color:white">Add row</button>
-        <button id = "button" class = "btn btn-primary" style = "background-color: rgb(52, 58, 64); color:white">Delete Selected Row</button>
+<div class="card" style="margin-top:3%">
+  <div class="filter_bar">
+    <br>
+    <h4>Filter: {{resultsMessage}}</h4><hr>
+          <form mehtod="get" action="#">
+            <div class = "media-text" id="input">
+              <label for "style">Style</label><br>
+                <input id="style" name="style" type="text" placeholder=" Enter Style"><br>
+            </div>
+            <div class = "media-text" id="input">
+              <label for "color">Color</label><br>
+                <input id="color" name="color" type="text" placeholder=" Enter Color" ><br>
+            </div>
+            <div class = "media-text" id="input">
+              <label for "description">Description</label><br>
+                <input id="description" name="description" type="text" placeholder=" Enter Description"><br>
+            </div>
+            <div class = "media-text" id="input">
+              <label for "status">Production Status</label><br>
+                <select id="status" class = "browser-default custom-select" name="status" style="width: 200px; border:solid; background-color: rgba(126, 125, 125, 0); cursor:pointer;">
+                  <option value="SELECT">[SELECT STATUS]</option>
+                  <option value="CUTTING">Cutting</option>
+                  <option value="SEWING">Sewing</option>
+                  <option value="PRINTING">Printing</option>
+                  <option value="WASHING">Washing</option>
+                  <option value="CANCELLED">Cancelled</option>
+                  <option value="DONE">Done</option>
+                </select>
+            </div>
+            <div class = "media-text" id="input">
+            <label for "dateStart">Start Date</label><br>
+              <input type="date" id="dateStart" name="dateStart" >
+					  </div>
+            <div class = "media-text" id="input">
+            <label for "dateEnd">End Date</label><br>
+              <input type="date" id="dateEnd" name="dateEnd" >
+            </div>
+              
+    </div><br>
+    <div class = "media-text" style="margin-bottom:10px;">
+      <button class="btn btn-primary"  id="btn" type="submit">Apply Filter</button>&nbsp;&nbsp;&nbsp;&nbsp;
+      </form>  
+      <button class="btn btn-primary"  id="add" data-toggle="modal" data-target="#modal_joborder">Add New Job Order</button>
     </div>
-</body>
-</html>
+    
+    
+  </div>
+
+<div id="jobOrderCardContainer"class="mt-5 row justify-content-center">
+    <div class="col-sm-4 col-md-12">
+      <div class="card" style="width:100%; overflow-y:hidden">
+          <table style="text-align: center; table-layout:fixed; width: 1000px; margin:auto" class="table table-striped">
+              <thead>
+                  <th>Date Encoded</th>
+                  <th>Batch No</th>
+                  <th>Style</th>
+                  <th>Description</th>
+                  <th>Color</th>
+                  <th>TTL</th>
+                  <th>Status Update</th>
+                  <th>Acutal Output</th>
+              </thead>
+          </table>
+      </div><hr>
+
+        {{#each jobOrderCards}}
+            {{> jobOrderCard}}
+        {{/each}}
+
+        {{#if noResults}}
+          <h4 class="col-sm-4 col-md-4">No results returned</h4><hr>
+        {{/if}}
+      
+      
+    </div>
+</div>
+
+
+<div id="modal_joborder" class="modal fade" role="dialog">
+        <div id="div" class="modal-dialog">
+          <div class="modal-content" style="background-color: rgb(247, 242, 242); text-align:center">
+                <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
+                <h4 class="modal-title">Add a new Job Order</h4>
+                <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+                </div>
+                <form id="newJobOrderForm" name="newJobOrderForm" method="POST" action="/admin/production/addJobOrder">
+                    <div class="modal-body" style="overflow:auto margin:auto; text-align:center; margin-top:2%">
+                        <label for="newJobOrderBatchNo">Batch no: </label>
+                        <input maxlength="16" type="text" name="newJobOrderBatchNo" id="newJobOrderBatchNo" placeholder=" Enter Batch Number"><br>
+                        <label for="newJobOrderStyle">Style: </label>
+                        <input maxlength="16" type="text" name="newJobOrderStyle" id="newJobOrderStyle" placeholder=" Enter Style"><br>
+                        <label for="newJobOrderDescription">Description: </label>
+                        <input maxlength="20" type="text" name="newJobOrderDescription" id="newJobOrderDescription" placeholder=" Enter Description"><br>
+                        <label for="newJobOrderColor">Color: </label>
+                        <input maxlength="16" type="text" name="newJobOrderColor" id="newJobOrderColor" placeholder=" Enter Color"><br>
+                        <label for="newJobOrderSmall">S: </label>
+                        <input type="number" min="0" max="9007199254740981" id="newJobOrderSmall" name="newJobOrderSmall" placeholder="Enter small amount"><br>
+                        <label for="newJobOrderMedium">M: </label>
+                        <input type="number" min="0" max="9007199254740981" id="newJobOrderMedium" name="newJobOrderMedium" placeholder="Enter medium amount"><br>
+                        <label for="newJobOrderLarge">L: </label>
+                        <input type="number" min="0" max="9007199254740981" id="newJobOrderLarge" name="newJobOrderLarge" placeholder="Enter large amount"><br>
+                        <label for="newJobOrderExtraLarge">XL: </label>
+                        <input type="number" min="0" max="9007199254740981" id="newJobOrderExtraLarge" name="newJobOrderExtraLarge" placeholder="Enter extra large amount"><br>
+                        <label for="newJobOrderYardage">Yardage: </label>
+                        <input type="number" min="0" max="9007199254740981" id="newJobOrderYardage" name="newJobOrderYardage" placeholder="Yardage (optional)"><br>
+                        <label for="newJobOrderRemarks">Remarks: </label>
+                        <input maxlength="80" id="newJobOrderRemarks" name="newJobOrderRemarks" placeholder="Remarks (optional)"><br>
+                        <div id="newJobOrderError" name="newJobOrderError" class="text-danger" style="text-align:center"></div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" id="newJobOrderBtn" name="newJobOrderBtn" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);">Confirm</button>
+                      <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+</div>
+
+
+{{> paginator}}
+
+
+

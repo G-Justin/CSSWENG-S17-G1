@@ -1,0 +1,679 @@
+
+    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
+
+    <style>
+         .dataTables_length select{
+            background-color: rgb(52, 58, 64);
+            color:White;
+        }
+         .btn{
+             background-color: rgb(52, 58, 64);
+             color: white;
+         }
+         .btn:hover{
+             opacity: 95%;
+             background-color: rgb(52, 58, 64);
+         }
+        .btn.btn-primary:focus {
+            background-color:rgb(52, 58, 64) ;
+        }
+    </style>
+     
+    <script>
+        var currPage = 0;
+        var searchValue = "";
+        var flag = 0;
+        function searchIcon(value){
+           
+            searchValue = value;
+            
+            var table =  $('#table_id').DataTable({
+                "oSearch":
+                {
+                    "sSearch": searchValue
+                },
+                "bDestroy": true
+            });
+
+            }
+
+         $(document).ready(function() {
+            var table2 =  $('#table_id2').DataTable();
+
+             $('#table_id2 tbody').on( 'click', 'tr', function () {
+                if ($(this).hasClass('selected') ) {
+                    $(this).removeClass('selected');
+                }
+                else {
+                    table2.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            } );
+        
+            $('#button').click( function () {
+                table2.row('.selected').remove().draw( false );
+            });
+
+            $('#addRows').on('click', function () {
+                table2.row.add([
+                    '','','','','','',''
+                ]).draw( false );
+            });
+        }); 
+        
+        var count = 0;
+         $(document).ready(function() {
+            var table = $('#table').DataTable();
+
+            $('#table tbody').on( 'click', 'tr', function () {
+                if ($(this).hasClass('selected') ) {
+                    $(this).removeClass('selected');
+                }
+                else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            } );
+        
+            $('#button2').click( function () {
+                table.row('.selected').remove().draw( false );
+            });      
+            $('#addRow').on( 'click', function () {
+                table.row.add( [
+                    '<button id = "btnC" class = "btn btn-primary" data-toggle="modal" data-target="#myModal" style = "width:100px;min-height:15px"></button>','','','','','','','','','','','','','',''
+                ] ).draw( false );
+                document.getElementById('btnC').id = 'btnC'+count;
+                $('#btnC'+count).click( function () {
+                    var table =  $('#table_id').DataTable({
+                    "oSearch":
+                    {
+                        "sSearch": $(this).text()
+                    },
+                    "bDestroy": true
+                    });
+                }); 
+                    count ++;
+            });
+
+            });  
+ 
+            function loadContent(a){
+                if (currPage != 1){
+                document.getElementById(a).innerHTML='<object type="text/html" data="production.html" id="import" ></object>';
+                $("#main").hide();
+                $("#content").show();
+                currPage = 1;}
+                }
+
+            function loadOrder(a){
+                if (currPage != 2){
+                document.getElementById(a).innerHTML='<object type="text/html" data="orderpage.html" id="import" ></object>';
+                $("#main").hide();
+                $("#content").show();
+                currPage = 2;}
+                 }   
+                 
+
+            function revertContent(a){
+                if (currPage != 0){
+                $("#content").hide();
+                $("#main").show();
+                currPage = 0;
+                }
+        }       
+    </script>
+
+    <style>
+        #Icon{
+            width:100px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id = "content">
+    </div>
+    <div contenteditable = true spellcheck = false style = "margin-top:2%; width: 95%;margin-left: 2.5%;" id = "main">
+        <table id="table" class="table-editable table-responsive" width="100%">
+            <thead>
+                <tr>
+                    <th>Color</th>
+                    <th>Style</th>
+                    <th>S (INV)</th>
+                    <th>M (INV)</th>
+                    <th>L (INV)</th>
+                    <th>XL (INV)</th>
+                    <th>S (Sold)</th>
+                    <th>M (Sold)</th>
+                    <th>L (Sold)</th>
+                    <th>XL (Sold)</th>
+                    <th>S (Avail)</th>
+                    <th>M (Avail)</th>
+                    <th>L (Avail)</th>
+                    <th>XL (Avail)</th>
+                    <th>Total Available Color</th>  
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('ICON')" class = "btn btn-primary">ICON</button></td>
+                    <td>Style 1</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td>10</td>
+                    <td>3</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>10</td>
+                    <td>3</td>
+                    <td>13</td>
+                </tr>
+                <tr>
+                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('PGE')" class = "btn btn-primary">PGE</button></td>
+                    <td>Style 1</td>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>10</td>
+                    <td>3</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>10</td>
+                    <td>3</td>
+                    <td>15</td>
+                </tr>
+                <tr>
+                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('Car27')" class = "btn btn-primary">Car27</button></td>
+                    <td>Style 1</td>
+                    <td>5</td>
+                    <td>2</td>
+                    <td>10</td>
+                    <td>3</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>10</td>
+                    <td>3</td>
+                    <td>18</td>
+                </tr>
+                <tr>
+                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('SKINTN62')" class = "btn btn-primary">SKINTN62</button></td>
+                    <td>Style 1</td>
+                    <td>5</td>
+                    <td>2</td>
+                    <td>4</td>
+                    <td>3</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>10</td>
+                    <td>3</td>
+                    <td>12</td>
+                </tr>
+                <tr>
+                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('PPINK33')" class = "btn btn-primary">PPINK33</button></td>
+                    <td>Style 1</td>
+                    <td>5</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>3</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>10</td>
+                    <td>3</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('ICON')" class = "btn btn-primary">ICON</button></td>
+                    <td>Style 2</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('BLACK')" class = "btn btn-primary">BLACK</button></td>
+                    <td>Style 2</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('CAR27')" class = "btn btn-primary">CAR27</button></td>
+                    <td>Style 2</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('GRN63')" class = "btn btn-primary">GRN63</button></td>
+                    <td>Style 2</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('LGRAY36')" class = "btn btn-primary">LGRAY36</button></td>
+                    <td>Style 2</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td><button id="Icon" data-toggle="modal" data-target="#myModal" onclick="searchIcon('BLACK')" class = "btn btn-primary">BLACK</button></td>
+                    <td>Style 2</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>3</td>
+                </tr>
+            </tbody>
+        </table>
+        <button id="addRow" class = "btn btn-primary" style = "background-color: rgb(52, 58, 64); color:white">Add row</button>
+        <button id="button2" class = "btn btn-primary" style = "background-color: rgb(52, 58, 64); color:white">Delete Selected Row</button>
+        <button id="button3" data-toggle="modal" data-target="#myModal2" class = "btn btn-primary" style = "background-color: rgb(52, 58, 64); color:white">Check Inventory</button>
+        <button type="button4" class = "btn btn-primary" data-toggle="modal" data-target="#production" style = "background-color: rgb(52, 58, 64);color:white">Request Production</button>
+
+    </div>
+
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog" id = "md1">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Inventory content</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" contenteditable="TRUE" spellcheck="FALSE">
+                <table id="table_id" class="table-responsive" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Date Endoded</th>
+                            <th>Style</th>
+                            <th>Color</th>
+                            <th>S</th>
+                            <th>M</th>
+                            <th>L</th>
+                            <th>XL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2020/01/01</td>
+                            <td>Style 1</td>
+                            <td>ICON</td>
+                            <td>2</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>2020/01/02</td>
+                            <td>Style 2</td>
+                            <td>BLACK</td>
+                            <td>3</td>
+                            <td>0</td>
+                            <td>12</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>2020/01/03</td>
+                            <td>Style 1</td>
+                            <td>PGE</td>
+                            <td>0</td>
+                            <td>100</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>2020/01/05</td>
+                            <td>Style 1</td>
+                            <td>SKINTN62</td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>2020/01/21</td>
+                            <td>Style 1</td>
+                            <td>LGRAY36</td>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>2020/01/22</td>
+                            <td>Style 1</td>
+                            <td>CYAN46</td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>2020/02/01</td>
+                            <td>Style 1</td>
+                            <td>PPINK33</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>2020/02/02</td>
+                            <td>Style 1</td>
+                            <td>BLACK</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>9</td>
+                        </tr>
+                        <tr>
+                            <td>2020/02/05</td>
+                            <td>Style 1</td>
+                            <td>ICON</td>
+                            <td>2</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>2020/02/06</td>
+                            <td>Style 2</td>
+                            <td>CAR27</td>
+                            <td>3</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>2020/01/01</td>
+                            <td>Style 1</td>
+                            <td>ICON</td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>2020/01/01</td>
+                            <td>Style 1</td>
+                            <td>GRN63</td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>2</td>
+                        </tr>
+                    </tbody>
+                </table><br><br>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="production" class="modal fade" role="dialog"  style = "text-align: center; margin-top: 10%">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Production Request</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+              <label for="style">Choose a Style:</label>
+                <select name="style" id="style">
+                    <option value="style 1">Style 1</option>
+                    <option value="style 2">Style 2</option>
+                    <option value="foam 1">Foam 1</option>
+                </select><br>
+                <label for="color">Choose a Color:</label>
+                <select name="color" id="color">
+                    <option value="ICON">ICON</option>
+                    <option value="BLACK">BLACK</option>
+                    <option value="MAROON">MAROON</option>
+                    <option value="PGE">PGE</option>
+                    <option value="CAR27">CAR27</option>
+                    <option value="SKINTN62">SKINTN62</option>
+                    <option value="PPINK33">PPINK33</option>
+                    <option value="ABLUE44">ABLUE44</option>
+                    <option value="LGRAY36">LGRAY36</option>
+                    <option value="CYAN46">CYAN46</option>
+                    <option value="GRN63">GRN63</option>
+                    <option value="SUNKIST65">SUNKIST65</option>
+                    <option value="MUSTARD30">MUSTARD30</option>
+                    <option value="MOSSGRN58">MOSSGRN58</option>
+                    <option value="D GRAY18">D GRAY18</option>
+                    <option value="MAGENDA56">MAGENDA56</option>
+                    <option value="RBLUE17">RBLUE17</option>
+                    <option value="NBLUE19">NBLUE19</option>
+                </select><br>
+                <label for="size">Choose a Style:</label>
+                <select name="size" id="sise">
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">X</option>
+                    <option value="XL">XL</option>
+                </select><br>
+                <label for="amount">Enter Amount: </label>
+                <input type="text" name="amount">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" style = "background-color: rgb(52, 58, 64);color:white">Request</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="myModal2" class="modal fade" role="dialog">
+        <div class="modal-dialog" id = "md1">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Inventory content</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" contenteditable="TRUE" spellcheck="FALSE">
+                <table id="table_id2" class="table-responsive" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Date Endoded</th>
+                            <th>Style</th>
+                            <th>Color</th>
+                            <th>S</th>
+                            <th>M</th>
+                            <th>L</th>
+                            <th>XL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2020/01/01</td>
+                            <td>Style 1</td>
+                            <td>ICON</td>
+                            <td>2</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>2020/01/02</td>
+                            <td>Style 2</td>
+                            <td>BLACK</td>
+                            <td>3</td>
+                            <td>0</td>
+                            <td>12</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>2020/01/03</td>
+                            <td>Style 1</td>
+                            <td>PGE</td>
+                            <td>0</td>
+                            <td>100</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>2020/01/05</td>
+                            <td>Style 1</td>
+                            <td>SKNTN62</td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>2020/01/21</td>
+                            <td>Style 1</td>
+                            <td>LGRAY36</td>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>2020/01/22</td>
+                            <td>Style 1</td>
+                            <td>CYAN46</td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>2020/02/01</td>
+                            <td>Style 1</td>
+                            <td>MAGENDA56</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>2020/02/02</td>
+                            <td>Style 1</td>
+                            <td>BLACK</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>9</td>
+                        </tr>
+                        <tr>
+                            <td>2020/02/05</td>
+                            <td>Style 1</td>
+                            <td>ICON</td>
+                            <td>2</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>2020/02/06</td>
+                            <td>Style 2</td>
+                            <td>GRN63</td>
+                            <td>3</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>2020/01/01</td>
+                            <td>Style 1</td>
+                            <td>ICON</td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>2</td>
+                        </tr>
+                    </tbody>
+                </table><br><br>
+            </div>
+            <div class="modal-footer">
+               <button id = "addRows" class = "btn btn-primary" style = "background-color: rgb(52, 58, 64); color:white">Add rows</button>
+               <button id="button" class = "btn btn-primary" style = "background-color: rgb(52, 58, 64); color:white">Delete Selected Row</button>
+               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+      
+        </div>
+      </div>

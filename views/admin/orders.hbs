@@ -1,96 +1,73 @@
+<style>
+  .media-text{
+    float:left;
+    margin-right: 20px;
+  }
+  .media-text #btn{
+      margin-right: -20px;
+  }
+  .filter_bar{
+    background-color: white;
+    margin:auto;
+    justify-content: center;
+  }
+  .card{
+    text-align: center;
+  }
+  #searchId{
+    background-color: white;
+    margin:auto;
+    justify-content: center;
+  }
+</style>
 
+<br>
+<div class="card">
+  <div class="filter_bar">
+    <br>
+          <form mehtod="get" action="/admin/orders">
+            <div class = "media-text" id="input">
+              <label for "deliveryStatus">Delivery Status</label><br>
+                <select id="deliveryStatus" class = "browser-default custom-select" name="deliveryStatus" style="width: 200px; border:solid; background-color: rgba(126, 125, 125, 0); cursor:pointer;">
+                  <option value="SELECT">[SELECT STATUS]</option>
+                  <option value="PROCESSING">PROCESSING</option>
+                  <option value="DELIVERING">DELIVERING</option>
+                  <option value="DELIVERED">DELIVERED</option>
+                </select>
+            </div>
+            <div class = "media-text" id="input">
+              <label for "paymentStatus">Payment Status</label><br>
+              <select id="paymentStatus" class = "browser-default custom-select" name="paymentStatus" style="width: 200px; border:solid; background-color: rgba(126, 125, 125, 0); cursor:pointer;">
+                <option value="SELECT">[SELECT STATUS]</option>
+                <option value="TO PAY">TO PAY</option>
+                <option value="PAID">PAID</option>
+              </select>
+            </div>
+            <div class = "media-text" id="input">
+            <label for "dateStart">Start Date</label><br>
+              <input type="date" id="dateStart" name="dateStart" >
+					  </div>
+            <div class = "media-text" id="input">
+            <label for "dateEnd">End Date</label><br>
+              <input type="date" id="dateEnd" name="dateEnd" >
+            </div>  
+    </div><br>
+    <div class = "media-text" style="margin-bottom:10px;"><button class="btn btn-primary"  id="btn" type="submit">Apply Filter</button></div>
+    </form>  
+    <hr>
+    <form class="form-inline mb-2 justify-content-center" mehtod="get" action="/admin/orders" id="searchId">
+      <div class = "media-text" id="input">
+        <input type="text" id="orderId" name="orderId" placeholder="Enter a Order Number">
+      </div>
+      <div class = "media-text"><button class="btn btn-primary" id="btn" type="submit" style="margin:0;height:30px;padding-left:10;padding-top:0">Search Order ID</button></div>  
+  </form>
+  </div>
+  
 
 <div class="mt-5 row">
-
-	<div class="col-sm-12 col-md-4">
-        <div class="card mb-4">
-        	<div class="card-body text-center">
-            	<h4 class="card-title">Filter</h4>
-                        <div class = "media-text">
-                            <p class="card-text">Deliver Status</p>
-                            <select style="border:solid; background-color: rgba(126, 125, 125, 0); cursor:pointer">
-                                <option value="">Ship Out</option>
-                                <option>Ongoing</option>
-                            </select>
-                        </div>  
-                      <p class="card-text">Payment Status</p>
-                        <div class = "media-text">
-                        <select style="border:solid; background-color: rgba(126, 125, 125, 0); cursor:pointer">
-                            <option value="">Paid</option>
-                            <option>COD</option>
-                        </select>
-                        </div>  
-                      <p class="card-text">Date</p> 
-                      <form action="">
-                        <input type="date" id="date" name="birthdaydate">
-                      </form>
-					  <br>
-                      <span class="input-group-btn filterbtn">
-                        <button class="btn btn-primary" type="button">Filter</button>
-                    </span>
-          	</div>
-        </div>
-    </div>
-
-    <div class="col-sm-12 col-md-4">
-        <div class="card mb-4">
-        	<div class="card-body text-center">
-            	<img src="/assets/boymask.png" width="100" height="100" class="rounded-10 d-inline-block align-top mb-1" alt="Logo">
-            	<h5 class="card-title pb-2"><a href="/admin/cart">Sample Order Number</a></h5>
-				<p class="card-text">Shipping Fee: <input type="number"></p>
-				<a href="/#" class="card-link bg-pill pl-2 pr-2 pt-1 pb-1 rounded">To Pay</a>
-            	<a href="/#" class="card-link bg-pill pl-2 pr-2 pt-1 pb-1 rounded">Ongoing</a>
-          	</div>
-        </div>
-    </div>
-
-    <div class="col-sm-12 col-md-4">
-        <div class="card mb-4">
-        	<div class="card-body text-center">
-            	<img src="/assets/boymask.png" width="100" height="100" class="rounded-10 d-inline-block align-top mb-1" alt="Logo">
-            	<h5 class="card-title pb-2">Sample Order</h5>
-            	<a href="/#" class="card-link bg-pill pl-2 pr-2 pt-1 pb-1 rounded">Ship Out</a>
-          	</div>
-        </div>
-    </div>
-
-    <div class="col-sm-12 col-md-4">
-        <div class="card mb-4">
-        	<div class="card-body text-center">
-            	<img src="/assets/boymask.png" width="100" height="100" class="rounded-10 d-inline-block align-top mb-1" alt="Logo">
-            	<h5 class="card-title pb-2">Sample Order</h5>
-            	<a href="/#" class="card-link bg-pill pl-2 pr-2 pt-1 pb-1 rounded">Ship Out</a>
-          	</div>
-        </div>
-    </div>
-
-    <div class="col-sm-12 col-md-4">
-        <div class="card mb-4">
-        	<div class="card-body text-center">
-            	<img src="/assets/boymask.png" width="100" height="100" class="rounded-10 d-inline-block align-top mb-1" alt="Logo">
-            	<h5 class="card-title pb-2">Sample Order</h5>
-            	<a href="/#" class="card-link bg-pill pl-2 pr-2 pt-1 pb-1 rounded">Ship Out</a>
-          	</div>
-        </div>
-    </div>
-
-    <div class="col-sm-12 col-md-4">
-        <div class="card mb-4">
-        	<div class="card-body text-center">
-            	<img src="/assets/boymask.png" width="100" height="100" class="rounded-10 d-inline-block align-top mb-1" alt="Logo">
-            	<h5 class="card-title pb-2">Sample Order</h5>
-            	<a href="/#" class="card-link bg-pill pl-2 pr-2 pt-1 pb-1 rounded">Ship Out</a>
-          	</div>
-        </div>
-    </div>
-
-    <div class="col-sm-12 col-md-4">
-        <div class="card mb-4">
-        	<div class="card-body text-center">
-            	<img src="/assets/boymask.png" width="100" height="100" class="rounded-10 d-inline-block align-top mb-1" alt="Logo">
-            	<h5 class="card-title pb-2">Sample Order</h5>
-            	<a href="/#" class="card-link bg-pill pl-2 pr-2 pt-1 pb-1 rounded">Ship Out</a>
-          	</div>
-        </div>
-    </div>
+    {{#each orderCards}}
+        {{> orderCard}}
+    {{/each}}
 </div>
+
+{{> paginator}}

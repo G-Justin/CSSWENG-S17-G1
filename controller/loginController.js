@@ -27,6 +27,7 @@ const loginController = {
         .exec((err, usernameResult) => {
             if (!usernameResult) {
                 renderLogin(res, true);
+                return;
             } 
 
             bcrypt.compare(password, usernameResult.password, function(err, equal) {
@@ -48,8 +49,9 @@ const loginController = {
 
 function renderLogin(res, err) {
     res.render('login', {
-        title: 'Facemustph Admin Login',
-        //showError: err
+        title: 'Login',
+        layout: 'auth',
+        fail: err
     });
 }
 
