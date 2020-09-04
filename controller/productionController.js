@@ -240,29 +240,29 @@ const productionController = {
 
         let _id = sanitize(req.body.resolveJobOrderId);
         let productId = sanitize(req.body.resolveJobOrderProductId);
-        let smallOuput = Number(sanitize(req.body.resolveJobOrderSmallOutput));
+        let smallOutput = Number(sanitize(req.body.resolveJobOrderSmallOutput));
         let mediumOutput = Number(sanitize(req.body.resolveJobOrderMediumOutput));
         let largeOutput = Number(sanitize(req.body.resolveJobOrderLargeOutput));
         let extraLargeOutput = Number(sanitize(req.body.resolveJobOrderExtraLargeOutput));
 
-        if (smallOuput == "" && mediumOutput == "" && largeOutput == "" && extraLargeOutput == "") {
+        if (smallOutput == "" && mediumOutput == "" && largeOutput == "" && extraLargeOutput == "") {
             console.log("all actual output fields are empty");
             res.redirect(req.get('referer'));
             return;
         }
 
-        if(!isValidJobOrderAmount(smallOuput) || !isValidJobOrderAmount(mediumOutput) || !isValidJobOrderAmount(largeOutput) || !isValidJobOrderAmount(extraLargeOutput)) {
+        if(!isValidJobOrderAmount(smallOutput) || !isValidJobOrderAmount(mediumOutput) || !isValidJobOrderAmount(largeOutput) || !isValidJobOrderAmount(extraLargeOutput)) {
             console.log('not valid job order resolution');
             res.redirect(req.get('referer'));
             return;
         }
 
         JobOrder.updateOne({_id: _id}, {
-            smallOuput: smallOuput,
+            smallOutput: smallOutput,
             mediumOutput: mediumOutput,
             largeOutput: largeOutput,
             extraLargeOutput: extraLargeOutput,
-            totalOutput: smallOuput + mediumOutput + largeOutput + extraLargeOutput,
+            totalOutput: smallOutput + mediumOutput + largeOutput + extraLargeOutput,
             status: 'DONE',
             isDone: true
         }, (err, result) => {
@@ -274,7 +274,7 @@ const productionController = {
             
             let inventoryRecord = new InventoryRecord({
                 parentRecord: productId,
-                smallUpdate: smallOuput,
+                smallUpdate: smallOutput,
                 mediumUpdate: mediumOutput,
                 largeUpdate: largeOutput,
                 extraLargeUpdate: extraLargeOutput
@@ -290,11 +290,11 @@ const productionController = {
                 Product.updateOne({_id: productId}, {
                     $push: {inventoryRecords: inventoryRecord._id},
                     $inc: {
-                        smallAvailable: smallOuput, 
+                        smallAvailable: smallOutput, 
                         mediumAvailable: mediumOutput, 
                         largeAvailable: largeOutput, 
                         extraLargeAvailable: extraLargeOutput,
-                        totalAvailable: smallOuput + mediumOutput + largeOutput + extraLargeOutput}
+                        totalAvailable: smallOutput + mediumOutput + largeOutput + extraLargeOutput}
                 }).then((a) => {
                     res.redirect(req.get('referer'));
                     return;
