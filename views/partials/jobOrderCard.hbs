@@ -1,15 +1,16 @@
+
 <br><div class="card" style="width:100%; overflow-y:hidden">
-          <table style="text-align: center; table-layout:fixed; width: 1000px; margin:auto; overflow-y:hidden; margin-top:1%;">
-                  <td>{{date}}</td>
-                  <td>{{batchNo}}</td>
-                  <td>{{style}}</td>
-                  <td>{{description}}</td>
-                  <td>{{color}}</td>
-                  <td>{{totalOrders}}</td>
-                  <td>
+          <table style="text-align: center;width: 1000px; margin:auto; overflow-y:hidden; margin-top:1%;">
+                  <td style="width:125px">{{date}}</td>
+                  <td style="width:125px">{{batchNo}}</td>
+                  <td style="width:125px">{{style}}</td>
+                  <td style="width:125px">{{description}}</td>
+                  <td style="width:125px">{{color}}</td>
+                  <td style="width:125px">{{totalOrders}}</td>
                     {{#if isDone}}
-                      <td>DONE</td>
+                      <td style="width:125px">DONE</td>
                     {{else}}
+                      <td style="width:125px">
                         <textarea readonly="readonly" id="productId" name="productId" style="display: none;">{{_id}}</textarea>
                         <select id="jobOrderStatusDropdown" name="jobOrderStatusDropdown" class="btn btn-primary" style = "background-color: rgb(52, 58, 64)">
                               <option value="CUTTING" {{#ifCond status "CUTTING"}} selected {{/ifCond}}>Cutting</option>
@@ -17,10 +18,15 @@
                               <option value="PRINTING" {{#ifCond status "PRINTING"}} selected {{/ifCond}}>Printing</option>
                               <option value="WASHING" {{#ifCond status "WASHING"}} selected {{/ifCond}}>Washing</option>
                               <option value="CANCELLED" {{#ifCond status "CANCELLED"}} selected {{/ifCond}}>Cancelled</option>
-                          </select>
+                        </select>
+                      </td>
                     {{/if}}
-                  </td>
-                  <td>{{totalOutput}}</td>
+                  
+                  {{#if totalOutput}} <td><button class="btn btn-primary"  data-toggle="modal" data-target="#modal_ttloutput_{{_id}}">{{totalOutput}}</button></td>
+                  {{else}}
+                    <td>{{totalOutput}}</td>
+                  {{/if}}
+
           </table><br>
           <div style="justify-content: center; display:flex; margin-bottom:1%">
               <button class="btn btn-primary" data-toggle="modal" data-target="#modal_production_{{_id}}">Production Details</button>&nbsp;
@@ -29,6 +35,39 @@
               {{/if}}
           </div>
       </div>
+
+
+<div id="modal_ttloutput_{{_id}}" class="modal fade" role="dialog">
+        <div id="divtest" class="modal-dialog" id = "md2">
+          <div class="modal-content" style="background-color: rgb(247, 242, 242); text-align:center">
+            <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
+              <h4 class="modal-title">Actual Output</h4>
+              <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+            </div>
+            <form id="updateRemarksForm" name="updateRemarksForm" method="POST" action="/admin/production/updateRemarks">
+              <table class="table table-striped">
+                  <thead>
+                      <th>S</th>
+                      <th>M</th>
+                      <th>L</th>
+                      <th>XL</th>
+                  </thead>
+                  <tbody>
+                      <td>{{smallOutput}}</td>
+                      <td>{{mediumOutput}}</td>
+                      <td>{{largeOutput}}</td>
+                      <td>{{extraLargeOutput}}</td>
+                  </tbody>
+              </table>
+              <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">Close</button>
+              </div>
+            </form>
+          </div>
+        </div>
+</div>
+
+
 
 <div id="modal_production_{{_id}}" class="modal fade" role="dialog">
         <div id="divtest" class="modal-dialog" id = "md2">
@@ -75,7 +114,7 @@
             </div>
             <form id="resolveJobOrderForm" name="resolveJobOrderForm" method="POST" action="/admin/production/resolveJobOrder">
                 <div class="modal-body" style="overflow:auto margin:auto; text-align:center; margin-top:2%">
-                  <div>Note: resolving this job order will mark it as 'DONE' and update the inventory accordingly.</div>
+                  <div><b>Note</b><hr> Resolving this job order will mark it as <b><i>DONE</i></b> and update the inventory accordingly.</div><br><br>
                   <textarea readonly="readonly" id="resolveJobOrderId" name="resolveJobOrderId" style="display: none;">{{_id}}</textarea>
                   <textarea readonly="readonly" id="resolveJobOrderProductId" name="resolveJobOrderProductId" style="display: none;">{{productId}}</textarea>
                     <label for="resolveJobOrderSmallOutput">S: </label>
