@@ -302,8 +302,32 @@ const productionController = {
             })
             
         })
+      },
 
+      updateRemarks: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
 
+        let _id = sanitize(req.body.updateRemarkId);
+        let remarks = sanitize(req.body.newRemarks);
+
+        if (remarks.length > 80) {
+            console.log('remarks exceeds the 80 character limit');
+            res.redirect(req.get('referer'));
+            return;
+        }
+
+        JobOrder.updateOne({_id: _id}, {remarks: remarks}, function(err, result) {
+            if (!result) {
+                console.log(err)
+                res.redirect(req.get('referer'));
+                return;
+            }
+
+            res.redirect(req.get('referer'));
+        })
       }
 }
 
