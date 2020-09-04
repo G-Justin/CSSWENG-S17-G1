@@ -237,4 +237,21 @@ $(document).ready(function(){
         })
     }) 
 
+    $('#jobOrderCardContainer').on('change', '#jobOrderStatusDropdown', function(e) {
+        let dropdown = $(this);
+        dropdown.prop('disabled', true);
+
+        let _id = dropdown.prev().val();
+
+        $.post("/admin/production/updateJobOrderStatus", {_id: _id, status: dropdown.val()}, (data) => {
+            if (!data) {
+                alert('error in server request. status not updated');
+                dropdown.prop('disabled', false);
+                return;
+            }
+
+            dropdown.prop('disabled', false);
+        })
+    })
+
 })

@@ -85,7 +85,7 @@
     
   </div>
 
-<div id="wrap"class="mt-5 row justify-content-center">
+<div id="jobOrderCardContainer"class="mt-5 row justify-content-center">
     <div class="col-sm-4 col-md-12">
       <div class="card" style="width:100%; overflow-y:hidden">
           <table style="text-align: center; table-layout:fixed; width: 1000px; margin:auto" class="table table-striped">
@@ -103,11 +103,7 @@
       </div><hr>
 
         {{#each jobOrderCards}}
-          <div id="jobOrderCardContainer" name="jobOrderCardContainer">
             {{> jobOrderCard}}
-          </div>
-          
-
         {{/each}}
 
         {{#if noResults}}

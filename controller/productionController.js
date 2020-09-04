@@ -207,9 +207,31 @@ const productionController = {
 
                 res.send(data);
             })
-        })
+        })  
+    },
+
+    updateJobOrderStatus: function (req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
         
-    }
+        let _id = sanitize(req.body._id);
+        let status = sanitize(req.body.status);
+        console.log(_id);
+        console.log(status)
+
+        JobOrder.updateOne({_id: _id}, {status: status}, (err, result) => {
+            if (!result) {
+                console.log(err);
+                res.redirect(req.get('referer'));
+                return;
+            }
+
+            console.log(result)
+            res.send(true);
+        })
+      }
 }
 
 function getResultsMessage(style, color, description, status, dateStart, dateEnd) {

@@ -46,6 +46,7 @@ const productionController = require('../controller/productionController.js');
 app.get('/admin/production', productionController.getProductionPage);
 app.post('/admin/production/addJobOrder', productionController.addJobOrder)
 app.post('/admin/production/validateNewJobOrder', productionController.validateNewJobOrder);
+app.post('/admin/production/updateJobOrderStatus', productionController.updateJobOrderStatus);
 
 const inventoryController = require('../controller/inventoryController.js');
 app.get('/admin/inventory', inventoryController.getInventoryPage);

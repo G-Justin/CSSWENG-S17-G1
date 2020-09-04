@@ -7,12 +7,13 @@
                   <td>{{color}}</td>
                   <td>{{totalOrders}}</td>
                   <td>
-                      <select class="btn btn-primary" style = "background-color: rgb(52, 58, 64)">
-                            <option value="CUTTING">Cutting</option>
-                            <option value="SEWING">Sewing</option>
-                            <option value="PRINTING">Printing</option>
-                            <option value="WASHING">Washing</option>
-                            <option value="CANCELLED">Cancelled</option>
+                    <textarea readonly="readonly" id="productId" name="productId" style="display: none;">{{_id}}</textarea>
+                      <select id="jobOrderStatusDropdown" name="jobOrderStatusDropdown" class="btn btn-primary" style = "background-color: rgb(52, 58, 64)">
+                            <option value="CUTTING" {{#ifCond status "CUTTING"}} selected {{/ifCond}}>Cutting</option>
+                            <option value="SEWING" {{#ifCond status "SEWING"}} selected {{/ifCond}}>Sewing</option>
+                            <option value="PRINTING" {{#ifCond status "PRINTING"}} selected {{/ifCond}}>Printing</option>
+                            <option value="WASHING" {{#ifCond status "WASHING"}} selected {{/ifCond}}>Washing</option>
+                            <option value="CANCELLED" {{#ifCond status "CANCELLED"}} selected {{/ifCond}}>Cancelled</option>
                         </select>
                   </td>
                   <td>{{totalOutputs}}</td>
