@@ -37,55 +37,29 @@
   }
 </style>
 
-<div class="card" style="margin-top:3%">
-  <div class="filter_bar">
-    <br>
+<div class="jumbotron shadow p-4 text-center">
     <h4>Filter: {{resultsMessage}}</h4><hr>
-          <form mehtod="get" action="#">
-            <div class = "media-text" id="input">
-              <label for "style">Style</label><br>
-                <input id="style" name="style" type="text" placeholder=" Enter Style"><br>
-            </div>
-            <div class = "media-text" id="input">
-              <label for "color">Color</label><br>
-                <input id="color" name="color" type="text" placeholder=" Enter Color" ><br>
-            </div>
-            <div class = "media-text" id="input">
-              <label for "description">Description</label><br>
-                <input id="description" name="description" type="text" placeholder=" Enter Description"><br>
-            </div>
-            <div class = "media-text" id="input">
-              <label for "status">Production Status</label><br>
-                <select id="status" class = "browser-default custom-select" name="status" style="width: 200px; border:solid; background-color: rgba(126, 125, 125, 0); cursor:pointer;">
-                  <option value="SELECT">[SELECT STATUS]</option>
-                  <option value="CUTTING">Cutting</option>
-                  <option value="SEWING">Sewing</option>
-                  <option value="PRINTING">Printing</option>
-                  <option value="WASHING">Washing</option>
-                  <option value="CANCELLED">Cancelled</option>
-                  <option value="DONE">Done</option>
-                </select>
-            </div>
-            <div class = "media-text" id="input">
-            <label for "dateStart">Start Date</label><br>
-              <input type="date" id="dateStart" name="dateStart" >
-					  </div>
-            <div class = "media-text" id="input">
-            <label for "dateEnd">End Date</label><br>
-              <input type="date" id="dateEnd" name="dateEnd" >
-            </div>
-              
-    </div><br>
-    <div class = "media-text" style="margin-bottom:10px;">
-      <button class="btn btn-primary"  id="btn" type="submit">Apply Filter</button>&nbsp;&nbsp;&nbsp;&nbsp;
-      </form>  
-      <button class="btn btn-primary"  id="add" data-toggle="modal" data-target="#modal_joborder">Add New Job Order</button>
-    </div>
-    
-    
-  </div>
+    <form class="form-inline mb-2 justify-content-center" id="searchInventory" name="searchInventory" mehtod="get" action="#">
+        <input class="form-control col-sm-1 my-2" type="text" name="style" id="style" placeholder="Style">
+        <input class="form-control col-sm-1 my-2 mx-sm-3" type="text" name="color" id="color" placeholder="Color">
+        <input class="form-control col-sm-2 my-2" type="text" name="description" id="description" placeholder="Description">
+        <select class="form-control custom-select col-sm-2 my-2 mx-sm-3" id="status" name="status">
+          <option hidden disabled selected value>Status...</option>
+          <option>Cutting</option>
+          <option>Sewing</option>
+          <option>Printing</option>
+          <option>Washing</option>
+          <option>Canceled</option>
+          <option>Done</option>
+        </select>
+        <input placeholder="Start Date" class="form-control my-2 col-sm-2" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="dateStart" name="dateStart"/>
+        <input placeholder="End Date" class="form-control my-2 mx-sm-3" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="dateEnd" name="dateEnd"/>
+        <button class="btn btn-primary mt-2" id="btn" type="submit">Apply Filter</button>
+        <button type="button" class="btn btn-primary mt-2 mx-3" id="add" data-toggle="modal" data-target="#modal_joborder">Add New Job Order</button>
+    </form>
+</div>
 
-<div id="jobOrderCardContainer"class="mt-5 row justify-content-center">
+<div id="jobOrderCardContainer"class="row justify-content-center">
     <div class="col-sm-4 col-md-12">
       <div class="card" style="width:100%; overflow-y:hidden">
           <table style="text-align: center; table-layout:fixed; width: 1000px; margin:auto" class="table table-striped">
