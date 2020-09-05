@@ -157,7 +157,7 @@ const productionController = {
                 let date = new Date();
                 let jobOrder = new JobOrder({
                     productId: productResult._id,
-                    date: date.toISOString(),
+                    date: new Date(date.toISOString().split("T")[0]),
                     batchNo: batchNo,
                     style: style,
                     color: color,
