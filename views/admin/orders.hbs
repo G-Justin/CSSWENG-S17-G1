@@ -21,50 +21,31 @@
   }
 </style>
 
-<br>
-<div class="card">
-  <div class="filter_bar">
-    <br>
-          <form mehtod="get" action="/admin/orders">
-            <div class = "media-text" id="input">
-              <label for "deliveryStatus">Delivery Status</label><br>
-                <select id="deliveryStatus" class = "browser-default custom-select" name="deliveryStatus" style="width: 200px; border:solid; background-color: rgba(126, 125, 125, 0); cursor:pointer;">
-                  <option value="SELECT">[SELECT STATUS]</option>
-                  <option value="PROCESSING">PROCESSING</option>
-                  <option value="DELIVERING">DELIVERING</option>
-                  <option value="DELIVERED">DELIVERED</option>
-                </select>
-            </div>
-            <div class = "media-text" id="input">
-              <label for "paymentStatus">Payment Status</label><br>
-              <select id="paymentStatus" class = "browser-default custom-select" name="paymentStatus" style="width: 200px; border:solid; background-color: rgba(126, 125, 125, 0); cursor:pointer;">
-                <option value="SELECT">[SELECT STATUS]</option>
-                <option value="TO PAY">TO PAY</option>
-                <option value="PAID">PAID</option>
-              </select>
-            </div>
-            <div class = "media-text" id="input">
-            <label for "dateStart">Start Date</label><br>
-              <input type="date" id="dateStart" name="dateStart" >
-					  </div>
-            <div class = "media-text" id="input">
-            <label for "dateEnd">End Date</label><br>
-              <input type="date" id="dateEnd" name="dateEnd" >
-            </div>  
-    </div><br>
-    <div class = "media-text" style="margin-bottom:10px;"><button class="btn btn-primary"  id="btn" type="submit">Apply Filter</button></div>
-    </form>  
-    <hr>
-    <form class="form-inline mb-2 justify-content-center" mehtod="get" action="/admin/orders" id="searchId">
-      <div class = "media-text" id="input">
-        <input type="text" id="orderId" name="orderId" placeholder="Enter a Order Number">
-      </div>
-      <div class = "media-text"><button class="btn btn-primary" id="btn" type="submit" style="margin:0;height:30px;padding-left:10;padding-top:0">Search Order ID</button></div>  
-  </form>
-  </div>
-  
+<div class="jumbotron shadow p-4 text-center">
+    <h4>Filter: {{resultsMessage}}</h4><hr>
+    <form class="form-inline justify-content-center" id="searchInventory" name="searchInventory" mehtod="get" action="#">
+        <select class="form-control custom-select col-sm-2 my-2" id="status" name="status">
+          <option hidden disabled selected value>Delivery Status...</option>
+          <option>Processing</option>
+          <option>Shipped</option>
+          <option>Delivered</option>
+        </select>
+        <select class="form-control custom-select col-sm-2 my-2 mx-sm-3" id="status" name="status">
+          <option hidden disabled selected value>Payment Status...</option>
+          <option>Unpaid</option>
+          <option>Paid</option>
+        </select>
+        <input placeholder="Start Date" class="form-control my-2 col-sm-2" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="dateStart" name="dateStart"/>
+        <input placeholder="End Date" class="form-control my-2 mx-sm-3" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="dateEnd" name="dateEnd"/>
+        <button class="btn btn-primary my-2" id="btn" type="submit">Apply Filter</button>
+    </form><hr>
+    <form class="form-inline justify-content-center" mehtod="get" action="/admin/orders" id="searchId">
+        <input type="text" class="form-control col-sm-2 mt-2 mx-sm-3" id="orderId" name="orderId" placeholder="Order ID">
+        <button class="btn btn-primary mt-2" id="btn" type="submit">Search</button>
+    </form>
+</div>
 
-<div class="mt-5 row">
+<div class="row">
     {{#each orderCards}}
         {{> orderCard}}
     {{/each}}
