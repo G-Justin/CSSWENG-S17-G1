@@ -45,12 +45,12 @@
         <input class="form-control col-sm-2 my-2" type="text" name="description" id="description" placeholder="Description">
         <select class="form-control custom-select col-sm-2 my-2 mx-sm-3" id="status" name="status">
           <option hidden disabled selected value>Status...</option>
-          <option>Cutting</option>
-          <option>Sewing</option>
-          <option>Printing</option>
-          <option>Washing</option>
-          <option>Canceled</option>
-          <option>Done</option>
+          <option value = "CUTTING">Cutting</option>
+          <option value = "SEWING">Sewing</option>
+          <option value = "PRINTING">Printing</option>
+          <option value = "WASHING">Washing</option>
+          <option value = "CANCELLED">Cancelled</option>
+          <option value = "DONE">Done</option>
         </select>
         <input placeholder="Start Date" class="form-control my-2 col-sm-2" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="dateStart" name="dateStart"/>
         <input placeholder="End Date" class="form-control my-2 mx-sm-3" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="dateEnd" name="dateEnd"/>
