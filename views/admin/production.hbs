@@ -88,7 +88,72 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal_joborder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header text-center">
+            <h4 class="modal-title w-100 font-weight-bold">New Job Order</h4>
+            <button type="button" class="close" data-dismiss="modal" id="newJobOrderClose" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        <form id="newJobOrderForm" name="newJobOrderForm"method="POST" action="/admin/production/addJobOrder">
+            <div class="modal-body mx-3">
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Batch No: </label>
+                <input maxlength="16" type="text" class="col-sm-3 form-control validate" name="modalBatchNo" id="modalBatchNo" required>
+              </div>
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Style: </label>
+                <input maxlength="16" type="text" class="col-sm-3 form-control validate" name="modalStyle" id="modalStyle" required>
+              </div>
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Description: </label>
+                <input maxlength="20" type="text" class="col-sm-3 form-control validate" name="modalDescription" id="modalDescription" required>
+              </div>
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Color: </label>
+                <input maxlength="16" type="text" class="col-sm-3 form-control validate" name="modalColor" id="modalColor" required>
+              </div>
+              <hr>
+              <h5 class="text-center my-2 justify-content-center">Order Breakdown</h5>
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Small: </label>
+                <input min="0" max="9007199254740981" type="number" class="col-sm-3 form-control validate" name="modalS" id="modalS" required>
+              </div>
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Medium: </label>
+                <input min="0" max="9007199254740981" type="number" class="col-sm-3 form-control validate" name="modalM" id="modalM" required>
+              </div>
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Large: </label>
+                <input min="0" max="9007199254740981" type="number" class="col-sm-3 form-control validate" name="modalL" id="modalL" required>
+              </div>
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Xtra Large: </label>
+                <input min="0" max="9007199254740981" type="number" class="col-sm-3 form-control validate" name="modalXL" id="modalXL" required>
+              </div>
+              <hr>
+              <h5 class="text-center my-2 justify-content-center">Additional Details</h5>
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Yardage: </label>
+                <input min="0" max="9007199254740981" type="number" class="col-sm-3 form-control validate" name="modalYardage" id="modalYardage" required>
+              </div>
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Remarks: </label>
+                <textarea class="col-sm-5 form-control validate" name="modalRemarks" id="modalRemarks" required></textarea>
+              </div>
+              <!--<p id="msgEd1" class="text-danger mb-0 mt-2 text-center"></p>-->
+            </div>
+          <div class="modal-footer d-flex justify-content-center">
+           <button type="submit" id="modalSubmit" name="modalSubmit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+    </div>
+  </div>
+</div>
 
+<!--
 <div id="modal_joborder" class="modal fade" role="dialog">
         <div id="div" class="modal-dialog">
           <div class="modal-content" style="background-color: rgb(247, 242, 242); text-align:center">
@@ -128,7 +193,7 @@
             </div>
         </div>
 </div>
-
+-->
 
 {{> paginator}}
 
