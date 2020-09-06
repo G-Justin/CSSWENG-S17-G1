@@ -25,7 +25,12 @@ const adminCartController = {
         .lean()
         .exec((err, orderResult) => {
             if (orderResult == null) {
-                res.redirect('/404');
+                console.log('here')
+                res.render('error', {
+                    title: 'Facemust',
+                    error: '404',
+                    message: 'ORDER DOES NOT EXIST'
+                })
                 return;
             }
 
