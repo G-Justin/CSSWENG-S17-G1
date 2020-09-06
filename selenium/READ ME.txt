@@ -1,0 +1,1 @@
+Some test scripts are not on the command of selenium, it was manually tested.  
