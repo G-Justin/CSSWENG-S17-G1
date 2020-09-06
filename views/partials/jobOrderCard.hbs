@@ -117,18 +117,26 @@
                   <div><b>Note</b><hr> Resolving this job order will mark it as <b><i>DONE</i></b> and update the inventory accordingly.</div><br><br>
                   <textarea readonly="readonly" id="resolveJobOrderId" name="resolveJobOrderId" style="display: none;">{{_id}}</textarea>
                   <textarea readonly="readonly" id="resolveJobOrderProductId" name="resolveJobOrderProductId" style="display: none;">{{productId}}</textarea>
-                    <label for="resolveJobOrderSmallOutput">S: </label>
-                    <input min="0" max="9007199254740981" type="number" name="resolveJobOrderSmallOutput" id="resolveJobOrderSmallOutput" placeholder=" Enter Small Amount"><br>
-                    <label for="resolveJobOrderMediumOutput">M: </label>
-                    <input min="0" max="9007199254740981" type="number" name="resolveJobOrderMediumOutput" id="resolveJobOrderMediumOutput" placeholder=" Enter Medium Amount"><br>
-                    <label for="resolveJobOrderLargeOutput">L: </label>
-                    <input min="0" max="9007199254740981" type="number" name="resolveJobOrderLargeOutput" id="resolveJobOrderLargeOutput" placeholder=" Enter Large Amount"><br>
-                    <label for="resolveJobOrderExtraLargeOutput">XL: </label>
-                    <input min="0" max="9007199254740981" type="number" name="resolveJobOrderExtraLargeOutput" id="resolveJobOrderExtraLargeOutput" placeholder=" Enter Extra Large Amount"><br>
+                  <div class="row md-form my-2 justify-content-center">
+                    <label class="col-sm-3" for="resolveJobOrderSmallOutput">S: </label>
+                    <input style="width:auto" class="col-sm-3 form-control validate" min="0" max="9007199254740981" type="number" name="resolveJobOrderSmallOutput" id="resolveJobOrderSmallOutput" placeholder=" Enter Small Amount"><br>
+                  </div>
+                  <div class="row md-form my-2 justify-content-center">  
+                    <label class="col-sm-3" for="resolveJobOrderMediumOutput">M: </label>
+                    <input style="width:auto" class="col-sm-3 form-control validate" min="0" max="9007199254740981" type="number" name="resolveJobOrderMediumOutput" id="resolveJobOrderMediumOutput" placeholder=" Enter Medium Amount"><br>
+                   </div>
+                   <div class="row md-form my-2 justify-content-center">
+                    <label class="col-sm-3" for="resolveJobOrderLargeOutput">L: </label>
+                    <input style="width:auto" class="col-sm-3 form-control validate" min="0" max="9007199254740981" type="number" name="resolveJobOrderLargeOutput" id="resolveJobOrderLargeOutput" placeholder=" Enter Large Amount"><br>
+                  </div> 
+                  <div class="row md-form my-2 justify-content-center">
+                    <label class="col-sm-3" for="resolveJobOrderExtraLargeOutput">XL: </label>
+                    <input style="width:auto" class="col-sm-3 form-control validate" min="0" max="9007199254740981" type="number" name="resolveJobOrderExtraLargeOutput" id="resolveJobOrderExtraLargeOutput" placeholder=" Enter Extra Large Amount"><br>
+                  </div>  
                     <div id="resolveJobOrderError" name="resolveJobOrderError" class="text-danger" style="text-align:center"></div>
                 </div>
                 <div class="modal-footer">
-                    <textarea readonly="readonly" id="productId" name="productId" style="display: none;">{{_id}}</textarea>
+                    <textarea class="col-sm-5 form-control validate" readonly="readonly" id="productId" name="productId" style="display: none;">{{_id}}</textarea>
                     <button type="submit" id="resolveJobOrderBtn" name="resolveJobOrderBtn" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);">Confirm</button>
                     <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">Close</button>
                 </div>
