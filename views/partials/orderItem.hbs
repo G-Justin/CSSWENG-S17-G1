@@ -1,8 +1,8 @@
-<br><div class="container-fluid" style = "margin:auto; border-style:groove">
-<br><h4 style="text-align:center"><b>Product:</b> {{color}} {{style}}</h4>
-	<table class="table table-striped" style="text-align:center">
+<div class="table-responsive text-center border shadow-sm rounded my-2">
+	<table class="table table-borderless">
 		<thead>
-			<tr>
+			<tr class="table-primary">
+				<th>{{color}} {{style}}</th>
 				<th>S</th>
 				<th>M</th>
 				<th>L</th>
@@ -11,25 +11,14 @@
 		</thead>
 		<tbody>
 			<tr>
+				<td>Order</td>
 				<td>{{smallAmount}}</td>
 				<td>{{mediumAmount}}</td>
 				<td>{{largeAmount}}</td>
 				<td>{{extraLargeAmount}}</td>
 			</tr>
-		</tbody>
-	</table>
-<br><h4 style="text-align:center">Deficit Status</h4>
-	<table class="table table-striped" style="text-align:center">
-		<thead>
 			<tr>
-				<th>S</th>
-				<th>M</th>
-				<th>L</th>
-				<th>XL</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
+				<td>Deficit</td>
 				<td>{{smallDeficit}}</td>
 				<td>{{mediumDeficit}}</td>
 				<td>{{largeDeficit}}</td>
@@ -37,5 +26,4 @@
 			</tr>
 		</tbody>
 	</table>
-</div><br><br>
-
+</div>
