@@ -3,6 +3,7 @@ const Order = require('../model/order.js');
 const sanitize = require('mongo-sanitize');
 const { filter } = require('async');
 const { options } = require('../routes/routes.js');
+const orderitem = require('../model/orderitem.js');
 
 const CARD_SELECT = '_id paymentStatus deliveryStatus orderDate';
 
@@ -12,7 +13,14 @@ const ordersController = {
             res.redirect('/login');
             return;
         }
-        console.log('getFiltered request')
+
+        let orderId = sanitize(req.query.orderId);
+        if (orderId != null && orderId != "" && orderId != "undefined") {
+            res.redirect('/admin/orders/' + orderId.trim());
+            return;
+        }
+        
+
         let deliveryQueries = new Array();
         let paymentQueries = new Array();
 
@@ -22,7 +30,6 @@ const ordersController = {
         } else {
             deliveryQueries.push(deliveryStatus);
         }
-        console.log(deliveryStatus)
 
         let paymentStatus = sanitize(req.query.paymentStatus);
         if (paymentStatus == 'SELECT' || paymentStatus == null || paymentStatus == 'undefined') {
@@ -33,7 +40,8 @@ const ordersController = {
 
         let dateStart = parseDate(sanitize(req.query.dateStart));
         let dateEnd = parseDate(sanitize(req.query.dateEnd));
-
+        let resultsMessage = getResultsMessage(deliveryStatus, paymentStatus, dateStart, dateEnd)
+        
         let page = sanitize(req.query.page);
         if (page == null) {
             page = 1;
@@ -53,6 +61,7 @@ const ordersController = {
         dateStart = (dateStart == null) ? new Date(-8640000000000000) : dateStart;
         dateEnd = (dateEnd == null) ? new Date(8640000000000000) : dateEnd;
 
+        
         let query= {
             deliveryStatus: {$in: deliveryQueries},
             paymentStatus: {$in : paymentQueries},
@@ -64,6 +73,7 @@ const ordersController = {
             } 
         };
 
+        
         Order.paginate(query, options, 
             function(err, results) {
             let filteredOrders = new Array();
@@ -85,6 +95,7 @@ const ordersController = {
             res.render('admin/orders', {
                 title: 'Facemustph | Orders',
                 layout: 'main',
+                resultsMessage: resultsMessage,
 
                 orderCards: results.docs,
                 selectOptions: selectOptions,
@@ -96,6 +107,52 @@ const ordersController = {
             });
         })
     }
+}
+
+function getResultsMessage(deliveryStatus, paymentStatus, dateStart, dateEnd) {
+    let deliveryMsg;
+    if (deliveryStatus == 'SELECT' || deliveryStatus == null || deliveryStatus == 'undefined') {
+        deliveryMsg = "";
+    } else {
+        deliveryMsg = deliveryStatus;
+    }
+
+    let paymentMsg;
+    if (paymentStatus == 'SELECT' || paymentStatus == null || paymentStatus == 'undefined') {
+        paymentMsg = "";
+    } else {
+        paymentMsg = paymentStatus;
+    }
+
+    let dateMsg;
+    if (dateStart == null && dateEnd == null ) {
+        dateMsg = "";
+    } else if (dateStart != null && dateEnd == null) {
+        dateMsg = " from " + formatDate(dateStart) + " to current date."
+    } else if (dateStart == null && dateEnd != null) {
+        dateMsg = " up to " + formatDate(dateEnd);
+    } else if (dateStart !== null && dateEnd != null) {
+        dateMsg = " between dates " + formatDate(dateStart) + " and " + formatDate(dateEnd);
+    }
+
+
+    return deliveryMsg + " " + paymentMsg + " " + dateMsg;
+}
+
+function formatDate(dt) {
+    if (dt == null) {
+        return null;
+    }
+
+    var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+];
+
+    let date = new Date(dt).getDate();
+    let month = new Date(dt).getMonth();
+    let year = new Date(dt).getFullYear();
+
+    return date + "/" + monthNames[month] + "/" + year;
 }
 
 function parseDate(s) {
