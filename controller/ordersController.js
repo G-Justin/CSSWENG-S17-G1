@@ -22,6 +22,7 @@ const ordersController = {
         } else {
             deliveryQueries.push(deliveryStatus);
         }
+        console.log(deliveryStatus)
 
         let paymentStatus = sanitize(req.query.paymentStatus);
         if (paymentStatus == 'SELECT' || paymentStatus == null || paymentStatus == 'undefined') {
@@ -66,7 +67,6 @@ const ordersController = {
         Order.paginate(query, options, 
             function(err, results) {
             let filteredOrders = new Array();
-            console.log(results)
            
             let selectOptions = new Array();
             for (let i = 0; i < results.totalPages; i++) {
