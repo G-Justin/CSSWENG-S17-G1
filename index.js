@@ -36,6 +36,14 @@ app.use(express.static(path.join(__dirname,'public')));
 app.use('/', routes);
 app.use(express.static('public'));
 
+app.use(function (req, res, next) {
+  res.status(404).render('error',{
+  	session: req.session,
+  	error: '404',
+  	message: "The Page can't be found"
+  });
+});
+
 database.connect();
 
 app.listen(port, function() {
