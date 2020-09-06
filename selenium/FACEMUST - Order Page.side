@@ -1358,6 +1358,397 @@
       ],
       "value": ""
     }]
+  }, {
+    "id": "313e825b-c98c-4c82-8c87-26756d9b7904",
+    "name": "Updating Content",
+    "commands": [{
+      "id": "b6eb3cd5-5d26-400a-af94-76a84ec6eb19",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3001/admin/orders",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "710b3394-99fe-4a81-bb8c-45af84eef04c",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1366x768",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "1d599081-d065-42ff-8a93-9a21809c0626",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=5f550860870e5f2f18b913a6",
+      "targets": [
+        ["linkText=5f550860870e5f2f18b913a6", "linkText"],
+        ["css=.col-sm-12:nth-child(1) .card-title > a", "css:finder"],
+        ["xpath=//a[contains(text(),'5f550860870e5f2f18b913a6')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/admin/orders/5f550860870e5f2f18b913a6')]", "xpath:href"],
+        ["xpath=//h5/a", "xpath:position"],
+        ["xpath=//a[contains(.,'5f550860870e5f2f18b913a6')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ff9078b4-1b92-43d0-a102-e7d0a01af046",
+      "comment": "",
+      "command": "click",
+      "target": "id=deliveryStatus",
+      "targets": [
+        ["id=deliveryStatus", "id"],
+        ["name=deliveryStatus", "name"],
+        ["css=#deliveryStatus", "css:finder"],
+        ["xpath=//select[@id='deliveryStatus']", "xpath:attributes"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e0191779-4933-4ffa-a4e8-0aad8ba6fa48",
+      "comment": "",
+      "command": "select",
+      "target": "id=deliveryStatus",
+      "targets": [],
+      "value": "label=DELIVERING"
+    }, {
+      "id": "d34ad0d8-1528-48b1-a6f1-3182923b8fcd",
+      "comment": "",
+      "command": "click",
+      "target": "id=deliveryStatus",
+      "targets": [
+        ["id=deliveryStatus", "id"],
+        ["name=deliveryStatus", "name"],
+        ["css=#deliveryStatus", "css:finder"],
+        ["xpath=//select[@id='deliveryStatus']", "xpath:attributes"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0816605e-c1e8-4c43-9bb6-91516e207618",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn:nth-child(5)",
+      "targets": [
+        ["css=.btn:nth-child(5)", "css:finder"],
+        ["xpath=(//button[@type='submit'])[2]", "xpath:attributes"],
+        ["xpath=//div[2]/div/form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Save')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "6dd90aee-e9bb-4a57-918f-ab636005e76d",
+      "comment": "",
+      "command": "click",
+      "target": "id=deliveryStatus",
+      "targets": [
+        ["id=deliveryStatus", "id"],
+        ["name=deliveryStatus", "name"],
+        ["css=#deliveryStatus", "css:finder"],
+        ["xpath=//select[@id='deliveryStatus']", "xpath:attributes"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "25557792-719b-4425-886f-a603daf2adf4",
+      "comment": "",
+      "command": "select",
+      "target": "id=deliveryStatus",
+      "targets": [],
+      "value": "label=DELIVERED"
+    }, {
+      "id": "9f89fa77-0052-49a3-a011-5f070ae05f9c",
+      "comment": "",
+      "command": "click",
+      "target": "id=deliveryStatus",
+      "targets": [
+        ["id=deliveryStatus", "id"],
+        ["name=deliveryStatus", "name"],
+        ["css=#deliveryStatus", "css:finder"],
+        ["xpath=//select[@id='deliveryStatus']", "xpath:attributes"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1d1333f9-85bd-4297-bb8a-e27f5a4beb29",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn:nth-child(5)",
+      "targets": [
+        ["css=.btn:nth-child(5)", "css:finder"],
+        ["xpath=(//button[@type='submit'])[2]", "xpath:attributes"],
+        ["xpath=//div[2]/div/form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Save')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "9fd92ca8-39fd-4bc9-83c2-fd11e7dbf162",
+      "comment": "",
+      "command": "click",
+      "target": "id=paymentStatus",
+      "targets": [
+        ["id=paymentStatus", "id"],
+        ["name=paymentStatus", "name"],
+        ["css=#paymentStatus", "css:finder"],
+        ["xpath=//select[@id='paymentStatus']", "xpath:attributes"],
+        ["xpath=//div[3]/div/form/p/select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f48ade93-5635-4f85-bd49-beb6bcc46ba5",
+      "comment": "",
+      "command": "select",
+      "target": "id=paymentStatus",
+      "targets": [],
+      "value": "label=PAID"
+    }, {
+      "id": "54cbf9bf-462f-476c-a58f-e8dcc458ee4e",
+      "comment": "",
+      "command": "click",
+      "target": "id=paymentStatus",
+      "targets": [
+        ["id=paymentStatus", "id"],
+        ["name=paymentStatus", "name"],
+        ["css=#paymentStatus", "css:finder"],
+        ["xpath=//select[@id='paymentStatus']", "xpath:attributes"],
+        ["xpath=//div[3]/div/form/p/select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "79d48e2d-29e9-4e37-a1db-6424e89c305e",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn:nth-child(4)",
+      "targets": [
+        ["css=.btn:nth-child(4)", "css:finder"],
+        ["xpath=(//button[@type='submit'])[3]", "xpath:attributes"],
+        ["xpath=//div[3]/div/form/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b2b64ba2-1e80-42ae-95ac-a976e2132aba",
+      "comment": "",
+      "command": "click",
+      "target": "id=paymentStatus",
+      "targets": [
+        ["id=paymentStatus", "id"],
+        ["name=paymentStatus", "name"],
+        ["css=#paymentStatus", "css:finder"],
+        ["xpath=//select[@id='paymentStatus']", "xpath:attributes"],
+        ["xpath=//div[3]/div/form/p/select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d407ac8d-29cc-48f3-8ffa-816542606383",
+      "comment": "",
+      "command": "select",
+      "target": "id=paymentStatus",
+      "targets": [],
+      "value": "label=TO PAY"
+    }, {
+      "id": "298f3a19-23b8-4d1b-aaf4-8876890651ff",
+      "comment": "",
+      "command": "click",
+      "target": "id=paymentStatus",
+      "targets": [
+        ["id=paymentStatus", "id"],
+        ["name=paymentStatus", "name"],
+        ["css=#paymentStatus", "css:finder"],
+        ["xpath=//select[@id='paymentStatus']", "xpath:attributes"],
+        ["xpath=//div[3]/div/form/p/select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "de5be76c-8720-4d43-86e9-5678d8c77ab0",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn:nth-child(4)",
+      "targets": [
+        ["css=.btn:nth-child(4)", "css:finder"],
+        ["xpath=(//button[@type='submit'])[3]", "xpath:attributes"],
+        ["xpath=//div[3]/div/form/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4a9f88e9-4e88-43aa-970e-a545f127abbf",
+      "comment": "",
+      "command": "click",
+      "target": "id=shippingFeeInput",
+      "targets": [
+        ["id=shippingFeeInput", "id"],
+        ["name=shippingFeeInput", "name"],
+        ["css=#shippingFeeInput", "css:finder"],
+        ["xpath=//input[@id='shippingFeeInput']", "xpath:attributes"],
+        ["xpath=//form[@id='shippingFeeForm']/input", "xpath:idRelative"],
+        ["xpath=//form/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9fc22105-7e16-4b03-b2ef-ffeafc97c792",
+      "comment": "",
+      "command": "type",
+      "target": "id=shippingFeeInput",
+      "targets": [
+        ["id=shippingFeeInput", "id"],
+        ["name=shippingFeeInput", "name"],
+        ["css=#shippingFeeInput", "css:finder"],
+        ["xpath=//input[@id='shippingFeeInput']", "xpath:attributes"],
+        ["xpath=//form[@id='shippingFeeForm']/input", "xpath:idRelative"],
+        ["xpath=//form/input", "xpath:position"]
+      ],
+      "value": "250"
+    }, {
+      "id": "dab95b1a-c660-411d-94e7-378b0b4d3a2c",
+      "comment": "",
+      "command": "click",
+      "target": "id=shipping-fee-btn",
+      "targets": [
+        ["id=shipping-fee-btn", "id"],
+        ["name=shipping-fee-btn", "name"],
+        ["css=#shipping-fee-btn", "css:finder"],
+        ["xpath=//button[@id='shipping-fee-btn']", "xpath:attributes"],
+        ["xpath=//form[@id='shippingFeeForm']/button", "xpath:idRelative"],
+        ["xpath=//div[4]/div/form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Confirm')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "5d629fd0-1f3a-4f43-8612-a6a5482a67de",
+      "comment": "",
+      "command": "click",
+      "target": "id=shippingFeeInput",
+      "targets": [
+        ["id=shippingFeeInput", "id"],
+        ["name=shippingFeeInput", "name"],
+        ["css=#shippingFeeInput", "css:finder"],
+        ["xpath=//input[@id='shippingFeeInput']", "xpath:attributes"],
+        ["xpath=//form[@id='shippingFeeForm']/input", "xpath:idRelative"],
+        ["xpath=//form/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4dad6c9e-d333-4ab2-9132-1e3455206e5c",
+      "comment": "",
+      "command": "type",
+      "target": "id=shippingFeeInput",
+      "targets": [
+        ["id=shippingFeeInput", "id"],
+        ["name=shippingFeeInput", "name"],
+        ["css=#shippingFeeInput", "css:finder"],
+        ["xpath=//input[@id='shippingFeeInput']", "xpath:attributes"],
+        ["xpath=//form[@id='shippingFeeForm']/input", "xpath:idRelative"],
+        ["xpath=//form/input", "xpath:position"]
+      ],
+      "value": "20000000000000000000"
+    }, {
+      "id": "fdd4500d-6d8e-4328-81eb-3c596b78ff49",
+      "comment": "",
+      "command": "click",
+      "target": "id=shipping-fee-btn",
+      "targets": [
+        ["id=shipping-fee-btn", "id"],
+        ["name=shipping-fee-btn", "name"],
+        ["css=#shipping-fee-btn", "css:finder"],
+        ["xpath=//button[@id='shipping-fee-btn']", "xpath:attributes"],
+        ["xpath=//form[@id='shippingFeeForm']/button", "xpath:idRelative"],
+        ["xpath=//div[4]/div/form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Confirm')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "d4a4c41b-1cb3-47ff-b48f-8e021acb3cba",
+      "comment": "",
+      "command": "click",
+      "target": "id=button3",
+      "targets": [
+        ["id=button3", "id"],
+        ["css=#button3", "css:finder"],
+        ["xpath=//button[@id='button3']", "xpath:attributes"],
+        ["xpath=//div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'View Order Details')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ba6f518a-f88d-48b0-b322-e9e80e9e1650",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "id=button3",
+      "targets": [
+        ["id=button3", "id"],
+        ["css=#button3", "css:finder"],
+        ["xpath=//button[@id='button3']", "xpath:attributes"],
+        ["xpath=//div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'View Order Details')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ade8c63d-22d2-4bb8-8d69-6153052e7ac5",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "id=button3",
+      "targets": [
+        ["id=button3", "id"],
+        ["css=#button3", "css:finder"],
+        ["xpath=//button[@id='button3']", "xpath:attributes"],
+        ["xpath=//div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'View Order Details')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ce65067c-c362-477a-b4e8-ecefd5589f3d",
+      "comment": "",
+      "command": "click",
+      "target": "id=orderDetailsBack",
+      "targets": [
+        ["id=orderDetailsBack", "id"],
+        ["name=orderDetailsBack", "name"],
+        ["css=#orderDetailsBack", "css:finder"],
+        ["xpath=//button[@id='orderDetailsBack']", "xpath:attributes"],
+        ["xpath=//div[@id='md1']/div/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Back')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "21b695f5-2f56-4784-9f77-45547199ff50",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Orders",
+      "targets": [
+        ["linkText=Orders", "linkText"],
+        ["css=.nav-item:nth-child(2) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Orders')]", "xpath:link"],
+        ["xpath=//div[@id='navbarSupportedContent']/ul/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/admin/orders')]", "xpath:href"],
+        ["xpath=//li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Orders')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "bfa1b08c-7d61-4c8a-aeab-dd821c309631",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=5f550860870e5f2f18b913a6",
+      "targets": [
+        ["linkText=5f550860870e5f2f18b913a6", "linkText"],
+        ["css=.col-sm-12:nth-child(1) .card-title > a", "css:finder"],
+        ["xpath=//a[contains(text(),'5f550860870e5f2f18b913a6')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/admin/orders/5f550860870e5f2f18b913a6')]", "xpath:href"],
+        ["xpath=//h5/a", "xpath:position"],
+        ["xpath=//a[contains(.,'5f550860870e5f2f18b913a6')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "69a84906-e7ea-4c09-91d6-c5c9caf1bbf4",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn:nth-child(3)",
+      "targets": [
+        ["css=.btn:nth-child(3)", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Void Order')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
   }],
   "suites": [{
     "id": "2f7140a9-92a0-401d-8851-428a1c52b910",
