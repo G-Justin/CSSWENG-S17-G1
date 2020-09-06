@@ -51,7 +51,7 @@ const ordersController = {
             select: CARD_SELECT,
             lean: true,
             page: page,
-            limit: 2,
+            limit: 3,
 
             sort: {
                 orderDate: -1
