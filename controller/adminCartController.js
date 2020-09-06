@@ -10,6 +10,7 @@ const ordersController = require('./ordersController.js');
 
 const { deleteMany } = require('../model/order.js');
 const { response } = require('../routes/routes.js');
+const order = require('../model/order.js');
 
 const adminCartController = {
     getOrder: function(req, res) {
@@ -112,6 +113,34 @@ const adminCartController = {
         let deliveryDate = parseDate(sanitize(req.body.deliveryDate));
         let js = req.body.js;
 
+        /*
+        *   Check if deliveryStatus is different from the _id's original status.
+        *
+        * */
+        Order.findById(_id)
+        .populate('orderItems')
+        .exec(function(err, orderResult) {
+            if (!orderResult) {
+                console.log(err);
+                res.redirect(req.get('referer'));
+                return;
+            }
+
+            if (orderResult.deliveryStatus == deliveryStatus) {
+                console.log("status are the same. returning.");
+                res.redirect(req.get('referer'));
+                return;
+            }
+
+            //if delivery status will change from 'processing' -> 'delivered'
+            if (orderResult.deliveryStatus == 'PROCESSING') {
+                //check for deficit in each order item
+                let productDeficits = new Array();
+                checkDeficit(orderResult.orderItems, productDeficits)
+                
+            }
+        })
+
         let statusEnum = new Array();
         console.log("test" + deliveryStatus)
         console.log("test" + deliveryDate)
@@ -159,6 +188,20 @@ const adminCartController = {
         })
     }
 };
+
+async function checkDeficit(orderItems, productDeficits) {
+    for (let i=0; i < orderItems.length; i++) {
+        let product = await Product.findById(orderItems[i].product);
+        let smallDiferrence = product.smallAvailable - orderItems.smallAmount;
+        let mediumDifference = product.mediumAvailable - orderItems.mediumAmount;
+        let largeDifference = product.largeAvailable - orderItems.largeAmount;
+        let extraLargeDifference = product.extraLargeAvailable - orderItems.extraLargeAmount;
+        
+        if (true) {     //checkpoint
+
+        }
+    }
+}
 async function getOrderItems(orderResultItems, orderItems) {
     for (let i = 0; i < orderResultItems.length; i++) {
         let productResult = await Product.findOne(orderResultItems[i].product);
