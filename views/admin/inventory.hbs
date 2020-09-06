@@ -29,6 +29,63 @@
 </style>
 
 {{#if notPhasedOut}}
+
+<div class="modal fade" id="modal_add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header text-center">
+            <h4 class="modal-title w-100 font-weight-bold">New Product</h4>
+            <button type="button" class="close" data-dismiss="modal" id="newProductClose" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        <form id="newProductForm" name="newProductForm"method="POST" action="/admin/inventory/addProduct">
+            <div class="modal-body mx-3">
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Style: </label>
+                <input maxlength="16" type="text" class="col-sm-3 form-control validate" name="newProductStyle" id="newProductStyle" required>
+              </div>
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Description: </label>
+                <input maxlength="20" type="text" class="col-sm-3 form-control validate" name="newProductDescription" id="newProductDescription" required>
+              </div>
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Color: </label>
+                <input maxlength="16" type="text" class="col-sm-3 form-control validate" name="newProductColor" id="newProductColor" required>
+              </div>
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Price: </label>
+                <input min="0" max="9007199254740981" type="number" class="col-sm-3 form-control validate" id="newProductPrice" name="newProductPrice" required>
+              </div>
+              <hr>
+              <h5 class="text-center my-2 justify-content-center">Initial Stock</h5>
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Small: </label>
+                <input min="0" max="9007199254740981" type="number" class="col-sm-3 form-control validate" name="newProductS" id="newProductS" required>
+              </div>
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Medium: </label>
+                <input min="0" max="9007199254740981" type="number" class="col-sm-3 form-control validate" name="newProductM" id="newProductM" required>
+              </div>
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Large: </label>
+                <input min="0" max="9007199254740981" type="number" class="col-sm-3 form-control validate" name="newProductL" id="newProductL" required>
+              </div>
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Xtra Large: </label>
+                <input min="0" max="9007199254740981" type="number" class="col-sm-3 form-control validate" name="newProductXl" id="newProductXl" required>
+              </div>
+              <div id="newProductError" name="newProductError" class="text-danger" style="text-align:center"></div>
+              <!--<p id="msgEd1" class="text-danger mb-0 mt-2 text-center"></p>-->
+            </div>
+          <div class="modal-footer d-flex justify-content-center">
+           <button type="submit" id="newProductBtn" name="newProductBtn" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+    </div>
+  </div>
+</div>
+<!--
   <div id="modal_add" class="modal fade" role="dialog">
           <div class="modal-dialog" id = "md1">
             <div class="modal-content" style="background-color: rgb(247, 242, 242)">
@@ -69,6 +126,7 @@
         
           </div>
   </div>
+  -->
 {{/if}}
 <div class="jumbotron shadow p-4 text-center">
     <h4>Filter: {{resultsMessage}}</h4><hr>
