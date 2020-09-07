@@ -4,6 +4,33 @@ $(document).ready(function(){
     const MAX_INT = (Number.MAX_SAFE_INTEGER - 10);
     const MIN_INT = (Number.MIN_SAFE_INTEGER + 10);
 
+    $('#updateDeliveryDateBtn').click(function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $(this).prop('disabled', true);
+        $('#updateDeliveryDateError').text("");
+
+        let _id = $('#updateStatusId').val();
+        let deliveryDate = $('#deliveryDate').val();
+
+        if (deliveryDate == "" || deliveryDate == "undefined" || deliveryDate == null) {
+            $(this).prop('disabled', false);
+            $('#updateDeliveryStatusForm').submit();
+            return;
+        }
+
+        $.post('/admin/cart/checkDeliveryUpdate', {_id: _id, deliveryDate: deliveryDate}, (data) => {
+            if (!data) {
+                $(this).prop('disabled', false);
+                $('#updateDeliveryDateError').text("Delivery date entered is earlier than the order date!");
+                return;
+            }
+
+            $(this).prop('disabled', false);
+            $('#updateDeliveryStatusForm').submit();
+        })
+      })
+
     $('#shipping-fee-btn').click(function(e){
         e.preventDefault();
         e.stopImmediatePropagation();

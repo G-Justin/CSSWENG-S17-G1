@@ -35,12 +35,12 @@
 				<div class="card" style = "float: left; width:275px; height:424px;">
 					<br><h3 class="card-title" style="text-align: center;"> Delivery Details</h3><hr>
 					<div class="card-body">
-						<form method="POST" action="/admin/orders/updateDeliveryStatus">
+						<form id="updateDeliveryStatusForm" name="updateDeliveryStatusForm" method="POST" action="/admin/orders/updateDeliveryStatus">
 							<textarea id="updateStatusId" name="updateStatusId" readonly="readonly" style="display: none;">{{_id}}</textarea>
 							<p class="card-text"><b>Edit Delivery Status:</b> <select id="deliveryStatus" name="deliveryStatus" class="browser-default custom-select"><option value="PROCESSING">PROCESSING</option><option value="DELIVERING">DELIVERING</option><option value="DELIVERED">DELIVERED</option><option value="{{deliveryStatus}}" hidden="hidden" selected="selected">{{deliveryStatus}}</option></select></p>
 							<label class="card-text">Delivery Date: {{deliveryDate}} <input type="date" class="form-control" id="deliveryDate" name="deliveryDate" style="width:100%"></label> 
-							<p class="card-text" style="display: none;">Order has deficit. Cannot deliver.</p>
-							<button class="btn btn-primary" type="submit" style = "background-color: rgb(52, 58, 64); color:white;margin-left:85.615px;margin-top:10%">Save</a>
+							<div id="updateDeliveryDateError" name="updateDeliveryDateError" class="text-danger" style="text-align:center"></div>
+							<button id="updateDeliveryDateBtn" name="updateDeliveryDateBtn" class="btn btn-primary" type="submit" style = "background-color: rgb(52, 58, 64); color:white;margin-left:85.615px;margin-top:10%">Save</a>
 						</form>
 						
 					</div>
