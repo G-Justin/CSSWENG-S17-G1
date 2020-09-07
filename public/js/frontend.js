@@ -170,7 +170,7 @@ $(document).ready(function(){
             }
 
             if (!data.productExists) {
-                $('#newJobOrderError').text("Product does not exist!");
+                $('#newJobOrderError').text(style + " " + color + " " + description + " does not exist in the inventory!");
                 return;
             }
 
