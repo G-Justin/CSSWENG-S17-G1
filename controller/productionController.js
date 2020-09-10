@@ -45,7 +45,7 @@ const productionController = {
             limit: 10, //test
 
             sort: {
-                date: -1
+                created: -1
             }
         }
 
