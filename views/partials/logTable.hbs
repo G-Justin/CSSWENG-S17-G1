@@ -1,0 +1,30 @@
+<table class="table table-striped" id="table1" style="text-align: center;">
+    <thead>
+        <tr>
+            <th>Date Enconded</th>
+            <th>Color</th>
+            <th>Style</th>
+            <th>Description</th>
+            <th>S</th>
+            <th>M</th>
+            <th>L</th>
+            <th>XL</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each products}}
+        {{#each inventoryRecords}}
+        <tr>
+            <td>{{date}}</td>
+            <td>{{color}}</td>
+            <td>{{style}}</td>
+            <td>{{description}}</td>
+            <td>{{smallUpdate}}</td>
+            <td>{{mediumUpdate}}</td>
+            <td>{{largeUpdate}}</td>
+            <td>{{extraLargeUpdate}}</td> 
+        </tr>
+        {{/each}}    
+        {{/each}}
+    </tbody>
+</table>

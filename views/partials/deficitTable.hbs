@@ -1,0 +1,27 @@
+<table class="table table-borderless" style="text-align: center;width:100%">
+    <thead>
+        <tr>
+            <th>Color</th>
+            <th>Style</th>
+            <th>Description</th>
+            <th>Small</th>
+            <th>Medium</th>
+            <th>Large</th>
+            <th>Extra Large</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each products}}
+        <tr>
+            <td>{{color}}</td>
+            <td>{{style}}</td>
+            <td>{{description}}</td>
+            <td>{{smallDeficit}}</td>
+            <td>{{mediumDeficit}}</td>
+            <td>{{largeDeficit}}</td>
+            <td>{{extraLargeDeficit}}</td>
+            
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
