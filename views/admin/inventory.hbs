@@ -1,11 +1,10 @@
 <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
-<script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
 
+<script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.5/js/responsive.bootstrap.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/fixedcolumns/3.3.1/js/dataTables.fixedColumns.min.js"></script>
 
 <style>
     .modal-backdrop {
@@ -15,29 +14,64 @@
       z-index: auto;
     }
     .row{
-      width:100%
+      width:100%;
     }
-    
-}
 </style>
 <script>
      $(document).ready(function() {
     
-        var table = $('#productTable').DataTable({ 
+         var table = $('#productTable').DataTable({ 
           responsive: true,
           fixedHeader:true,
           "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
            "pagingType": "full",
-           scrollY:        "500px",
+         
           fixedColumns: true
         
         }); 
-        
-       
-        new $.fn.dataTable.FixedHeader( table, {});
+        new $.fn.dataTable.fixedHeader(table);
     });
-   
 
+    $(document).ready(function() {
+    var table2 = $('#defTable').DataTable( {
+        responsive: true
+    } );
+ 
+    new $.fn.dataTable.FixedHeader(table2);
+      
+    });
+
+    $(document).ready(function() {
+    
+        var table3 = $('#logTable').DataTable( {
+        responsive: true
+    } );
+ 
+    new $.fn.dataTable.FixedHeader(table3);
+      
+    });
+
+
+    
+    $(document).ready(function(){ //datatable responsive view only work if the page is set to show active
+      $("#deficit").hide();       //which means all the pages are shown at all times, except we are just hiding it
+      $("#log").hide();       //cant find an alterative fix for now
+      
+      $("#products-tab").click(function(){
+        $("#deficit").hide();
+        $("#log").hide();});
+
+      $("#deficit-tab").click(function(){
+        $("#deficit").show();
+        $("#log").hide();})
+
+      $("#log-tab").click(function(){
+        $("#log").show();
+        $("#deficit").hide();});
+  
+
+    });
+      
     function warning(form)
     {
       var warn = confirm("Warning\nThis will Phase Out the product");
@@ -211,17 +245,18 @@
 <!-- START OF TABS -->
 <div class="tab-content mytab-content" id="myTabContent">
   <!-- PRODUCTS TAB -->
-  <div class="tab-pane fade show active" id="products" role="tabpanel" aria-labelledby="products-tab" style="overflow: hidden !important">
+  <div class="tab-pane fade show active" id="products" role="tabpanel" aria-labelledby="products-tab">
     <!-- PLACE CODES HERE -->
   <table class="table table-striped" id="productTable" style="padding:0">
 	<thead>
-        <tr>
-                    <th>Color</th>
-                    <th>Style</th>
-                    <th>Description</th>
-                    <th >Price</th>
-                    <th>Small</th>
-                    <th>Medium</th>
+        <tr>    
+            <th class="d-xl-none"></th>
+            <th>Color</th>
+            <th>Style</th>
+            <th>Description</th>
+            <th >Price</th>
+            <th>Small</th>
+            <th>Medium</th>
             <th>Large</th>
             <th>Extra Large</th>
             <th>Total Available</th>
@@ -241,10 +276,11 @@
       
    
   {{#if notPhasedOut}}
-    <div style="justify-content: center; display:flex">
-      <button class="btn btn-primary mt-2" data-toggle="modal" data-target="#modal_add">Add New Product</button>
-      <a href="/admin/inventory/phasedOut"><button class="btn btn-primary mt-2 mx-3">Check Phased Out Product</button></a>
-    </div>
+    <form class="form-inline justify-content-center" mehtod="get" action="/admin/orders">
+        <button class="btn btn-primary mt-2" data-toggle="modal" data-target="#modal_add">Add New Product</button>
+        <a href="/admin/inventory/phasedOut"><button class="btn btn-primary mt-2 mx-3">Check Phased Out Product</button></a>
+      </form>
+     
     {{else}}
       <a href="/admin/inventory"><button class="btn btn-primary">Check Inventory</button></a>
     {{/if}}
@@ -252,15 +288,55 @@
     <!-- PLACE CODES HERE -->
   </div>
   <!-- DEFICIT TAB -->
-  <div class="tab-pane fade" id="deficit" role="tabpanel" aria-labelledby="deficit-tab"  style="overflow: auto;">
+  <div class="tab-pane fade show active" id="deficit" role="tabpanel" aria-labelledby="deficit-tab"   style="overflow: auto;"> 
+    
     <!-- PLACE CODES HERE -->
-    {{> deficitTable}}
+    <table class="table table-striped" id="defTable" style="padding:0; width:100%">
+    <thead>
+        <tr>
+           <th class="d-xl-none"></th>
+            <th>Color</th>
+            <th>Style</th>
+            <th>Description</th>
+            <th>Small</th>
+            <th>Medium</th>
+            <th>Large</th>
+            <th>Extra Large</th>
+        </tr>
+    </thead>
+    <tbody>
+      {{#each products}}
+      {{> deficitTable}}
+      {{/each}}
+       </tbody>
+</table>
     <!-- PLACE CODES HERE -->
   </div>
   <!-- LOG TAB -->
-  <div class="tab-pane fade" id="log" role="tabpanel" aria-labelledby="log-tab"  style="overflow: auto;">
+  <div class="tab-pane fade show active" id="log" role="tabpanel" aria-labelledby="log-tab"  style="overflow: auto;">
     <!-- PLACE CODES HERE -->
-   {{> logTable}}
+   <table class="table table-striped" id="logTable" style="text-align: center; width:100%">
+    <thead>
+        <tr>
+            <th class="d-xl-none"></th>
+            <th>Date Enconded</th>
+            <th>Color</th>
+            <th>Style</th>
+            <th>Description</th>
+            <th>S</th>
+            <th>M</th>
+            <th>L</th>
+            <th>XL</th>
+        </tr>
+    </thead>
+    <tbody>
+      {{#each products}}
+      {{#each inventoryRecords}}
+        {{> logTable}}
+      {{/each}}
+      {{/each}}
+    </tbody>
+    </table>
     <!-- PLACE CODES HERE -->
   </div>
 </div>
