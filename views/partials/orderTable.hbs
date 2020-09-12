@@ -1,6 +1,24 @@
 
-	
+
+<script>
+    window.onresize = function(event) //refreshes a window once a viewport size changes KEEP THIS
+    {
+        document.location.reload(true);
+    }
+
+    function imgFlip(img){
+       
+    if (img.src == "http://localhost:3001/assets/add.png")
+        img.src = "../assets/minus.png";
+    else
+    img.src = "../assets/add.png"
+   }
+   
+</script>
+
+
 <tr>
+    <td class="d-xl-none" ><img id="dc" name="pic" src="../assets/add.png" onClick="imgFlip(this)" alt="" height=30px width=30px></img></td>
     <td>{{color}}</td>
     <td>{{style}}</td>
     <td>{{description}}</td>
@@ -13,10 +31,10 @@
     {{#if notPhasedOut}}
         <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_stock_{{_id}}" style="font-size:12px">Add Stock</button></td>
         <td>
-            <form method="POST" action="/admin/inventory/phaseOut"  style="display: flex; justify-content: center;" onSubmit="return warning(this)">
-                <textarea id="phaseOutId" name="phaseOutId" readonly="readonly" style="display: none;">{{_id}}</textarea><br>
-                <button class="btn btn-primary btn-sm" style = "background-color: rgb(163, 47, 47); color:white;font-size:12px" >Phase out</button>	
-                </form>
+            <form method="POST" action="/admin/inventory/phaseOut"  style="margin:auto" onSubmit="return warning(this)">
+                <textarea id="phaseOutId" name="phaseOutId" readonly="readonly" style="display: none;">{{_id}}</textarea>
+                <button class="btn btn-primary btn-sm" style = "background-color: rgb(163, 47, 47); color:white;font-size:12px; display:inline; float:left" >Phase out</button>	
+            </form>
         </td>
     {{else}}
     {{/if}}

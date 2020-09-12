@@ -1,41 +1,20 @@
 <script>
-     $(document).ready(function() {
-    
-        var table = $('#defTable').DataTable({ 
-          responsive: true,
-          fixedHeader:true,
-          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-           "pagingType": "full"
-        }); 
-        new $.fn.dataTable.fixedHeader(table);
-    });
-
+    function imgFlip(img){
+       
+    if (img.src == "http://localhost:3001/assets/add.png")
+        img.src = "../assets/minus.png";
+    else
+    img.src = "../assets/add.png"
+   }
 </script>
-
-<table class="table table-borderless" style="text-align: center;width:100%" id="defTable">
-    <thead>
-        <tr>
-            <th>Color</th>
-            <th>Style</th>
-            <th>Description</th>
-            <th>Small</th>
-            <th>Medium</th>
-            <th>Large</th>
-            <th>Extra Large</th>
-        </tr>
-    </thead>
-    <tbody>
-        {{#each products}}
-        <tr>
-            <td>{{color}}</td>
-            <td>{{style}}</td>
-            <td>{{description}}</td>
-            <td>{{smallDeficit}}</td>
-            <td>{{mediumDeficit}}</td>
-            <td>{{largeDeficit}}</td>
-            <td>{{extraLargeDeficit}}</td>
-            
-        </tr>
-        {{/each}}
-    </tbody>
-</table>
+<tr>
+    <td class="d-xl-none" ><img id="dc" name="pic" src="../assets/add.png" onClick="imgFlip(this)" alt="" height=30px width=30px></img></td>
+    <td>{{color}}</td>
+    <td>{{style}}</td>
+    <td>{{description}}</td>
+    <td>{{smallDeficit}}</td>
+    <td>{{mediumDeficit}}</td>
+    <td>{{largeDeficit}}</td>
+    <td>{{extraLargeDeficit}}</td>
+    
+</tr>
