@@ -74,7 +74,7 @@
 
     });
       
-    function warning(form)
+    function warning(form) //shows the warning when the user press the phase out button
     {
       var warn = confirm("Warning\nThis will Phase Out the product");
       if (warn){
@@ -275,6 +275,7 @@
       {{/each}}
     </tbody>
 	</table>
+  {{> paginator}} <!-- the built-in datatable paginator doesn't work but this one works only for the first tab, idk why this is interfering with the built in paginator-->
       
    
   {{#if notPhasedOut}}
@@ -312,6 +313,7 @@
       {{/each}}
        </tbody>
 </table>
+{{> paginator}}
     <!-- PLACE CODES HERE -->
   </div>
   <!-- LOG TAB -->
