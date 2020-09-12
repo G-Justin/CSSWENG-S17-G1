@@ -1,5 +1,12 @@
 <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
 <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.5/js/responsive.bootstrap.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/fixedcolumns/3.3.1/js/dataTables.fixedColumns.min.js"></script>
+
 <style>
     .modal-backdrop {
     z-index: auto;
@@ -7,15 +14,29 @@
     #myTabContent{
       z-index: auto;
     }
+    .row{
+      width:100%
+    }
+    
+}
 </style>
 <script>
      $(document).ready(function() {
-        if (!$.fn.DataTable.isDataTable('.table')){
-
-            $('.table').DataTable({ // instead of id, passes class instead
-            }); 
-        }
+    
+        var table = $('#productTable').DataTable({ 
+          responsive: true,
+          fixedHeader:true,
+          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+           "pagingType": "full",
+           scrollY:        "500px",
+          fixedColumns: true
+        
+        }); 
+        
+       
+        new $.fn.dataTable.FixedHeader( table, {});
     });
+   
 
     function warning(form)
     {
@@ -56,6 +77,7 @@
   .modal input{
     min-width:200px;
   }
+
 </style>
 
 {{#if notPhasedOut}}
@@ -189,17 +211,15 @@
 <!-- START OF TABS -->
 <div class="tab-content mytab-content" id="myTabContent">
   <!-- PRODUCTS TAB -->
-  <div class="tab-pane fade show active" id="products" role="tabpanel" aria-labelledby="products-tab">
+  <div class="tab-pane fade show active" id="products" role="tabpanel" aria-labelledby="products-tab" style="overflow: hidden !important">
     <!-- PLACE CODES HERE -->
-  <table class="table table-borderless">
+  <table class="table table-striped" id="productTable" style="padding:0">
 	<thead>
         <tr>
-            <th style="display: none;">Image</th>
-            <th style="display: none;">Id</th>
                     <th>Color</th>
                     <th>Style</th>
                     <th>Description</th>
-                    <th>Price</th>
+                    <th >Price</th>
                     <th>Small</th>
                     <th>Medium</th>
             <th>Large</th>
@@ -221,8 +241,10 @@
       
    
   {{#if notPhasedOut}}
+    <div style="justify-content: center; display:flex">
       <button class="btn btn-primary mt-2" data-toggle="modal" data-target="#modal_add">Add New Product</button>
       <a href="/admin/inventory/phasedOut"><button class="btn btn-primary mt-2 mx-3">Check Phased Out Product</button></a>
+    </div>
     {{else}}
       <a href="/admin/inventory"><button class="btn btn-primary">Check Inventory</button></a>
     {{/if}}
@@ -230,13 +252,13 @@
     <!-- PLACE CODES HERE -->
   </div>
   <!-- DEFICIT TAB -->
-  <div class="tab-pane fade" id="deficit" role="tabpanel" aria-labelledby="deficit-tab">
+  <div class="tab-pane fade" id="deficit" role="tabpanel" aria-labelledby="deficit-tab"  style="overflow: auto;">
     <!-- PLACE CODES HERE -->
     {{> deficitTable}}
     <!-- PLACE CODES HERE -->
   </div>
   <!-- LOG TAB -->
-  <div class="tab-pane fade" id="log" role="tabpanel" aria-labelledby="log-tab">
+  <div class="tab-pane fade" id="log" role="tabpanel" aria-labelledby="log-tab"  style="overflow: auto;">
     <!-- PLACE CODES HERE -->
    {{> logTable}}
     <!-- PLACE CODES HERE -->
