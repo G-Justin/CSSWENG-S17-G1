@@ -1,4 +1,18 @@
-<table class="table table-borderless" style="text-align: center;width:100%">
+<script>
+     $(document).ready(function() {
+    
+        var table = $('#defTable').DataTable({ 
+          responsive: true,
+          fixedHeader:true,
+          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+           "pagingType": "full"
+        }); 
+        new $.fn.dataTable.fixedHeader(table);
+    });
+
+</script>
+
+<table class="table table-borderless" style="text-align: center;width:100%" id="defTable">
     <thead>
         <tr>
             <th>Color</th>

@@ -1,8 +1,6 @@
 
 	
 <tr>
-    <td style="display:none"></td>
-    <td style="display:none">{{_id}}</td>
     <td>{{color}}</td>
     <td>{{style}}</td>
     <td>{{description}}</td>
@@ -13,11 +11,11 @@
     <td>{{extraLargeAvailable}}</td>
     <td>{{totalAvailable}}</td>
     {{#if notPhasedOut}}
-        <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_stock_{{_id}}">Add Stock</button></td>
+        <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_stock_{{_id}}" style="font-size:12px">Add Stock</button></td>
         <td>
             <form method="POST" action="/admin/inventory/phaseOut"  style="display: flex; justify-content: center;" onSubmit="return warning(this)">
                 <textarea id="phaseOutId" name="phaseOutId" readonly="readonly" style="display: none;">{{_id}}</textarea><br>
-                <button class="btn btn-primary" style = "background-color: rgb(163, 47, 47); color:white;font-size:12px" >Phase out</button>	
+                <button class="btn btn-primary btn-sm" style = "background-color: rgb(163, 47, 47); color:white;font-size:12px" >Phase out</button>	
                 </form>
         </td>
     {{else}}
