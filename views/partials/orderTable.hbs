@@ -1,11 +1,6 @@
 
 
 <script>
-    window.onresize = function(event) //refreshes a window once a viewport size changes KEEP THIS
-    {
-        document.location.reload(true);
-    }
-
     function imgFlip(td){ //flips the +,- icon upon click
         var bg = $(td).css('background-image');
         bg = bg.replace('url("','').replace('")','');
