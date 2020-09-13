@@ -4,6 +4,7 @@
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.5/js/responsive.bootstrap.min.js"></script>
+
 <style>
     .modal-backdrop {
     z-index: auto;
@@ -15,6 +16,7 @@
       width:100%;
     }
 </style>
+
 <script>
      $(document).ready(function() {
     
@@ -55,23 +57,9 @@
 
 
     
-    $(document).ready(function(){ //datatable responsive view only work if the page is set to show active
-      $("#deficit").hide();       //which means all the pages are shown at all times, except we are just hiding it
-      $("#log").hide();       //cant find an alterative fix for now
-      
-      $("#products-tab").click(function(){
-        $("#deficit").hide();
-        $("#log").hide();});
-
-      $("#deficit-tab").click(function(){
-        $("#deficit").show();
-        $("#log").hide();})
-
-      $("#log-tab").click(function(){
-        $("#log").show();
-        $("#deficit").hide();});
-  
-
+    $(document).ready(function(){ //datatable responsive view only work if the page is set to show active, so remove those when we launch the app
+        document.getElementById('deficit').className = 'tab-pane fade';
+        document.getElementById('log').className = 'tab-pane fade';
     });
       
     function warning(form) //shows the warning when the user press the phase out button
@@ -83,8 +71,6 @@
       else
         return false
     }
-
-     $('.modal-backdrop').remove();
 
 </script>
 
