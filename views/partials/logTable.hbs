@@ -1,7 +1,17 @@
+<script>
+    function imgFlip(td){
+        var bg = $(td).css('background-image');
+        bg = bg.replace('url("','').replace('")','');
+        if (bg === 'http://localhost:3001/assets/add.png')
+            $(td).css('background-image','url(../assets/minus.png)')
+        else
+            $(td).css('background-image','url(../assets/add.png)')
+    }
+</script>
 
 
 <tr>
-    <td class="d-xl-none" ><img id="dc" name="pic" src="../assets/add.png" onClick="imgFlip(this)" alt="" height=30px width=30px></img></td>
+    <td class="d-xl-none" onclick="imgFlip(this)" style="background-image: url(../assets/add.png); background-size:25px; background-repeat:no-repeat; background-position: center;"></td>
     <td>{{date}}</td>
     <td>{{color}}</td>
     <td>{{style}}</td>
