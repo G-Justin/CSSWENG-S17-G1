@@ -21,43 +21,29 @@
      $(document).ready(function() {
     
          var table = $('#productTable').DataTable({ 
-          responsive: {
-        details: {
-            type: 'inline'
-        }
-    },
-          fixedHeader:true,
-          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-          
-         
-          fixedColumns: true
-        
+          responsive: true,
+          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]] //can display all data
         }); 
-        new $.fn.dataTable.fixedHeader(table);
+        //new $.fn.dataTable.fixedHeader(table); //this doesnt do anything except returning error
     });
 
     $(document).ready(function() {
-    var table2 = $('#defTable').DataTable( {
+        var table2 = $('#defTable').DataTable( {
         responsive: true
-    } );
- 
-    new $.fn.dataTable.FixedHeader(table2);
-      
+      });
+    // $.fn.dataTable.FixedHeader(table2);
     });
 
     $(document).ready(function() {
-    
-        var table3 = $('#logTable').DataTable( {
-        responsive: true
-    } );
- 
-    new $.fn.dataTable.FixedHeader(table3);
-      
+          var table3 = $('#logTable').DataTable( {
+          responsive: true
+      });
+    //new $.fn.dataTable.FixedHeader(table3); 
     });
 
-
-    
-    $(document).ready(function(){ //datatable responsive view only work if the page is set to show active, so remove those when we launch the app
+    //who knows why but the datatable responsive view only works when the tab class is initially set to "show active"
+    //so we have to make those who aren't the front page "not active" when we launch the app
+    $(document).ready(function(){                                       
         document.getElementById('deficit').className = 'tab-pane fade';
         document.getElementById('log').className = 'tab-pane fade';
     });
@@ -237,8 +223,13 @@
     <!-- PLACE CODES HERE -->
   <table class="table table-striped" id="productTable" style="padding:0">
 	<thead>
-        <tr>    
+        <tr>
             <th class="d-xl-none"></th>
+            <!-- these columns are hidden but kinda makes the datatable responsive view weird, so removed for now-->
+            <!--
+            <th class="d-none">Image</th> 
+            <th class="d-none">id</th>
+            -->
             <th>Color</th>
             <th>Style</th>
             <th>Description</th>
@@ -283,7 +274,7 @@
     <table class="table table-striped" id="defTable" style="padding:0; width:100%">
     <thead>
         <tr>
-           <th class="d-xl-none"></th>
+            <th class="d-xl-none"></th>
             <th>Color</th>
             <th>Style</th>
             <th>Description</th>
