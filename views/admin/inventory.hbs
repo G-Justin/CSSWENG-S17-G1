@@ -18,6 +18,11 @@
 </style>
 
 <script>
+    window.onresize = function(event) //refreshes a window once a viewport size changes KEEP THIS
+    {
+      document.location.reload(true);
+    }
+
      $(document).ready(function() {
     
          var table = $('#productTable').DataTable({ 
