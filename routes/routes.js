@@ -74,6 +74,10 @@ app.get('/cart', function(req, res) {
     res.render('customer/cart', {title: 'Cart'});
 });
 
+app.get('/checkout', function(req, res) {
+    res.render('customer/checkout', {title: 'Checkout'});
+});
+
 
 
 
