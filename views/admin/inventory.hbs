@@ -23,9 +23,13 @@
 </style>
 
 <script>
+
     function addStock(){ //gets the id of the product from the select, then opens the modal_stock with its id
-      var sel = document.getElementById("productselect").value
-      $("#modal_stock_"+sel).modal()
+      var sel = document.getElementById("productselect").value;
+      if (sel != "")
+        $("#modal_stock_"+sel).modal();
+      else 
+        alert("Please select a product!");
     }
 
     window.onresize = function(event) //refreshes a window once a viewport size changes KEEP THIS
