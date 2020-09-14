@@ -78,6 +78,10 @@ app.get('/checkout', function(req, res) {
     res.render('customer/checkout', {title: 'Checkout'});
 });
 
+app.get('/facemust', function(req, res) {
+    res.render('customer/main', {title: 'FACEMUST'});
+});
+
 
 
 
