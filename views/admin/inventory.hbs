@@ -43,8 +43,7 @@
     
          var table = $('#productTable').DataTable({ 
           responsive: true,
-          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]], //can display all data
-          "aoColumnDefs": [{"bSortable": false, "aTargets": [0, 10] }] //makes the first and last column unsortable
+          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]//can display all data
         }); 
         //new $.fn.dataTable.fixedHeader(table); //this doesnt do anything except returning error
     });
