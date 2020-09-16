@@ -1,6 +1,8 @@
 const Product = require('../model/product.js');
 const InventoryRecord = require('../model/inventoryRecord.js');
+const OrderItem = require("../model/orderitem.js");
 const sanitize = require('mongo-sanitize');
+const orderitem = require('../model/orderitem.js');
 const PAGE_LIMIT = 10;
 
 const inventoryController = {
@@ -175,6 +177,9 @@ const inventoryController = {
 
             let inventoryRecord = new InventoryRecord({
                 parentRecord: _id,
+                color: productResult.color,
+                style: productResult.style,
+                description: productResult.description,
                 smallUpdate: s,
                 mediumUpdate: m,
                 largeUpdate: l,
@@ -281,110 +286,88 @@ const inventoryController = {
 
 module.exports = inventoryController;
 
-function getInventory(req, res, isPhasedOut) {
-    let style = sanitize(req.query.style);
-    let color = sanitize(req.query.color);
-    let description = sanitize(req.query.description);
-    let query = getQueries(style, color, description, isPhasedOut);
-    let resultsMessage = getResultsMessage(style, color, description);
-    let phasedOutUrlPiece = isPhasedOut ? "/phasedout" : "";
 
-    let page = sanitize(req.query.page);
-    if (page == null) {
-        page = 1;
-    }
+function getInventory(req, res, phasedOut) {
 
-    let options = {
-        populate: 'inventoryRecords',
-        lean: true,
-        page: page,
-        limit: PAGE_LIMIT,
+    Product.find({isPhasedOut: phasedOut})
+        .sort({dateCreated: -1})
+        .lean()
+        .exec(function(err, productResults) {
+            if (!productResults) {
+                console.log("Inventory controller error: no products returned");
+                res.redirect(req.get('referer'));
+                return;
+            }
 
-        sort: {
-            dateCreated: -1
-        }
-    };
+            for (let i = 0; i < productResults.length; i++) {
+                productResults[i].notPhasedOut = !phasedOut;
+            }
 
-    Product.paginate(query, options, function (err, results) {
-        if (!results) {
-            console.log('no products returned');
-            console.log(results);
-            return;
-        }
+            updateDeficits(productResults).then((a) => {
+                InventoryRecord.find()
+                    .sort({date: -1})
+                    .lean()
+                    .exec(function(err, inventoryRecordsResult) {
+                        if (!inventoryRecordsResult) {
+                            console.log("Inventory Controller: no records returned");
+                            res.redirect(req.get('referer'));
+                            return;
+                        }
 
-        for (let i = 0; i < results.docs.length; i++) {
-            results.docs[i].notPhasedOut = !isPhasedOut;
-        }
-
-        let selectOptions = new Array();
-        for (let i = 0; i < results.totalPages; i++) {
-            let no = i + 1;
-            let options = {
-                pageLink: "/admin/inventory" + phasedOutUrlPiece + "?style=" + style + "&color=" + color + "&page=" + no,
-                pageNo: no,
-                isSelected: (results.page == no)
-            };
-
-            selectOptions.push(options);
-        }
-
-        let prevPageLink = results.hasPrevPage ? "/admin/inventory" + phasedOutUrlPiece + "?style=" + style + "&color=" + color + "&page=" + results.prevPage : "";
-        let nextPageLink = results.hasNextPage ? "/admin/inventory" + phasedOutUrlPiece + "?style=" + style + "&color=" + color + "&page=" + results.nextPage : "";
-        res.render('admin/inventory', {
-            title: 'Inventory',
-
-            products: results.docs,
-            resultsMessage: resultsMessage,
-            notPhasedOut: !isPhasedOut,
-            noResults: results.docs.length == 0,
-
-            //pagination
-            selectOptions: selectOptions,
-            hasPrev: results.hasPrevPage,
-            hasNext: results.hasNextPage,
-            prevPageLink: prevPageLink,
-            nextPageLink: nextPageLink
-        });
-    });
+                        res.render('admin/inventory', {
+                            title: 'Inventory',
+                
+                            products: productResults,
+                            inventoryRecords: inventoryRecordsResult,
+                            notPhasedOut: !phasedOut,
+                        });
+                    })
+            })
+        })
 }
 
-function getQueries(style, color, description, isPhasedOut) {
-    let query = {isPhasedOut: isPhasedOut};
+async function updateDeficits(products) {
+    for (let i = 0; i < products.length; i++) {
+        let orderItems = await OrderItem.find({product: products[i]._id});
+        let smallAmount = 0;
+        let mediumAmount = 0;
+        let largeAmount = 0;
+        let extraLargeAmount = 0;
+        let totalAmount = 0;
 
-    if (!isEmpty(style)) {
-        query.style = new RegExp(style, 'i')
+        for (let j = 0; j < orderItems.length; j++) {
+            smallAmount = smallAmount + orderItems[j].smallAmount;
+            mediumAmount = mediumAmount + orderItems[j].mediumAmount;
+            largeAmount = largeAmount + orderItems[j].largeAmount;
+            extraLargeAmount = extraLargeAmount + orderItems[j].extraLargeAmount;
+        }
+        totalAmount = smallAmount + mediumAmount + largeAmount + extraLargeAmount;
+
+        let smallDeficit = smallAmount - products[i].smallAvailable;
+        products[i].smallDeficit = (smallDeficit > 0) ? smallDeficit : 0;
+
+        let mediumDeficit = mediumAmount - products[i].mediumAvailable;
+        products[i].mediumDeficit = (mediumDeficit > 0) ? mediumDeficit : 0;
+
+        let largeDeficit = largeAmount - products[i].largeAvailable;
+        products[i].largeDeficit = (largeDeficit > 0) ? largeDeficit : 0;
+
+        let extraLargeDeficit = extraLargeAmount - products[i].extraLargeAvailable;
+        products[i].extraLargeDeficit = (extraLargeDeficit > 0) ? extraLargeDeficit : 0;
+
+        let totalDeficit = totalAmount - products[i].totalAvailable;
+        products[i].totalDeficit = (totalDeficit > 0) ? totalDeficit : 0;
+
+        let update = await Product.updateOne({_id: products[i]._id}, {
+            smallDeficit: products[i].smallDeficit,
+            mediumDeficit: products[i].mediumDeficit,
+            largeDeficit: products[i].largeDeficit,
+            extraLargeDeficit: products[i].extraLargeDeficit,
+            totalDeficit: products[i].totalDeficit
+        });
+
     }
 
-    if (!isEmpty(color)) {
-        query.color = new RegExp(color, 'i')
-    }
-
-    if (!isEmpty(description)) {
-        query.description = new RegExp(description, 'i');
-    }
-
-    return query;
-    
-
-    if(isEmpty(style) && isEmpty(color) && isEmpty(description)) {
-        return query;
-    }
-
-    if (isEmpty(style) && !isEmpty(color)) {
-        query = { color: new RegExp(color, 'i'), isPhasedOut: isPhasedOut };
-        return query;
-    } 
-    
-    if (isEmpty(color) && !isEmpty(style)) {
-        query = { style: new RegExp(style, 'i'), isPhasedOut: isPhasedOut };
-        return query;
-    }
-
-    if (!isEmpty(color) && !isEmpty(style)) {
-        query = { color: new RegExp(color, 'i'), style: new RegExp(style, 'i'), isPhasedOut: isPhasedOut };
-        return query;
-    } 
-     
 }
 
 function isEmptyNumberInput(input) {
@@ -409,18 +392,6 @@ function isEmpty(input) {
     }
 
     return false;
-}
-
-function getResultsMessage(style, color, description) {
-    let styleMsg = !isEmpty(style) ? style : "";
-    let colorMsg = !isEmpty(color) ? color : "";
-    let descriptionMsg = !isEmpty(description) ? description : "";
-
-    if (styleMsg == "" && colorMsg == "" && description == "") {
-        return "";
-    }
-
-    return styleMsg + " " + colorMsg + " " + descriptionMsg;
 }
 
 function isValidNumberInput(n) {

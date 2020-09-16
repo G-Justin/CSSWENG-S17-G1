@@ -80,18 +80,27 @@ var ProductSchema = new mongoose.Schema({
     },
     smallDeficit: {
         type: Number,
+        default: 0,
         min: 0
     },
     mediumDeficit: {
-        type: Number, 
+        type: Number,
+        default: 0, 
         min: 0
     },
     largeDeficit: {
         type: Number,
+        default: 0,
         min: 0
     },
     extraLargeDeficit: {
         type: Number,
+        default: 0,
+        min: 0
+    },
+    totalDeficit: {
+        type: Number,
+        default: 0,
         min: 0
     },
     inventoryRecords: [{

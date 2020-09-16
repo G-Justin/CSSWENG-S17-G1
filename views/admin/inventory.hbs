@@ -26,6 +26,7 @@
 
     function addStock(){ //gets the id of the product from the select, then opens the modal_stock with its id
       var sel = document.getElementById("productselect").value;
+     
       if (sel != "")
         $("#modal_stock_"+sel).modal();
       else 
@@ -259,7 +260,7 @@
       {{/each}}
     </tbody>
 	</table>
-  {{> paginator}} <!-- the built-in datatable paginator doesn't work but this one works only for the first tab, idk why this is interfering with the built in paginator-->
+  
       
    
   {{#if notPhasedOut}}
@@ -270,7 +271,7 @@
       
       <select class="selectpicker show-tick" name="productselect" id="productselect" data-live-search="true" title="Select Product" data-width="300px">
                 {{#each products}}
-                  <option value={{id}}>{{color}}-{{style}}-{{description}}</option>
+                  <option value={{_id}}>{{color}} {{style}} {{description}}</option>
                 {{/each}}
               </select>
         <button class="btn btn-primary mt-2" onClick="addStock()"  style="font-size:12px">Add Stock</button>
@@ -296,6 +297,7 @@
             <th>Medium</th>
             <th>Large</th>
             <th>Extra Large</th>
+            <th>Total Deficit</th>
         </tr>
     </thead>
     <tbody>
@@ -304,7 +306,7 @@
       {{/each}}
        </tbody>
 </table>
-{{> paginator}}
+
     <!-- PLACE CODES HERE -->
   </div>
   <!-- LOG TAB -->
@@ -325,11 +327,11 @@
         </tr>
     </thead>
     <tbody>
-      {{#each products}}
+      
       {{#each inventoryRecords}}
         {{> logTable}}
       {{/each}}
-      {{/each}}
+      
     </tbody>
     </table>
     <!-- PLACE CODES HERE -->
