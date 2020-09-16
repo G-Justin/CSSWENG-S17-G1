@@ -43,7 +43,8 @@
     
          var table = $('#productTable').DataTable({ 
           responsive: true,
-          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]] //can display all data
+          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]], //can display all data
+          "aoColumnDefs": [{"bSortable": false, "aTargets": [0, 10] }] //makes the first and last column unsortable
         }); 
         //new $.fn.dataTable.fixedHeader(table); //this doesnt do anything except returning error
     });
@@ -237,7 +238,7 @@
   <div class="tab-pane fade show active" id="products" role="tabpanel" aria-labelledby="products-tab">
     <!-- PLACE CODES HERE -->
   <table class="table table-striped" id="productTable" style="padding:0">
-
+    <br>
      {{#if notPhasedOut}}
      <a href="/admin/inventory/phasedOut"><button class="btn btn-primary">Check Phased Out Product</button></a>
      <div style="float:right">
@@ -280,8 +281,6 @@
       {{/each}}
     </tbody>
 	</table>
-  
-    
     <!-- PLACE CODES HERE -->
   </div>
   <!-- DEFICIT TAB -->
