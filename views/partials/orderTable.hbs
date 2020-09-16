@@ -9,6 +9,23 @@
         else
             $(td).css('background-image','url(../assets/add.png)')
     }
+
+    function showDetail(){                                       
+        document.getElementById('detail').className = 'tab-pane fade active show';
+        document.getElementById('image').className = 'tab-pane fade';
+        document.getElementById('phase').className = 'tab-pane fade';
+    }
+
+    function showImage(){                                       
+        document.getElementById('detail').className = 'tab-pane fade';
+        document.getElementById('image').className = 'tab-pane fade active show';
+        document.getElementById('phase').className = 'tab-pane fade';
+    }
+    function showPhase(){                                       
+        document.getElementById('detail').className = 'tab-pane fade';
+        document.getElementById('image').className = 'tab-pane fade';
+        document.getElementById('phase').className = 'tab-pane fade active show';
+    }
    
 </script>
 
@@ -29,13 +46,7 @@
     <td>{{extraLargeAvailable}}</td>
     <td>{{totalAvailable}}</td>
     {{#if notPhasedOut}}
-        <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_stock_{{_id}}" style="font-size:12px">Add Stock</button></td>
-        <td>
-            <form method="POST" action="/admin/inventory/phaseOut"  style="margin:auto" onSubmit="return warning(this)">
-                <textarea id="phaseOutId" name="phaseOutId" readonly="readonly" style="display: none;">{{_id}}</textarea>
-                <button class="btn btn-primary btn-sm" style = "background-color: rgb(163, 47, 47); color:white;font-size:12px; display:inline; float:left" >Phase out</button>	
-            </form>
-        </td>
+        <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_test" style="font-size:12px">Edit Product</button></td>
     {{else}}
     {{/if}}
 </tr>
@@ -67,4 +78,92 @@
               </form>
           </div>
           </div>
+  </div>
+
+  <div id="modal_test" class="modal fade" role="dialog">
+          <div id="divtest" class="modal-dialog" id = "md2">
+          <div class="modal-content" style="background-color: rgb(247, 242, 242); text-align:center">
+              <div class="modal-header" style="background-color;background-color: rgb(52, 58, 64);color:white">
+              <h4 class="modal-title">Edit Information</h4>
+              <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+              </div>
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="image-tab" data-toggle="tab" href="#imageEdit" role="tab" aria-controls="image" aria-selected="true" onclick="showImage()">Image</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="detail-tab" data-toggle="tab" href="#detailEdit" role="tab" aria-controls="detail" aria-selected="false" onclick="showDetail()">Product Detail</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="phase-tab" data-toggle="tab" href="#detailPhase" role="tab" aria-controls="phase" aria-selected="false" onclick="showPhase()">Phase Out</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content mytab-content" id="myTabContent">
+                    <!-- Image TAB -->
+                    <div class="tab-pane fade show active" id="image" role="tabpanel" aria-labelledby="image-tab">
+                        {{image}}
+                        <form action="#"> <!-- uploads the image-->
+                            <input type="file" id="img" name="img" accept="image/*" style="width:220px">
+                            <input type="submit" class="btn btn-primary">
+                        </form>
+                    </div>
+                    <!-- Product Detail TAB -->
+                    <div class="tab-pane fade show" id="detail" role="tabpanel" aria-labelledby="detail-tab"> <!-- edits the inventory-->
+                        <form id="" name="" method="POST" action="/">
+                            <div class="modal-body mx-3">
+                            <div class="row md-form my-2 justify-content-center">
+                                <label class="col-sm-4">Style: </label>
+                                <input maxlength="16" type="text" class="col-sm-3 form-control validate" name="editProductStyle" id="editProductStyle" value='{{style}}' required>
+                            </div>
+                            <div class="row md-form my-2 justify-content-center">
+                                <label class="col-sm-4">Description: </label>
+                                <input maxlength="20" type="text" class="col-sm-3 form-control validate" name="editProductDescription" id="editProductDescription"  value='{{description}}' required>
+                            </div>
+                            <div class="row md-form my-2 justify-content-center">
+                                <label class="col-sm-4">Color: </label>
+                                <input maxlength="16" type="text" class="col-sm-3 form-control validate" name="editProductColor" id="editProductColor"  value='{{color}}' required>
+                            </div>
+                            <div class="row md-form my-2 justify-content-center">
+                                <label class="col-sm-4">Price: </label>
+                                <input min="0" max="9007199254740981" type="number" class="col-sm-3 form-control validate" id="editProductPrice" name="editProductPrice" value='{{price}}' required>
+                            </div>
+                            <hr>
+                            <h5 class="text-center my-2 justify-content-center">Deficits</h5>
+                            <div class="row md-form my-2 justify-content-center">
+                                <label class="col-sm-4">Small: </label>
+                                <input min="0" max="9007199254740981" type="number" class="col-sm-3 form-control validate" name="editProductS" id="editProductS"  value='{{smallDeficit}}' required>
+                            </div>
+                            <div class="row md-form my-2 justify-content-center">
+                                <label class="col-sm-4">Medium: </label>
+                                <input min="0" max="9007199254740981" type="number" class="col-sm-3 form-control validate" name="editProductM" id="editProductM"  value='{{mediumDeficit}}' required>
+                            </div>
+                            <div class="row md-form my-2 justify-content-center">
+                                <label class="col-sm-4">Large: </label>
+                                <input min="0" max="9007199254740981" type="number" class="col-sm-3 form-control validate" name="editProductL" id="editProductL" value='{{largeDeficit}}' required>
+                            </div>
+                            <div class="row md-form my-2 justify-content-center">
+                                <label class="col-sm-4">Extra Large: </label>
+                                <input min="0" max="9007199254740981" type="number" class="col-sm-3 form-control validate" name="editProductXl" id="editProductXl" value='{{extraLargeDeficit}}' required>
+                            </div>
+                            <div id="editProductError" name="editProductError" class="text-danger" style="text-align:center"></div>
+                            <!--<p id="msgEd1" class="text-danger mb-0 mt-2 text-center"></p>-->
+                            </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                        <button type="submit" id="editProductBtn" name="editProductBtn" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                    </div>
+                    
+                    <div class="tab-pane fade show" id="phase" role="tabpanel" aria-labelledby="phase-tab">
+                        <form method="POST" action="/admin/inventory/phaseOut"  style="margin:auto" onSubmit="return warning(this)">
+                            <textarea id="phaseOutId" name="phaseOutId" readonly="readonly" style="display: none;">{{_id}}</textarea>
+                            <h2 style="color:red">Warning</h2><hr>
+                            <h4>Phased out product won't be seen by the customers and can't be edited!</h4><br><br>
+                            <button class="btn btn-primary btn-sm" style = "background-color: rgb(163, 47, 47); color:white;font-size:24px" >Phase out</button>	
+                        </form>
+                    </div>
+                </div>
+          </div>
+    </div>
   </div>
