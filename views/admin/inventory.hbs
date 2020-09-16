@@ -217,10 +217,16 @@
       <a class="nav-link active" id="products-tab" data-toggle="tab" href="#products" role="tab" aria-controls="products" aria-selected="true">Products</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" id="deficit-tab" data-toggle="tab" href="#deficit" role="tab" aria-controls="deficit" aria-selected="false">Deficit</a>
+      {{#if notPhasedOut}}
+        <a class="nav-link" id="deficit-tab" data-toggle="tab" href="#deficit" role="tab" aria-controls="deficit" aria-selected="false" style=>Deficit</a>
+      {{else}}
+      {{/if}}
     </li>
     <li class="nav-item">
-      <a class="nav-link" id="log-tab" data-toggle="tab" href="#log" role="tab" aria-controls="log" aria-selected="false">Log</a>
+      {{#if notPhasedOut}}
+        <a class="nav-link" id="log-tab" data-toggle="tab" href="#log" role="tab" aria-controls="log" aria-selected="false">Log</a>
+      {{else}}
+      {{/if}}
     </li>
 </ul>
 
@@ -248,8 +254,7 @@
             <th>Extra Large</th>
             <th>Total Available</th>
             {{#if notPhasedOut}}
-            <th>Add Stock</th>
-            <th>Phase Out</th>
+            <th></th>
             {{else}}
             {{/if}}
         </tr>
