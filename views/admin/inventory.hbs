@@ -274,7 +274,7 @@
         <a href="/admin/inventory/phasedOut"><button class="btn btn-primary mt-2 mx-3">Check Phased Out Product</button></a>
       </div>
       
-      <select class="selectpicker show-tick" name="productselect" id="productselect" data-live-search="true" title="Select Product" data-width="300px">
+      <select data-size="10" class="selectpicker show-tick" name="productselect" id="productselect" data-live-search="true" title="Select Product" data-width="300px" >
                 {{#each products}}
                   <option value={{_id}}>{{color}} {{style}} {{description}}</option>
                 {{/each}}
