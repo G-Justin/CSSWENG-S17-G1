@@ -19,6 +19,7 @@
     }
     .row{
       width:100%;
+      margin-top:2%;
     }
 </style>
 
@@ -236,6 +237,20 @@
   <div class="tab-pane fade show active" id="products" role="tabpanel" aria-labelledby="products-tab">
     <!-- PLACE CODES HERE -->
   <table class="table table-striped" id="productTable" style="padding:0">
+
+     {{#if notPhasedOut}}
+     <a href="/admin/inventory/phasedOut"><button class="btn btn-primary">Check Phased Out Product</button></a>
+     <div style="float:right">
+     <select data-size="10" class="selectpicker show-tick" name="productselect" id="productselect" data-live-search="true" title="Select Product" data-width="250px" >
+                {{#each products}}
+                  <option value={{_id}}>{{color}} {{style}} {{description}}</option>
+                {{/each}}
+      </select>
+      <button class="btn btn-primary mt-2" onClick="addStock()">Add Stock</button>
+     <button style="margin-right:27px" class="btn btn-primary mt-2" data-toggle="modal" data-target="#modal_add">Add New Product</button></div>
+    {{else}}
+      <a href="/admin/inventory"><button class="btn btn-primary">Check Inventory</button></a>
+    {{/if}}
 	<thead>
         <tr>
             <th class="d-xl-none"></th>
@@ -266,24 +281,6 @@
     </tbody>
 	</table>
   
-      
-   
-  {{#if notPhasedOut}}
-      <div style="display:flex; align-content:center">
-        <button class="btn btn-primary mt-2" data-toggle="modal" data-target="#modal_add">Add New Product</button>
-        <a href="/admin/inventory/phasedOut"><button class="btn btn-primary mt-2 mx-3">Check Phased Out Product</button></a>
-      </div>
-      <br>
-      <select data-size="10" class="selectpicker show-tick" name="productselect" id="productselect" data-live-search="true" title="Select Product" data-width="250px" >
-                {{#each products}}
-                  <option value={{_id}}>{{color}} {{style}} {{description}}</option>
-                {{/each}}
-      </select>
-        <button class="btn btn-primary mt-2" onClick="addStock()"  style="font-size:12px">Add Stock</button>
-     
-    {{else}}
-      <a href="/admin/inventory"><button class="btn btn-primary">Check Inventory</button></a>
-    {{/if}}
     
     <!-- PLACE CODES HERE -->
   </div>
