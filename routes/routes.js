@@ -74,6 +74,21 @@ app.get('/cart', function(req, res) {
     res.render('customer/cart', {title: 'Cart'});
 });
 
+//customer
+
+app.get('', function(req, res) {
+    res.render('customer/main', {title: "Welcome to Facemustph!"})
+})
+
+app.get('/', function(req, res) {
+    res.render('customer/main', {title: "Welcome to Facemustph!"})
+})
+
+app.get('/checkout', function(req, res) {
+    res.render('customer/checkout', {title: "Checkout"})
+})
+
+
 
 
 module.exports = app;
