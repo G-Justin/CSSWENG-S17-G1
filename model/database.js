@@ -1,6 +1,6 @@
 //db
 const mongoose = require('mongoose');
-const url = 'mongodb://localhost:27017/facemustph'
+const url = 'mongodb+srv://fmAdmin:kSBI0pqqCcPfq6Id@facemust.k65jg.mongodb.net/test'
 
 const options = {
     useUnifiedTopology: true,
