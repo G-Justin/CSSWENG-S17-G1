@@ -100,6 +100,10 @@ app.get('/checkout', function(req, res) {
     res.render('customer/checkout', {title: "Checkout"})
 })
 
+app.get('/item', function(req, res) {
+    res.render('customer/item', {title: "View Item"})
+})
+
 
 
 
