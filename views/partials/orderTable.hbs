@@ -10,23 +10,27 @@
             $(td).css('background-image','url(../assets/add.png)')
     }
 
-    function showDetail(){                                       
-        document.getElementById('detail').className = 'tab-pane fade active show';
-        document.getElementById('image').className = 'tab-pane fade';
-        document.getElementById('phase').className = 'tab-pane fade';
+    var id;
+    function initVar(param){ //gets the id of the modal then use it to find the specific tab below
+        id = param;
+    }
+
+    function showDetail(){                                     
+        document.getElementById('pd'+id).className = 'tab-pane fade active show';
+        document.getElementById('i'+id).className = 'tab-pane fade';
+        document.getElementById('p'+id).className = 'tab-pane fade';
     }
 
     function showImage(){                                       
-        document.getElementById('detail').className = 'tab-pane fade';
-        document.getElementById('image').className = 'tab-pane fade active show';
-        document.getElementById('phase').className = 'tab-pane fade';
+        document.getElementById('pd'+id).className = 'tab-pane fade';
+        document.getElementById('i'+id).className = 'tab-pane fade active show';
+        document.getElementById('p'+id).className = 'tab-pane fade';
     }
     function showPhase(){                                       
-        document.getElementById('detail').className = 'tab-pane fade';
-        document.getElementById('image').className = 'tab-pane fade';
-        document.getElementById('phase').className = 'tab-pane fade active show';
-    }
-   
+        document.getElementById('pd'+id).className = 'tab-pane fade';
+        document.getElementById('i'+id).className = 'tab-pane fade';
+        document.getElementById('p'+id).className = 'tab-pane fade active show';
+    }   
 </script>
 
 <tr>
@@ -46,7 +50,7 @@
     <td>{{extraLargeAvailable}}</td>
     <td>{{totalAvailable}}</td>
     {{#if notPhasedOut}}
-        <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_edit_{{_id}}" style="font-size:12px">Edit Product</button></td>
+        <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_edit_{{_id}}" onclick="initVar('{{_id}}')" style="font-size:12px">Edit Product</button></td>
     {{else}}
     {{/if}}
 </tr>
@@ -101,7 +105,7 @@
 
                 <div class="tab-content mytab-content" id="myTabContent">
                     <!-- Image TAB -->
-                    <div class="tab-pane fade show active" id="image" role="tabpanel" aria-labelledby="image-tab">
+                    <div class="tab-pane fade show active" id="i{{_id}}" role="tabpanel" aria-labelledby="image-tab">
                         <div class="col-md-12">
                             <img id="productImage" name="productImage" src="" class="card-img" alt="...">
                             
@@ -114,7 +118,7 @@
                         </form>
                     </div>
                     <!-- Product Detail TAB -->
-                    <div class="tab-pane fade show" id="detail" role="tabpanel" aria-labelledby="detail-tab"> <!-- edits the inventory-->
+                    <div class="tab-pane fade show" id="pd{{_id}}" role="tabpanel" aria-labelledby="detail-tab"> <!-- edits the inventory-->
                         <form id="" name="" method="POST" action="/">
                             <h5 class="text-center my-2 justify-content-center">Product Details</h5>
                             <div class="modal-body mx-3">
@@ -161,7 +165,7 @@
                     </form>
                     </div>
                     
-                    <div class="tab-pane fade show" id="phase" role="tabpanel" aria-labelledby="phase-tab">
+                    <div class="tab-pane fade show" id="p{{_id}}" role="tabpanel" aria-labelledby="phase-tab">
                         <form method="POST" action="/admin/inventory/phaseOut"  style="margin:auto" onSubmit="return warning(this)">
                             <textarea id="phaseOutId" name="phaseOutId" readonly="readonly" style="display: none;">{{_id}}</textarea>
                             <h2 style="color:red">Warning</h2><hr>
