@@ -3,6 +3,8 @@ const InventoryRecord = require('../model/inventoryRecord.js');
 const OrderItem = require("../model/orderitem.js");
 const sanitize = require('mongo-sanitize');
 const orderitem = require('../model/orderitem.js');
+const { findSeries } = require('async');
+const fs = require('fs')
 const PAGE_LIMIT = 10;
 
 const inventoryController = {
@@ -281,10 +283,82 @@ const inventoryController = {
 
             res.redirect('/admin/inventory/phasedout')
         })
+    },
+
+    getProductImage: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+
+        let _id = sanitize(req.query._id);
+        Product.findById(_id)
+        .select('image')
+        .exec((err, result) => {
+            res.send(result.image);
+        })
+    },
+
+    updateProductImage: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+
+        let file = req.file;
+        let _id = sanitize(req.body.editImageProductId);
+        
+        if (!file) {
+            res.redirect(req.get('referer'));
+            return;
+        }
+
+        if (file.size > (1048576 * 2)) {
+            res.redirect(req.get('referer'));
+            return;
+        }
+
+        let imageName = renameImage(file, _id);
+
+        updateImage(_id, imageName, res).then((a) => {
+            res.redirect(req.get('referer'));
+        })
     }
+
 }
 
 module.exports = inventoryController;
+
+async function updateImage(_id, imageName, res) {
+    let extension = imageName.substring(imageName.lastIndexOf("."))
+    let filename = imageName.split('.').slice(0, -1).join('.');
+    console.log(_id)
+    Product.findByIdAndUpdate(_id, {image: imageName}).then((a) => {
+        switch (extension) {
+            case '.jpg':
+                fs.unlink('./public/productimgs/' + filename + '.png', (fds) => {});
+                fs.unlink('./public/productimgs/' + filename + '.jpeg', (fds) => {});
+                break;
+            case '.png': 
+                fs.unlink('./public/productimgs/' + filename + '.jpg', (fds) => {});
+                fs.unlink('./public/productimgs/' + filename + '.jpeg', (fds) => {});
+                break;
+            case '.jpeg':
+                fs.unlink('./public/productimgs/' + filename + '.png', (fds) => {});
+                fs.unlink('./public/productimgs/' + filename + '.jpg', (fds) => {});
+                break;
+        }
+    })
+}
+
+function renameImage(file, newName) {
+    let original = file.originalname;
+    let extension = original.substring(original.lastIndexOf("."));
+    const newUrl = file.destination + '/' + newName + extension;
+
+    fs.renameSync(file.path, newUrl);
+    return newName + extension;
+}
 
 
 function getInventory(req, res, phasedOut) {

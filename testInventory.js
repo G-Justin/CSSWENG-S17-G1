@@ -3,13 +3,8 @@ database.connect();
 const Product = require('./model/product.js');
 const OrderItem = require('./model/orderitem');
 
-OrderItem.find({})
-.exec((err, result) => {
-    console.log(result)
-})
-
 Product.find({})
-.select('smallAvailable')
+.select()
 .exec((err, result) => {
     console.log(result);
 })

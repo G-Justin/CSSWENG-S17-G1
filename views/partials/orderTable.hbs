@@ -46,7 +46,7 @@
     <td>{{extraLargeAvailable}}</td>
     <td>{{totalAvailable}}</td>
     {{#if notPhasedOut}}
-        <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_test" style="font-size:12px">Edit Product</button></td>
+        <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_edit_{{_id}}" style="font-size:12px">Edit Product</button></td>
     {{else}}
     {{/if}}
 </tr>
@@ -80,7 +80,7 @@
           </div>
   </div>
 
-  <div id="modal_test" class="modal fade" role="dialog">
+  <div id="modal_edit_{{_id}}" name="modal_edit" class="modal fade" role="dialog">
           <div id="divtest" class="modal-dialog" id = "md2">
           <div class="modal-content" style="background-color: rgb(247, 242, 242); text-align:center">
               <div class="modal-header" style="background-color;background-color: rgb(52, 58, 64);color:white">
@@ -102,10 +102,15 @@
                 <div class="tab-content mytab-content" id="myTabContent">
                     <!-- Image TAB -->
                     <div class="tab-pane fade show active" id="image" role="tabpanel" aria-labelledby="image-tab">
-                        {{image}}
-                        <form action="#"> <!-- uploads the image-->
-                            <input type="file" id="img" name="img" accept="image/*" style="width:220px"><br><br>
-                            <input type="submit" class="btn btn-primary" style="width:220px">
+                        <div class="col-md-12">
+                            <img id="productImage" name="productImage" src="" class="card-img" alt="...">
+                            
+                        </div>
+                        <form id="productImageForm" name="productImageForm" action="/updateProductImage" enctype="multipart/form-data" method="POST"> <!-- uploads the image-->
+                            <textarea readonly="readonly" id="editImageProductId" name="editImageProductId" style="display: none;">{{_id}}</textarea>
+                            <input type="file" id="newProductImage" name="newProductImage" accept="image/*" style="width:220px" required><br><br>
+                            <div id="productImageError" name="productImageError" class="text-danger" style="text-align:center"></div>
+                            <button id="submitProductImage" type="submit" class="btn btn-primary" style="width:220px">Submit</button>
                         </form>
                     </div>
                     <!-- Product Detail TAB -->

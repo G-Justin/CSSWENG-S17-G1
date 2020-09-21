@@ -5,6 +5,16 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
+//Multer image processing
+var multer = require('multer');
+var storage = multer.diskStorage({
+    destination:  './public/productimgs',
+    filename: function(req, file, cb) {
+        cb(null, file.originalname)
+    }
+}),
+productImageUpload = multer({ storage: storage }).single('newProductImage');
+
 //INIT COOKIE AND BODY
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
@@ -58,6 +68,8 @@ app.post('/admin/inventory/updateStock', inventoryController.updateStock);
 app.post('/admin/inventory/validateStockUpdate', inventoryController.validateStockUpdate);
 app.post('/admin/inventory/phaseOut', inventoryController.phaseOut);
 app.get('/admin/inventory/phasedout', inventoryController.getPhasedOut);
+app.get('/getProductImage', inventoryController.getProductImage)
+app.post('/updateProductImage', productImageUpload, inventoryController.updateProductImage)
 
 const adminCartController = require('../controller/adminCartController.js');
 app.get('/admin/orders/:_id', adminCartController.getOrder);

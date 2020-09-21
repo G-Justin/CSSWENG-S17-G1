@@ -2,6 +2,10 @@ var mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
 
 var ProductSchema = new mongoose.Schema({
+    image: {
+        type: String,
+        default: 'test.jpg'
+    },
     dateCreated: {
         type: Date,
         default: Date.now

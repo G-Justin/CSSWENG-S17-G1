@@ -320,4 +320,38 @@ $(document).ready(function(){
         })
     })
 
+
+    $('#myTabContent').on('show.bs.modal', 'div[name="modal_edit"]', function(e) {
+        
+        let image = $(this).find('div:nth-child(1)').find('div:nth-child(1)').find('img:nth-child(1)');
+        let id = $(this).find('div:nth-child(1)').find('div:nth-child(1)').find('textarea:nth-child(2)').val();
+        
+
+        $.get('/getProductImage', {_id: id}, (data) => {
+            image.attr('src', '/productimgs/' + data)  
+        })
+        
+    })
+
+    $('#myTabContent').on('click', '#submitProductImage', function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        let form = ($(this.form))[0]
+        let file = ($(this).prevAll('input'))[0];
+        let _id = $(this).prevAll('textarea').val();
+        let error1 = $(this).prev('.text-danger');
+
+        if (file.files[0] === undefined) {
+            error1.text('Choose an image')
+            return;
+        }
+        if (file.files[0].size >  (1048576 * 2)) {
+            error1.text('Image should not be larger than 2MB!')
+            return;
+        }
+
+        $(this.form).submit();
+    })
+
 })
