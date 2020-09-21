@@ -21,25 +21,28 @@
 </style>
 
 <script>
-$(document).ready(function() {
-    document.getElementById("price").value = 100; // change this to {{price}}
-    document.getElementById("ttlprice").innerHTML = "₱" + 100; // change this to {{price}}
-});
+    $(document).ready(function() {
+        document.getElementById("price").value = 100; // change this to {{price}}
+        document.getElementById("ttlprice").innerHTML = "₱" + 100; // change this to {{price}}
+    });
 
-function increment() {
-  document.getElementById("myNumber").stepUp(1);
-  document.getElementById("ttlprice").innerHTML = "₱" + document.getElementById("price").value * document.getElementById("myNumber").value;
-}
-function decrement() {
-    if (document.getElementById("myNumber").value > 1){
-        document.getElementById("myNumber").stepDown(1);
-        document.getElementById("ttlprice").innerHTML = "₱" + document.getElementById("price").value * document.getElementById("myNumber").value;
+    function increment() {
+    document.getElementById("myNumber").stepUp(1);
+    document.getElementById("ttlprice").innerHTML = "₱" + document.getElementById("price").value * document.getElementById("myNumber").value;
     }
-}
-$(document).on('change', 'input', function() {
-    document.getElementById("ttlprice").innerHTML = "₱" + document.getElementById("price").value * document.getElementById("myNumber").value;   
-});
-
+    function decrement() {
+        if (document.getElementById("myNumber").value > 1){
+            document.getElementById("myNumber").stepDown(1);
+            document.getElementById("ttlprice").innerHTML = "₱" + document.getElementById("price").value * document.getElementById("myNumber").value;
+        }
+    }
+    $(document).on('change', 'input', function() {
+        document.getElementById("ttlprice").innerHTML = "₱" + document.getElementById("price").value * document.getElementById("myNumber").value;
+        if (document.getElementById("myNumber").value <= 0){
+            document.getElementById("myNumber").value = 1;
+            document.getElementById("ttlprice").innerHTML = "₱" + document.getElementById("price").value * document.getElementById("myNumber").value;
+        }
+    });
 </script>
 
 <div class="container" style="margin-top:10%">
@@ -72,7 +75,7 @@ $(document).on('change', 'input', function() {
                     </div>
                     <div class="form-group row">
                         <h4 style="width:100px;float:left;margin-left:15px;margin-right:15px;font-family: 'Lora';font-size:22px">Quantity</h4>
-                        <div><button class="btn btn-secondary" onclick="decrement()">-</button><input type="number" id="myNumber" value="1" style="width:100px" onchange="increment"><button class="btn btn-secondary" onclick="increment()">+</button></div>
+                        <div><button class="btn btn-secondary" onclick="decrement()" style="margin-bottom:6px">-</button><input type="number" id="myNumber" value="1" style="width:100px;height:38px;" onchange="increment"><button class="btn btn-secondary" onclick="increment()" style="margin-bottom:6px">+</button></div>
                     </div>
                    <hr>
                     <div class="form-group row">
