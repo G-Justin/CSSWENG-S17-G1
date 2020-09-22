@@ -7,4 +7,4 @@ Product.find({})
 .select()
 .exec((err, result) => {
     console.log(result);
-})
+}) 

@@ -88,13 +88,10 @@ app.get('/cart', function(req, res) {
 
 //customer
 
-app.get('', function(req, res) {
-    res.render('customer/main', {title: "Welcome to Facemustph!"})
-})
+const mainCustomerController = require('../controller/mainCustomerController.js');
+app.get('', mainCustomerController.getMainCustomerPage)
+app.get('/', mainCustomerController.getMainCustomerPage)
 
-app.get('/', function(req, res) {
-    res.render('customer/main', {title: "Welcome to Facemustph!"})
-})
 
 app.get('/checkout', function(req, res) {
     res.render('customer/checkout', {title: "Checkout"})
