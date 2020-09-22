@@ -104,6 +104,9 @@ app.get('/item', function(req, res) {
     res.render('customer/item', {title: "View Item"})
 })
 
+const specificProductController = require('../controller/specificProductController.js');
+app.get('/item/:_id', specificProductController.getSpecificProduct);
+
 
 
 

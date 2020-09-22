@@ -95,7 +95,7 @@ let newProduct2 = new Product({
     style: 'STYLE 1', 
     color: 'CAR27',
     description: 'DUCKBILL FLAT',
-    price: 100,
+    price: 50,
     smallInventory: 10,
     mediumInventory: 5,
     largeInventory: 5,
