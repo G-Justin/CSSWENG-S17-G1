@@ -108,11 +108,12 @@
 
     <div class="el-wrapper" style="text-align: center;font-family: 'Lora';">
         <h3 class="center" >Filter</h3><hr>
+        
 
         <div class="container">
             <select class="selectpicker show-tick" data-size="10" name="selectDescription" id="selectDescription" data-live-search="true" title="Select Description" multiple data-actions-box="true" multiple>
                 {{#each products}}
-                    <option>{{description}}</option>
+                    <option value="{{description}}">{{description}}</option>
                 {{/each}}
             </select><br><br>
             <select class="selectpicker show-tick" data-size="10" name="selectColor" id="selectColor" data-live-search="true" title="Select Color" multiple data-actions-box="true" multiple>
@@ -130,7 +131,11 @@
       {{#each products}}
         {{> catalogue}}
       {{/each}}
+
+      
     </div>
+  {{> paginator}}
+
   </div>
 </div>
 
