@@ -6,12 +6,11 @@
 
 <style>
     .center {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
     }
-
     .carousel-indicators .active{
         background-color:black;
     }
@@ -28,7 +27,26 @@
         width:auto;
         height:350px;
     }
+    #carouselAd .carousel-indicators li {
+        width: 10px;
+        height: 10px;
+        border-radius: 100%;
+    }
+    @media only screen and (max-width: 1200px) {
+        #carouselAd{
+            min-width:100%;
+            margin-bottom: 25px;
+        }
+        #shopee{
+            min-width:100%;
+            max-height:150px;
+        }
+        .fb{
+           text-align: center;
+        }
+    }
 </style>
+
 
 <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v8.0" nonce="Nv8MumiY"></script>
@@ -36,7 +54,7 @@
 <h2 style="font-family: 'Lora';margin-top:10%">Best Sellers</h2>
 
 <div>
-<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="background-color:rgb(52, 58, 64);width:100%;margin-bottom:80px;">
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="background-color:rgb(52, 58, 64);width:100%;margin-bottom:10vh">
     <ol class="carousel-indicators">
         <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
         <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -75,29 +93,30 @@
     </a>
 </div>
 
-<div class="container text-center my-3" style="width:75%;min-height:150px">
-    <div class="row mx-auto my-auto">
-        <div id="recipeCarousel" class="carousel slide w-100" data-ride="carousel" style="min-height:150px">
-            <div class="carousel-inner w-100" role="listbox" style="min-height:150px">
-                <div class="carousel-item active" style="background-color: #3b5998;min-height:150px">
-                    <div class="fb-page" style="min-height:150px;padding:10px" data-href="https://www.facebook.com/FACEMUSTPH" data-tabs="" data-width="242" data-height="350" data-small-header="true" data-adapt-container-width="false" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/FACEMUSTPH" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/FACEMUSTPH">FACE MUST</a></blockquote></div>
-                </div>
-                <div class="carousel-item" style="background-color: #ffa500;min-height:150px">
-                    <a href="https://shopee.ph/shopeeph"> <img src="https://cfshopeesg-a.akamaihd.net/file/f0bfbe61296cce0f59ec3d0ca279eeb5" class="center" style="object-fit:scale-down;min-height:150px"></a></div>
-                <div class="carousel-item" style="height: 150px;">
-                    <a href="/cart{{id}}"><img src="../assets/horizontal.png" style="object-fit:contain;width:100%;height:150px"></a>   
-                </div>
-            </div>
-            <a class="carousel-control-prev w-auto" href="#recipeCarousel" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon bg-dark border border-dark rounded-circle" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next w-auto" href="#recipeCarousel" role="button" data-slide="next">
-                <span class="carousel-control-next-icon bg-dark border border-dark rounded-circle" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
+<div id="carouselAd" class="carousel slide" data-ride="carousel" style="background-color:rgba(0, 0, 0, 0);width:70%;float:left;">
+    <ol class="carousel-indicators">
+        <li data-target="#carouselAd" data-slide-to="0" class="active"></li>
+        <li data-target="#carouselAd" data-slide-to="1"></li>
+        <li data-target="#carouselAd" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <a href="/"><img src="../assets/sale3.jpg" style="width:100%;height:350px;object-fit:contain"></a>   
+        </div>
+        <div class="carousel-item">
+            <a href="/"><img src="../assets/sale.jpg" style="width:100%;height:350px;object-fit:contain"></a>   
+        </div>
+        <div class="carousel-item">
+            <a href="/"><img src="../assets/sale2.jpg" style="width:100%;height:350px;object-fit:contain"></a>   
         </div>
     </div>
+  
+</div>
+
+    <div class="fb">
+        <div class="fb-page" style="min-height:150px;" data-href="https://www.facebook.com/FACEMUSTPH" data-tabs="" data-width="300" data-height="400" data-small-header="true" data-adapt-container-width="false" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/FACEMUSTPH" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/FACEMUSTPH">FACE MUST</a></blockquote></div>
+    </div>
+    <a href="https://shopee.ph/shopeeph"> <img src="https://cfshopeesg-a.akamaihd.net/file/f0bfbe61296cce0f59ec3d0ca279eeb5" id="shopee" style="object-fit:scale-down;min-height:150px;width:300px;background-color:#ffa500"></a>
 </div>
 
 <h3 style="width:140px;margin-top:100px;font-family: 'Lora';">Catalogues</h3>
@@ -108,12 +127,11 @@
 
     <div class="el-wrapper" style="text-align: center;font-family: 'Lora';">
         <h3 class="center" >Filter</h3><hr>
-        
 
         <div class="container">
             <select class="selectpicker show-tick" data-size="10" name="selectDescription" id="selectDescription" data-live-search="true" title="Select Description" multiple data-actions-box="true" multiple>
                 {{#each products}}
-                    <option value="{{description}}">{{description}}</option>
+                    <option>{{description}}</option>
                 {{/each}}
             </select><br><br>
             <select class="selectpicker show-tick" data-size="10" name="selectColor" id="selectColor" data-live-search="true" title="Select Color" multiple data-actions-box="true" multiple>
@@ -131,11 +149,7 @@
       {{#each products}}
         {{> catalogue}}
       {{/each}}
-
-      
     </div>
-  {{> paginator}}
-
   </div>
 </div>
 
