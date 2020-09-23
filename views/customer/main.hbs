@@ -23,6 +23,15 @@
         height:240px;
         padding:15px;
     }
+
+    .my-4{
+        margin-top: 0px;
+    }
+
+    .el-wrapper p{
+        margin-bottom: 0rem;
+    }
+
     #carouselExampleIndicators .carousel-item img{
         width:auto;
         height:350px;
@@ -117,30 +126,36 @@
   <div class="page-inner">
     <div class="row">
 
-    <div class="el-wrapper" style="text-align: center;font-family: 'Lora';">
-        <h3 class="center" >Filter</h3><hr>
-        
-        <form id="customerFilter" name="customerFilter" method="GET">
-            <div class="container">
-            <select class="selectpicker show-tick" data-size="10" name="selectDescription" id="selectDescription" data-live-search="true" title="Select Description" multiple data-actions-box="true" multiple>
-                {{#each productSelect}}
-                    <option value="{{description}}">{{description}}</option>
-                {{/each}}
-            </select><br><br>
-            <select class="selectpicker show-tick" data-size="10" name="selectColor" id="selectColor" data-live-search="true" title="Select Color" multiple data-actions-box="true" multiple>
-                {{#each productSelect}}
-                    <option>{{color}}</option>
-                {{/each}}
-            </select><br><br>
-            <input step="50" value="0" type="number" min="0" max="{{maxPrice}}" placeholder="Min ₱" class="form-control my-2 col-sm-6" type="int" id="minPrice" name="minPrice" style="float:left"/>
-            <input step="50" value="{{maxPrice}}" type="number" min="0" max="{{maxPrice}}" placeholder="Max ₱" class="form-control my-2 col-sm-6" type="int" id="maxPrice" name="maxPrice" style="float:left"/>
-            <br><br><br>
-            <button type="submit" class="btn btn-primary">Confirm</button>
-        </div>
-    </div>
+        <div class="el-wrapper" style="text-align: center;font-family: 'Lora';">
+            <h3 class="center" >Filter</h3><hr>
+            
+            <form id="customerFilter" name="customerFilter" method="GET">
+                <div class="container">
+                <select class="selectpicker show-tick" data-size="10" name="selectDescription" id="selectDescription" data-live-search="true" title="Select Description" multiple data-actions-box="true" multiple>
+                    {{#each productSelect}}
+                        <option value="{{description}}">{{description}}</option>
+                    {{/each}}
+                </select><br><br>
+                <select class="selectpicker show-tick" data-size="10" name="selectColor" id="selectColor" data-live-search="true" title="Select Color" multiple data-actions-box="true" multiple>
+                    {{#each productSelect}}
+                        <option>{{color}}</option>
+                    {{/each}}
+                </select><br><br>
+                
+                <p>Price Range</p>
 
-        </form>
-        
+                <div class="d-flex justify-content-center my-4 slider">
+                    <form>
+                        <input id="slider11" class="border-0" type="range" min="0" max="{{maxPrice}}" />
+                    </form>
+                    <span class="font-weight-bold text-primary ml-2 mt-1 valueSpan"></span>
+                </div>
+            
+                <button type="submit" class="btn btn-primary">Confirm</button>
+                </div>
+            </form>
+        </div>
+
 
       {{#each products}}
         {{> catalogue}}
@@ -155,6 +170,20 @@
     {{> paginator}}
   </div>
 </div>
+
+<script>
+$(document).ready(function() {
+
+  const $valueSpan = $('.valueSpan');
+  const $value = $('#slider11');
+  $valueSpan.html($value.val());
+  $value.on('input change', () => {
+
+    $valueSpan.html($value.val());
+  });
+});
+
+</script>
 
 
 </div>
