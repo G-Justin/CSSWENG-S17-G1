@@ -104,7 +104,9 @@ app.get('/item', function(req, res) {
 const specificProductController = require('../controller/specificProductController.js');
 app.get('/item/:_id', specificProductController.getSpecificProduct);
 
-
+app.get('/track', function(req, res) {
+    res.render('customer/track', {title: "Track your Parcel"})
+})
 
 
 module.exports = app;
