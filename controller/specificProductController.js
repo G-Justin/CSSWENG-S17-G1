@@ -37,7 +37,8 @@ const specificProductController = {
 
                         res.render('customer/item', {
                             title: productResult.style + "| " + productResult.description,
-
+                            
+                            _id: productResult._id,
                             style: productResult.style,
                             description: productResult.description,
                             color: productResult.color,

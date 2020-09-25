@@ -7,8 +7,11 @@ const mainCustomerController = {
     getMainCustomerPage: function(req, res) {
         if (req.session.cart === null || req.session.cart === undefined) {
             req.session.cart = new Array();
+            console.log('bruh')
         }
 
+        console.log(req.session.cart)
+        req.session.cart.push('nigger')
         let selectDescription = sanitize(req.query.selectDescription);
         let description = getArrayQuery(selectDescription);
         let descriptionUrlPiece = getUrlPiece(description, "selectDescription");

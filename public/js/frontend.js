@@ -1,9 +1,99 @@
 
+
 $(document).ready(function(){
 
     const MAX_INT = (Number.MAX_SAFE_INTEGER - 10);
     const MIN_INT = (Number.MIN_SAFE_INTEGER + 10);
 
+    const CART = {
+        KEY: "cart",
+        contents: [],
+        init() {
+            let _contents = localStorage.getItem(CART.KEY)
+            if (_contents) {
+                CART.contents = JSON.parse(_contents)
+            } else {
+
+            }
+            CART.sync()
+        },
+        async sync() {
+            let _cart = JSON.stringify(CART.contents);
+            await localStorage.setItem(CART.KEY, _cart);
+        },
+        add(order) {
+            let found = false;
+            let foundIndex;
+            for (let i = 0; i < CART.contents.length; i++) {
+                if (CART.contents[i].product == order.productId) {
+                    foundIndex = i;
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found) {
+                switch(order.size){
+                    case "S":
+                        CART.contents[foundIndex].smallAmount = CART.contents[foundIndex].smallAmount + Number(order.amount);
+                        break;
+                    case "M":
+                        CART.contents[foundIndex].mediumAmount = CART.contents[foundIndex].mediumAmount + Number(order.amount);
+                        break;
+                    case "L":
+                        CART.contents[foundIndex].largeAmount = CART.contents[foundIndex].largeAmount + Number(order.amount);
+                        break;
+                    case "XL":
+                        CART.contents[foundIndex].extraLargeAmount = CART.contents[foundIndex].extraLargeAmount + Number(order.amount);
+                        break;
+                    default:
+                        alert('error')
+                        break;
+                }
+                CART.contents[foundIndex].price = CART.contents[foundIndex].price + Number(order.price);
+                CART.sync();
+                return;
+            }
+
+            let orderItem = {
+                product: order.productId,
+                price: order.price,
+                image: order.image,
+                style: order.style,
+                color: order.color,
+                description: order.description,
+                smallAmount: 0,
+                mediumAmount: 0,
+                largeAmount: 0,
+                extraLargeAmount: 0
+            }
+
+            switch(order.size){
+                case "S":
+                    orderItem.smallAmount = orderItem.smallAmount + Number(order.amount);
+                    break;
+                case "M":
+                    orderItem.mediumAmount = orderItem.mediumAmount + Number(order.amount);
+                    break;
+                case "L":
+                    orderItem.largeAmount = orderItem.largeAmount + Number(order.amount);
+                    break;
+                case "XL":
+                    orderItem.extraLargeAmount = orderItem.extraLargeAmount + Number(order.amount);
+                    break;
+                default:
+                    alert('error')
+                    break;
+            }
+            
+            
+            CART.contents.push(orderItem);
+            CART.sync();
+        }
+
+    }
+    
+    CART.init();
     $('#updateDeliveryDateBtn').click(function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -352,6 +442,34 @@ $(document).ready(function(){
         }
 
         $(this.form).submit();
+    })
+
+    $('#addToCart').click(function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        let productId = $('#specificProductId').val();
+        let amount = $('#myNumber').val();
+        let size = $('#specificProductSize').val();
+        let style = $('#specificProductStyle').val();
+        let color = $('#specificProductColor').text();
+        let description = $('#specificProductDescription').val();
+        let image = $('#specificProductImage').attr('src');
+        let price = $('#specificProductPrice').val();
+        
+        let order = {
+            productId: productId,
+            amount: amount,
+            size: size,
+            style: style,
+            color: color,
+            description: description,
+            image: image,
+            price: Number(price) * amount
+        }
+
+        CART.add(order)
+        
     })
 
 })
