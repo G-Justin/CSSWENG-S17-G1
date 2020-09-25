@@ -71,8 +71,11 @@
             values: [0, {{maxPrice}}],
             slide: function(event, ui) {
                 $("#price").val("₱" + ui.values[0] + " - ₱" + ui.values[1]);
+                $('#minPrice').val(ui.values[0]);
+                $('#maxPrice').val(ui.values[1])
             }
         });
+        
         $("#price").val("₱" + $("#slider-3").slider("values", 0) + " - ₱" + $("#slider-3").slider("values", 1));
         $("#slider-3 .ui-slider-range" ).css('background', 'rgb(52, 58, 64)');
     });
@@ -170,6 +173,9 @@
                 <input type ="text" id = "price" style="background-color: rgba(134, 133, 133, 0);border-width:0px;text-align:center;outline:none" readonly>
             
                 <br><br>
+
+                <input readonly="readonly" id="minPrice" name="minPrice" type="hidden" value="0"></input>
+                <input readonly="readonly" id="maxPrice" name="maxPrice" style="display: none;" value="{{maxPrice}}"></input>
 
                 <button type="submit" class="btn btn-primary">Confirm</button>
                 </div>
