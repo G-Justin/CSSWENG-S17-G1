@@ -10,7 +10,7 @@ const orderitem = require('../model/orderitem');
 const dashboardController = {
     trackOrder: function(req, res) {
 
-        let _id = sanitize(req.params._id)
+        let _id = sanitize(req.query._id)
         let validator = sanitize(req.query.validator);
 
         Order.findOne({_id: _id})
@@ -25,7 +25,7 @@ const dashboardController = {
                     })
                     return;
                 }
-/*
+
                 if (isNaN(validator)) {
                     if (validator != orderResult.email) {
                         res.render('error', {
@@ -44,7 +44,7 @@ const dashboardController = {
                         })
                         return;
                     }
-                } */
+                } 
 
                 let shippingFee = (orderResult.shippingFee == null) ? "PROCESSING" : "₱" + orderResult.shippingFee;
 

@@ -469,7 +469,10 @@ $(document).ready(function(){
         }
 
         CART.add(order)
+    });
+
+    /*$('#myTabContent').on('click', "#editProductBtn", function(e) {
         
-    })
+    })*/
 
 })

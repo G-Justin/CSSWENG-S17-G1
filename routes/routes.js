@@ -105,7 +105,11 @@ const specificProductController = require('../controller/specificProductControll
 app.get('/item/:_id', specificProductController.getSpecificProduct);
 
 const trackOrderController = require('../controller/trackOrderController.js');
-app.get('/track/:_id', trackOrderController.trackOrder);
+app.get('/track/', trackOrderController.trackOrder);
+
+app.post('/editProductDetails', function(req, res) {
+    res.redirect(req.get('referer'))
+})
 
 
 module.exports = app;
