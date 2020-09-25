@@ -4,7 +4,7 @@ const Product = require('../model/product.js');
 
 const specificProductController = {
     getSpecificProduct: function(req, res) {
-        if (req.session.cart === null || req.session.cart === undefined) {
+        if (!(req.session.cart)) {
             req.session.cart = new Array();
         }
 
