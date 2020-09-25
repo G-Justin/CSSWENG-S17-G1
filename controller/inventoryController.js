@@ -107,12 +107,15 @@ const inventoryController = {
         let query = {
             style: style.trim().toUpperCase(),
             color: color.trim().toUpperCase(),
-            description: description.trim().toUpperCase()
+            description: description.trim().toUpperCase(),
+            isPhasedOut: false
         };
 
-        Product.exists(query, function(err, result) {
-            res.send(result);
+        Product.findOne(query, function(err, result) {
+            res.send(result != null);
         })
+
+       
     },
 
     updateStock: function(req, res) {
