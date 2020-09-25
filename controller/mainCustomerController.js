@@ -5,13 +5,7 @@ const async = require('async')
 
 const mainCustomerController = {
     getMainCustomerPage: function(req, res) {
-        if (req.session.cart === null || req.session.cart === undefined) {
-            req.session.cart = new Array();
-            console.log('bruh')
-        }
-
-        console.log(req.session.cart)
-        req.session.cart.push('nigger')
+        
         let selectDescription = sanitize(req.query.selectDescription);
         let description = getArrayQuery(selectDescription);
         let descriptionUrlPiece = getUrlPiece(description, "selectDescription");
@@ -136,6 +130,7 @@ function getArrayQuery(data) {
     if (data == null || data == "undefined" || data == undefined) {
         return new Array();
     }
+
     let query = new Array();
     if (Array.isArray(data)) {
         query.push(...data);
@@ -149,6 +144,7 @@ function getArrayQuery(data) {
 function getUrlPiece(data, type) {
     let query = "&" + type + "=";
     let urlPiece = "";
+
     if (Array.isArray(data)) {
         for (let i = 0; i < data.length; i++) {
             urlPiece = urlPiece + "&selectDescription=" + data[i];
@@ -157,5 +153,6 @@ function getUrlPiece(data, type) {
     else {
         urlPiece = "&selectDescription=" + data;
     }
+    
     return urlPiece;
 }
