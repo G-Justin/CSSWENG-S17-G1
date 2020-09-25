@@ -61,6 +61,7 @@ app.get('/admin/inventory/phasedout', inventoryController.getPhasedOut);
 
 const adminCartController = require('../controller/adminCartController.js');
 app.get('/admin/orders/:_id', adminCartController.getOrder);
+app.post('/admin/cart/checkDeliveryUpdate', adminCartController.checkDeliveryUpdate);
 app.post('/admin/orders/updateShippingFee', adminCartController.updateShippingFee);
 app.post('/admin/orders/updateDeliveryStatus', adminCartController.updateDeliveryStatus);
 app.post('/admin/orders/updatePaymentStatus', adminCartController.updatePaymentStatus);
@@ -72,6 +73,16 @@ app.get('/admin/cart', (request, res) => {
 app.get('/cart', function(req, res) {
     res.render('customer/cart', {title: 'Cart'});
 });
+
+app.get('/checkout', function(req, res) {
+    res.render('customer/checkout', {title: 'Checkout'});
+});
+
+app.get('/facemust', function(req, res) {
+    res.render('customer/main', {title: 'FACEMUST'});
+});
+
+
 
 
 

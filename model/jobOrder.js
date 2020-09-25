@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
 
 var JobOrderSchema = new mongoose.Schema({
+    created: {
+        type: Date,
+        default: Date.now
+    },
     productId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true

@@ -1,5 +1,69 @@
-<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
-<script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.5/js/responsive.bootstrap.min.js"></script>
+
+<style>
+    .modal-backdrop {
+    z-index: auto;
+    }
+    #myTabContent{
+      z-index: auto;
+    }
+    .row{
+      width:100%;
+    }
+</style>
+
+<script>
+    window.onresize = function(event) //refreshes a window once a viewport size changes KEEP THIS
+    {
+      document.location.reload(true);
+    }
+
+     $(document).ready(function() {
+    
+         var table = $('#productTable').DataTable({ 
+          responsive: true,
+          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]] //can display all data
+        }); 
+        //new $.fn.dataTable.fixedHeader(table); //this doesnt do anything except returning error
+    });
+
+    $(document).ready(function() {
+        var table2 = $('#defTable').DataTable( {
+        responsive: true
+      });
+    // $.fn.dataTable.FixedHeader(table2);
+    });
+
+    $(document).ready(function() {
+          var table3 = $('#logTable').DataTable( {
+          responsive: true
+      });
+    //new $.fn.dataTable.FixedHeader(table3); 
+    });
+
+    //who knows why but the datatable responsive view only works when the tab class is initially set to "show active"
+    //so we have to make those who aren't the front page "not active" when we launch the app
+    $(document).ready(function(){                                       
+        document.getElementById('deficit').className = 'tab-pane fade';
+        document.getElementById('log').className = 'tab-pane fade';
+    });
+      
+    function warning(form) //shows the warning when the user press the phase out button
+    {
+      var warn = confirm("Warning\nThis will Phase Out the product");
+      if (warn){
+       return true
+      }
+      else
+        return false
+    }
+
+</script>
 
 <style>
   .media-text{
@@ -26,9 +90,67 @@
   .modal input{
     min-width:200px;
   }
+
 </style>
 
 {{#if notPhasedOut}}
+
+<div class="modal fade" id="modal_add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header text-center">
+            <h4 class="modal-title w-100 font-weight-bold">New Product</h4>
+            <button type="button" class="close" data-dismiss="modal" id="newProductClose" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        <form id="newProductForm" name="newProductForm"method="POST" action="/admin/inventory/addProduct">
+            <div class="modal-body mx-3">
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Style: </label>
+                <input maxlength="16" type="text" class="col-sm-3 form-control validate" name="newProductStyle" id="newProductStyle" required>
+              </div>
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Description: </label>
+                <input maxlength="20" type="text" class="col-sm-3 form-control validate" name="newProductDescription" id="newProductDescription" required>
+              </div>
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Color: </label>
+                <input maxlength="16" type="text" class="col-sm-3 form-control validate" name="newProductColor" id="newProductColor" required>
+              </div>
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Price: </label>
+                <input min="0" max="9007199254740981" type="number" class="col-sm-3 form-control validate" id="newProductPrice" name="newProductPrice" required>
+              </div>
+              <hr>
+              <h5 class="text-center my-2 justify-content-center">Initial Stock</h5>
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Small: </label>
+                <input min="0" max="9007199254740981" type="number" class="col-sm-3 form-control validate" name="newProductS" id="newProductS" required>
+              </div>
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Medium: </label>
+                <input min="0" max="9007199254740981" type="number" class="col-sm-3 form-control validate" name="newProductM" id="newProductM" required>
+              </div>
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Large: </label>
+                <input min="0" max="9007199254740981" type="number" class="col-sm-3 form-control validate" name="newProductL" id="newProductL" required>
+              </div>
+              <div class="row md-form my-2 justify-content-center">
+                <label class="col-sm-3">Extra Large: </label>
+                <input min="0" max="9007199254740981" type="number" class="col-sm-3 form-control validate" name="newProductXl" id="newProductXl" required>
+              </div>
+              <div id="newProductError" name="newProductError" class="text-danger" style="text-align:center"></div>
+              <!--<p id="msgEd1" class="text-danger mb-0 mt-2 text-center"></p>-->
+            </div>
+          <div class="modal-footer d-flex justify-content-center">
+           <button type="submit" id="newProductBtn" name="newProductBtn" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+    </div>
+  </div>
+</div>
+<!--
   <div id="modal_add" class="modal fade" role="dialog">
           <div class="modal-dialog" id = "md1">
             <div class="modal-content" style="background-color: rgb(247, 242, 242)">
@@ -69,35 +191,143 @@
         
           </div>
   </div>
+  -->
 {{/if}}
+
+
+
+<!-- FILTER DIV-->
+<!--
 <div class="jumbotron shadow p-4 text-center">
     <h4>Filter: {{resultsMessage}}</h4><hr>
-    <form class="form-inline mb-2 justify-content-center" id="searchInventory" name="searchInventory" mehtod="get" action="#">
-        <input class="form-control my-2" type="text" name="style" id="style" placeholder=" Enter Style">
-        <input class="form-control my-2 mx-sm-3" type="text" name="color" id="color" placeholder=" Enter Color">
-        <input class="form-control my-2" type="text" name="description" id="description" placeholder=" Enter Description">
-        <button class="btn btn-primary my-2" id="btn" type="submit">Search</button>
+    <form class="form-inline justify-content-center" id="searchInventory" name="searchInventory" mehtod="get" action="#">
+        <input class="form-control col-sm-2 my-2" type="text" name="style" id="style" placeholder="Style">
+        <input class="form-control col-sm-2 my-2 mx-sm-3" type="text" name="color" id="color" placeholder="Color">
+        <input class="form-control col-sm-2 my-2" type="text" name="description" id="description" placeholder="Description">
+        <button class="btn btn-primary my-sm-2 mx-3" id="btn" type="submit">Apply Filter</button>
     </form>
-    {{#if notPhasedOut}}
-      <button class="btn btn-primary" data-toggle="modal" data-target="#modal_add">Add New Product</button>
-      <a href="/admin/inventory/phasedOut"><button class="btn btn-primary">Check Phased Out Product</button></a>
+</div>
+-->
+
+<ul class="nav nav-mytabs" id="myTab" role="tablist">
+  <li class="nav-item">
+      <a class="nav-link active" id="products-tab" data-toggle="tab" href="#products" role="tab" aria-controls="products" aria-selected="true">Products</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="deficit-tab" data-toggle="tab" href="#deficit" role="tab" aria-controls="deficit" aria-selected="false">Deficit</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="log-tab" data-toggle="tab" href="#log" role="tab" aria-controls="log" aria-selected="false">Log</a>
+    </li>
+</ul>
+
+<!-- START OF TABS -->
+<div class="tab-content mytab-content" id="myTabContent">
+  <!-- PRODUCTS TAB -->
+  <div class="tab-pane fade show active" id="products" role="tabpanel" aria-labelledby="products-tab">
+    <!-- PLACE CODES HERE -->
+  <table class="table table-striped" id="productTable" style="padding:0">
+	<thead>
+        <tr>
+            <th class="d-xl-none"></th>
+            <!-- these columns are hidden but kinda makes the datatable responsive view weird, so removed for now-->
+            <!--
+            <th class="d-none">Image</th> 
+            <th class="d-none">id</th>
+            -->
+            <th>Color</th>
+            <th>Style</th>
+            <th>Description</th>
+            <th >Price</th>
+            <th>Small</th>
+            <th>Medium</th>
+            <th>Large</th>
+            <th>Extra Large</th>
+            <th>Total Available</th>
+            {{#if notPhasedOut}}
+            <th>Add Stock</th>
+            <th>Phase Out</th>
+            {{else}}
+            {{/if}}
+        </tr>
+		</thead>
+		<tbody>
+      {{#each products}}
+        {{> orderTable}}
+      {{/each}}
+    </tbody>
+	</table>
+  {{> paginator}} <!-- the built-in datatable paginator doesn't work but this one works only for the first tab, idk why this is interfering with the built in paginator-->
+      
+   
+  {{#if notPhasedOut}}
+      <div style="display:flex; align-content:center">
+        <button class="btn btn-primary mt-2" data-toggle="modal" data-target="#modal_add">Add New Product</button>
+        <a href="/admin/inventory/phasedOut"><button class="btn btn-primary mt-2 mx-3">Check Phased Out Product</button></a>
+      </div>
+     
     {{else}}
       <a href="/admin/inventory"><button class="btn btn-primary">Check Inventory</button></a>
     {{/if}}
-</div>
-
-<div id="producdtCardContainer"class="mt-5 row justify-content-center">
-  {{#each products}}
-    <div class="col-sm-4 col-md-4">
-      {{> productCard}}
-    </div>
-  {{/each}}
-
-  {{#if noResults}}
-    <h4 class="col-sm-4 col-md-4">No results returned</h4><hr>
-  {{/if}}
-</div>
-
-
+    
+    <!-- PLACE CODES HERE -->
+  </div>
+  <!-- DEFICIT TAB -->
+  <div class="tab-pane fade show active" id="deficit" role="tabpanel" aria-labelledby="deficit-tab"   style="overflow: auto;"> 
+    
+    <!-- PLACE CODES HERE -->
+    <table class="table table-striped" id="defTable" style="padding:0; width:100%">
+    <thead>
+        <tr>
+            <th class="d-xl-none"></th>
+            <th>Color</th>
+            <th>Style</th>
+            <th>Description</th>
+            <th>Small</th>
+            <th>Medium</th>
+            <th>Large</th>
+            <th>Extra Large</th>
+        </tr>
+    </thead>
+    <tbody>
+      {{#each products}}
+      {{> deficitTable}}
+      {{/each}}
+       </tbody>
+</table>
 {{> paginator}}
+    <!-- PLACE CODES HERE -->
+  </div>
+  <!-- LOG TAB -->
+  <div class="tab-pane fade show active" id="log" role="tabpanel" aria-labelledby="log-tab"  style="overflow: auto;">
+    <!-- PLACE CODES HERE -->
+   <table class="table table-striped" id="logTable" style="text-align: center; width:100%">
+    <thead>
+        <tr>
+            <th class="d-xl-none"></th>
+            <th>Date Enconded</th>
+            <th>Color</th>
+            <th>Style</th>
+            <th>Description</th>
+            <th>S</th>
+            <th>M</th>
+            <th>L</th>
+            <th>XL</th>
+        </tr>
+    </thead>
+    <tbody>
+      {{#each products}}
+      {{#each inventoryRecords}}
+        {{> logTable}}
+      {{/each}}
+      {{/each}}
+    </tbody>
+    </table>
+    <!-- PLACE CODES HERE -->
+  </div>
+</div>
+<!-- END OF TABS -->
+
+
+
 

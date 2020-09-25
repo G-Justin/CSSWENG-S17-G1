@@ -2,6 +2,7 @@ const sanitize = require('mongo-sanitize');
 const Order = require('../model/order.js');
 const OrderItem = require('../model/orderitem.js');
 const Product = require('../model/product.js');
+const async = require('async');
 const orderitem = require('../model/orderitem.js');
 
 const moment = require('moment');
@@ -24,7 +25,12 @@ const adminCartController = {
         .lean()
         .exec((err, orderResult) => {
             if (orderResult == null) {
-                res.redirect('/404');
+                console.log('here')
+                res.render('error', {
+                    title: 'Facemust',
+                    error: '404',
+                    message: 'ORDER DOES NOT EXIST'
+                })
                 return;
             }
 
@@ -65,6 +71,10 @@ const adminCartController = {
     },
 
     updateShippingFee: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
         let _id = sanitize(req.body.shippingFeeCartId);
         let shippingFee = Number(sanitize(req.body.shippingFeeInput));
         let js = req.body.js;
@@ -107,15 +117,18 @@ const adminCartController = {
     },
 
     updateDeliveryStatus: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+
         let _id = sanitize(req.body.updateStatusId);
         let deliveryStatus = sanitize(req.body.deliveryStatus);
         let deliveryDate = parseDate(sanitize(req.body.deliveryDate));
         let js = req.body.js;
 
         let statusEnum = new Array();
-        console.log("test" + deliveryStatus)
-        console.log("test" + deliveryDate)
-
+        
         switch(deliveryStatus) {
             case 'PROCESSING':
                 statusEnum.push('PROCESSING')
@@ -135,6 +148,10 @@ const adminCartController = {
     },
     
     updatePaymentStatus: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
         let _id = sanitize(req.body.updateStatusId);
         let paymentStatus = sanitize(req.body.paymentStatus);
         let paymentDate = parseDate(sanitize(req.body.paymentDate));
@@ -149,6 +166,11 @@ const adminCartController = {
     },
 
     voidOrder: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+
         let _id = sanitize(req.body.voidId);
 
         Order.deleteOne({_id: _id})
@@ -156,6 +178,29 @@ const adminCartController = {
             OrderItem.deleteMany({parentOrder: _id}).then((a) => {
                 res.redirect('/admin/orders');
             })
+        })
+    }, 
+
+    checkDeliveryUpdate: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+
+        let _id =  sanitize(req.body._id);
+        let deliveryDate = parseDate(sanitize(req.body.deliveryDate));
+
+        Order.findById(_id, function(err, result) {
+            if (!result) {
+                console.log(err);
+                res.redirect(req.get('referer'));
+                return;
+            }
+
+            res.send(!(deliveryDate.getTime() < result.orderDate.getTime()));
+            return;
+
+            
         })
     }
 };
@@ -197,6 +242,12 @@ function updateDeliveryStatusHelper(_id, res, deliveryDate, js, deliveryStatus, 
         .exec((err, orderResult) => {
             if (orderResult == null) {
                 res.redirect('/admin/orders');
+                return;
+            }
+
+            if (deliveryDate.getTime() < orderResult.orderDate.getTime()) {
+                console.log("error: delivery date earlier than order date");
+                res.redirect(req.get('referer'));
                 return;
             }
             

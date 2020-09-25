@@ -27,6 +27,8 @@
     <link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/bootstrap.css">
     <link rel="stylesheet" href="/css/custom.css">
+    <link rel="stylesheet" href="/css/error.css" />
+ 
     <!-- End of CSS Imports -->
     <!-- Import jquery before calling the navbar -->
     <script src="/js/jquery.min.js"></script>
@@ -44,11 +46,14 @@
     <script src="/js/bootstrap.js"></script>
     <script src="https://kit.fontawesome.com/959ec9fdad.js" crossorigin="anonymous"></script>
     <!-- End of JS Imports -->
+    {{#if error}}
+    {{else}}
     <p>&nbsp;</p>
     <footer class="footer mt-4">
       <div class="text-center container mt-4 mb-3">
         <span class="text-dark">&copy Copyright 2020.</span>
       </div>
     </footer>
+    {{/if}}
   </body>
 </html>

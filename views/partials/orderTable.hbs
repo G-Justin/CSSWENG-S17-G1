@@ -1,0 +1,70 @@
+
+
+<script>
+    function imgFlip(td){ //flips the +,- icon upon click
+        var bg = $(td).css('background-image');
+        bg = bg.replace('url("','').replace('")','');
+        if (bg === 'http://localhost:3001/assets/add.png')
+            $(td).css('background-image','url(../assets/minus.png)')
+        else
+            $(td).css('background-image','url(../assets/add.png)')
+    }
+   
+</script>
+
+<tr>
+    <td class="d-xl-none"  onclick="imgFlip(this)" style="background-image: url(../assets/add.png); background-size:25px; background-repeat:no-repeat; background-position: center;"></td>
+    <!-- these columns are hidden but kinda makes the datatable responsive view weird, so removed for now-->
+    <!--
+    <td class="d-none">{{image}}</td>
+    <td class="d-none">{{id}}</td>
+    -->
+    <td>{{color}}</td>
+    <td>{{style}}</td>
+    <td>{{description}}</td>
+    <td>{{price}}</td>
+    <td>{{smallAvailable}}</td>
+    <td>{{mediumAvailable}}</td>
+    <td>{{largeAvailable}}</td>
+    <td>{{extraLargeAvailable}}</td>
+    <td>{{totalAvailable}}</td>
+    {{#if notPhasedOut}}
+        <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_stock_{{_id}}" style="font-size:12px">Add Stock</button></td>
+        <td>
+            <form method="POST" action="/admin/inventory/phaseOut"  style="margin:auto" onSubmit="return warning(this)">
+                <textarea id="phaseOutId" name="phaseOutId" readonly="readonly" style="display: none;">{{_id}}</textarea>
+                <button class="btn btn-primary btn-sm" style = "background-color: rgb(163, 47, 47); color:white;font-size:12px; display:inline; float:left" >Phase out</button>	
+            </form>
+        </td>
+    {{else}}
+    {{/if}}
+</tr>
+	
+    <div id="modal_stock_{{_id}}" class="modal fade" role="dialog">
+          <div id="divtest" class="modal-dialog" id = "md2">
+          <div class="modal-content" style="background-color: rgb(247, 242, 242); text-align:center">
+              <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
+              <h4 class="modal-title">Update Stock in Inventory</h4>
+              <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+              </div>
+              <form id="updateStockForm" name="updateStockForm" method="POST" action="/admin/inventory/updateStock">
+                  <div class="modal-body" style="overflow:auto margin:auto; text-align:center; margin-top:2%">
+                      <label for="s">S: </label>
+                      <input type="number" name="updateStockS" id="updateStockS" placeholder=" Enter Small Amount"><br>
+                      <label for="m">M: </label>
+                      <input type="number" name="updateStockM" id="updateStockM" placeholder=" Enter Medium Amount"><br>
+                      <label for="l">L: </label>
+                      <input type="number" name="updateStockL" id="updateStockL" placeholder=" Enter Large Amount"><br>
+                      <label for="xl">XL: </label>
+                      <input type="number" name="updateStockXL" id="updateStockXL" placeholder=" Enter Extra Large Amount"><br>
+                      <div id="updateStockError" name="updateStockError" class="text-danger" style="text-align:center"></div>
+                  </div>
+                  <div class="modal-footer">
+                      <textarea readonly="readonly" id="productId" name="productId" style="display: none;">{{_id}}</textarea>
+                      <button type="submit" id="updateStockBtn" name="updateStockBtn" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);">Confirm</button>
+                      <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">Close</button>
+                  </div>
+              </form>
+          </div>
+          </div>
+  </div>
