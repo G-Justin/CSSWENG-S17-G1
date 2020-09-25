@@ -1,6 +1,7 @@
 const session = require('express-session');
 const Product = require('../model/product.js');
 const sanitize = require('mongo-sanitize');
+const async = require('async')
 
 const mainCustomerController = {
     getMainCustomerPage: function(req, res) {
@@ -25,8 +26,6 @@ const mainCustomerController = {
         }
 
         let query = getQuery(description, color, minPrice, maxPrice);
-        
-
         let options = {
             lean: true,
             page: page, 
@@ -48,41 +47,56 @@ const mainCustomerController = {
                 return;
             }
 
+            Product.find().select('description color').exec((err, selectors) => {
+                let descriptions = new Set();
+                for (let i = 0; i < selectors.length; i++) {
+                    descriptions.add(selectors[i].description);
+                }
+
+                let colors = new Set();
+                for (let i = 0; i < selectors.length; i++) {
+                    colors.add(selectors[i].color);
+                } 
+
+                let selectOptions = new Array();
+                for (let i = 0; i < productResults.totalPages; i++) {
+                    let no = i + 1;
+                    let options = {
+                        pageLink: "/?page=" + no + descriptionUrlPiece + colorUrlPiece + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice,
+                        pageNo: no,
+                        isSelected: (productResults.page == no)
+                    };
+
+                    selectOptions.push(options);
+                }
+
+                let prevPageLink = productResults.hasPrevPage ? "/?page=" + productResults.prevPage + descriptionUrlPiece + colorUrlPiece + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice: "";
+                let nextPageLink = productResults.hasNextPage ? "/?page=" + productResults.nextPage + descriptionUrlPiece + colorUrlPiece + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice: "";
+                Product.find()
+                    .sort({price: -1})
+                    .lean()
+                    .exec((err, highestPrice) => {
+                        
+                        res.render('customer/main', {
+                            title: "Welcome to Facemustph!",
+                            products: productResults.docs,
+                            maxPrice: highestPrice[0].price,
+                            productSelect: highestPrice,
+                            noResults: productResults.docs.length == 0,
+                            descriptions: descriptions,
+                            colors: colors,
             
-            let selectOptions = new Array();
-            for (let i = 0; i < productResults.totalPages; i++) {
-                let no = i + 1;
-                let options = {
-                    pageLink: "/?page=" + no + descriptionUrlPiece + colorUrlPiece + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice,
-                    pageNo: no,
-                    isSelected: (productResults.page == no)
-                };
-
-                selectOptions.push(options);
-            }
-
-            let prevPageLink = productResults.hasPrevPage ? "/?page=" + productResults.prevPage + descriptionUrlPiece + colorUrlPiece + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice: "";
-            let nextPageLink = productResults.hasNextPage ? "/?page=" + productResults.nextPage + descriptionUrlPiece + colorUrlPiece + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice: "";
-            Product.find()
-                .sort({price: -1})
-                .lean()
-                .exec((err, highestPrice) => {
-                    
-                    res.render('customer/main', {
-                        title: "Welcome to Facemustph!",
-                        products: productResults.docs,
-                        maxPrice: highestPrice[0].price,
-                        productSelect: highestPrice,
-                        noResults: productResults.docs.length == 0,
-        
-                        //pagination
-                        selectOptions: selectOptions,
-                        hasPrev: productResults.hasPrevPage,
-                        hasNext: productResults.hasNextPage,
-                        prevPageLink: prevPageLink,
-                        nextPageLink: nextPageLink
+                            //pagination
+                            selectOptions: selectOptions,
+                            hasPrev: productResults.hasPrevPage,
+                            hasNext: productResults.hasNextPage,
+                            prevPageLink: prevPageLink,
+                            nextPageLink: nextPageLink
+                        })
                     })
-                })
+                
+            })
+           
             
         })
     }

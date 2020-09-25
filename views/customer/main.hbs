@@ -155,19 +155,19 @@
             <form id="customerFilter" name="customerFilter" method="GET">
                 <div class="container">
                 <select class="selectpicker show-tick" data-size="10" name="selectDescription" id="selectDescription" data-live-search="true" title="Select Description" multiple data-actions-box="true" multiple>
-                    {{#each products}}
-                        <option>{{description}}</option>
+                    {{#each descriptions}}
+                        <option>{{this}}</option>
                     {{/each}}
                     
                 </select><br><br>
                 <select class="selectpicker show-tick" data-size="10" name="selectColor" id="selectColor" data-live-search="true" title="Select Color" multiple data-actions-box="true" multiple>
-                    {{#each products}}
-                        <option>{{color}}</option>
+                    {{#each colors}}
+                        <option>{{this}}</option>
                     {{/each}}
                 </select><br><br>
 
                 <div id = "slider-3"></div>
-                <input type = "text" id = "price" style="background-color: rgba(134, 133, 133, 0);border-width:0px;text-align:center;outline:none" readonly>
+                <input type ="text" id = "price" style="background-color: rgba(134, 133, 133, 0);border-width:0px;text-align:center;outline:none" readonly>
             
                 <br><br>
 
@@ -180,6 +180,8 @@
         {{> catalogue}}
       {{/each}}
     </div>
+
+    {{>paginator}}
   </div>
 </div>
 </div>
