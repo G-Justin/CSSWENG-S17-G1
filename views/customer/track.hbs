@@ -15,7 +15,7 @@
 </style>
 
 <div class="card" style="padding:15px;margin-top:5%;font-family: 'Lora';background-color:rgb(52, 58, 64);color:White">
-    <h4>Order Tracking - asdasdawq321{{_id}}</h4>
+    <h4>Order Tracking - {{_id}}</h4>
 </div>
 <div class="card" style="padding:15px;font-family: 'Lora';margin-top:-5px;">
     <table>
@@ -28,9 +28,9 @@
         </thead>
         <tbody>
             <tr>
-                <td>Delivering {{deliveryStatus}}</td>
-                <td>Paid {{paymentStatus}}</td>
-                <td>₱ {{shipping}}200</td>
+                <td>{{deliveryStatus}}</td>
+                <td>{{paymentStatus}}</td>
+                <td>{{shipping}}</td>
             </tr>
         </tbody>
     </table>
@@ -44,7 +44,7 @@
         </thead>
         <tbody>
             <tr>
-                <td>EGI Taft Tower Unit 1000, Taft Avenue, Malate Metro Manila 1004 {{address}}</td>
+                <td>{{address}}</td>
             </tr>
         </tbody>
     </table>
@@ -53,34 +53,9 @@
     <h5>Order Details</h5>
 </div>
 <!-- trackOrder hbs card template -->
-<div class="card" style="padding:15px;font-family: 'Lora'">
-        <table id="productTable" class="center" style="text-align: center;overflow:auto;">
-            <thead>
-                <tr>
-                    <!-- must change this into the product picture -->
-                    <th><img src="/assets/boymask.png" width="100" height="100" class=" p-1 rounded-10 d-inline-block align-top mb-1" alt="Logo"></th>
-                    <th>Premium AIRism Face Mask{{description}} - {{color}}Blue</th>
-                    <th>₱ {{price}}200 </th>
-                    <th>Quantity: 1</th>
-                </tr>
-            </thead>
-        </table>
-</div>
-<div class="card" style="padding:15px;font-family: 'Lora'">
-        <table id="productTable" class="center" style="text-align: center;overflow:auto;">
-            <thead>
-                <tr>
-                    <!-- must change this into the product picture -->
-                    <th><img src="/assets/boymask.png" width="100" height="100" class=" p-1 rounded-10 d-inline-block align-top mb-1" alt="Logo"></th>
-                    <th>Premium AIRism Face Mask{{description}} - {{color}}Blue</th>
-                    <th>₱ {{price}}200 </th>
-                    <th>Quantity: 1</th>
-                </tr>
-            </thead>
-        </table>
-</div>
 
-{{#each products}}
+
+{{#each orderItems}}
     {{> trackOrder}}
 {{/each}}
 
@@ -91,8 +66,16 @@
         <table class="center" style="text-align: center;overflow:auto;width:auto">
             <thead>
                 <tr>
-                    <th>Total:   </th>
-                    <th>₱ 400 + 200</th>
+                    <th>Base Price (without shipping fee):   </th>
+                    <th>{{basePrice}}</th>
+                </tr>
+                <tr>
+                    <th>Shipping Fee: </th>
+                    <th>{{shippingFee}}</th>
+                </tr>
+                <tr>
+                    <th>Total: </th>
+                    <th>{{totalPrice}}</th>
                 </tr>
             </thead>
         </table>

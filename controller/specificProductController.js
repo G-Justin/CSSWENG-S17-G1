@@ -43,6 +43,7 @@ const specificProductController = {
                             color: productResult.color,
                             price: productResult.price,
                             image: productResult.image,
+                            customer: true,
 
                             variations: variationsResult
                         })

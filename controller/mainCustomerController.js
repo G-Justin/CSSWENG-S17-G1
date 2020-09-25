@@ -85,6 +85,7 @@ const mainCustomerController = {
                             noResults: productResults.docs.length == 0,
                             descriptions: descriptions,
                             colors: colors,
+                            customer: true,
             
                             //pagination
                             selectOptions: selectOptions,

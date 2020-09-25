@@ -35,7 +35,11 @@
   </head>
 
   <body>
-    {{>admin_navbar}}
+    {{#if customer}}
+      {{>customer_navbar}}
+    {{else}}
+      {{>admin_navbar}}
+    {{/if}}
     <div class="container">
       {{{body}}}
     </div>
