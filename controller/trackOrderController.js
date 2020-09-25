@@ -9,7 +9,6 @@ const orderitem = require('../model/orderitem');
 
 const dashboardController = {
     trackOrder: function(req, res) {
-        //session validation
 
         let _id = sanitize(req.params._id)
         let validator = sanitize(req.query.validator);

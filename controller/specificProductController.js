@@ -4,9 +4,6 @@ const Product = require('../model/product.js');
 
 const specificProductController = {
     getSpecificProduct: function(req, res) {
-        if (!(req.session.cart)) {
-            req.session.cart = new Array();
-        }
 
         let _id = sanitize(req.params._id);
         Product.findOne({_id: _id})
