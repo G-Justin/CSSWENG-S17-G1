@@ -77,6 +77,7 @@ app.post('/admin/cart/checkDeliveryUpdate', adminCartController.checkDeliveryUpd
 app.post('/admin/orders/updateShippingFee', adminCartController.updateShippingFee);
 app.post('/admin/orders/updateDeliveryStatus', adminCartController.updateDeliveryStatus);
 app.post('/admin/orders/updatePaymentStatus', adminCartController.updatePaymentStatus);
+app.post('/admin/cart/checkDeliveryStatusUpdate', adminCartController.checkDeliveryStatusUpdate)
 app.post('/admin/orders/void', adminCartController.voidOrder);
 app.get('/admin/cart', (request, res) => {
     res.render('admin/cart',  { title: 'Cart Dashboard' });

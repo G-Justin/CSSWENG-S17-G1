@@ -102,12 +102,7 @@ $(document).ready(function(){
 
         let _id = $('#updateStatusId').val();
         let deliveryDate = $('#deliveryDate').val();
-
-        if (deliveryDate == "" || deliveryDate == "undefined" || deliveryDate == null) {
-            $(this).prop('disabled', false);
-            $('#updateDeliveryStatusForm').submit();
-            return;
-        }
+        let deliveryStatus = $('#deliveryStatus').val();
 
         $.post('/admin/cart/checkDeliveryUpdate', {_id: _id, deliveryDate: deliveryDate}, (data) => {
             if (!data) {
@@ -116,10 +111,22 @@ $(document).ready(function(){
                 return;
             }
 
-            $(this).prop('disabled', false);
-            $('#updateDeliveryStatusForm').submit();
+            $.post('/admin/cart/checkDeliveryStatusUpdate', {_id: _id, deliveryStatus: deliveryStatus}, (hasDeficit) => {
+                if (hasDeficit) {
+                    $(this).prop('disabled', false);
+                    $('#updateDeliveryDateError').text("Order has deficit. Please resolve before setting to delivered.");
+                    return;
+                }
+
+                $(this).prop('disabled', false);
+                $('#updateDeliveryStatusForm').submit();
+            })
+
+            
+
+            
         })
-      })
+      }) 
 
     $('#shipping-fee-btn').click(function(e){
         e.preventDefault();
@@ -147,7 +154,7 @@ $(document).ready(function(){
 
             $('#shipping-fee-btn').prop('disabled', false);
         });
-    });
+    }); 
 
     $('#paginator').on('change', function (param) {
         let url = $(this).val(); // get selected value

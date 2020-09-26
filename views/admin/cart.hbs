@@ -37,7 +37,16 @@
 					<div class="card-body">
 						<form id="updateDeliveryStatusForm" name="updateDeliveryStatusForm" method="POST" action="/admin/orders/updateDeliveryStatus">
 							<textarea id="updateStatusId" name="updateStatusId" readonly="readonly" style="display: none;">{{_id}}</textarea>
-							<p class="card-text"><b>Edit Delivery Status:</b> <select id="deliveryStatus" name="deliveryStatus" class="browser-default custom-select"><option value="PROCESSING">PROCESSING</option><option value="DELIVERING">DELIVERING</option><option value="DELIVERED">DELIVERED</option><option value="{{deliveryStatus}}" hidden="hidden" selected="selected">{{deliveryStatus}}</option></select></p>
+							<p class="card-text"><b>Edit Delivery Status:</b>
+								{{#if delivered}}
+									<div>DELIVERED</div>
+									<textarea id="deliveryStatus" name="deliveryStatus" readonly="readonly" style="display: none;">DELIVERED</textarea>
+								{{else}}
+								<select id="deliveryStatus" name="deliveryStatus" class="browser-default custom-select">
+									<option value="PROCESSING">PROCESSING</option><option value="DELIVERED">DELIVERED</option>
+									<option value="{{deliveryStatus}}" hidden="hidden" selected="selected">{{deliveryStatus}}</option>
+								</select></p>
+								{{/if}}
 							<label class="card-text">Delivery Date: {{deliveryDate}} <input type="date" class="form-control" id="deliveryDate" name="deliveryDate" style="width:100%"></label> 
 							<div id="updateDeliveryDateError" name="updateDeliveryDateError" class="text-danger" style="text-align:center"></div>
 							<button id="updateDeliveryDateBtn" name="updateDeliveryDateBtn" class="btn btn-primary" type="submit" style = "background-color: rgb(52, 58, 64); color:white;margin-left:85.615px;margin-top:10%">Save</a>

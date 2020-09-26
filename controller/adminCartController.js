@@ -11,6 +11,7 @@ const ordersController = require('./ordersController.js');
 
 const { deleteMany } = require('../model/order.js');
 const { response } = require('../routes/routes.js');
+const order = require('../model/order.js');
 
 const adminCartController = {
     getOrder: function(req, res) {
@@ -36,8 +37,8 @@ const adminCartController = {
 
             let orderResultItems = orderResult.orderItems;
             let orderItems = new Array();
-
-            getOrderItems(orderResultItems, orderItems).then((a) => {
+            let delivered = orderResult.deliveryStatus == "DELIVERED";
+            if (delivered) {
                 let details = {
                     _id: orderResult._id,
                     orderDate: formatDate(orderResult.orderDate),
@@ -51,6 +52,7 @@ const adminCartController = {
                     deliveryMode: orderResult.deliveryMode,
                     deliveryDate: formatDate(orderResult.deliveryDate),
                     totalItems: orderResult.orderItems.length,
+                    delivered: delivered,
     
                     deliveryStatus: orderResult.deliveryStatus,
                     paymentStatus: orderResult.paymentStatus,
@@ -58,14 +60,44 @@ const adminCartController = {
                     basePrice: orderResult.basePrice,
                     totalPrice: orderResult.totalPrice,
     
-                    orderItems: orderItems,
+                    orderItems: orderResultItems,
     
                     title: 'Customer Cart'
                 };
     
                 res.render('admin/cart', details);
-            })
-                
+            } else {
+                getOrderItems(orderResultItems, orderItems).then((a) => {
+                    let details = {
+                        _id: orderResult._id,
+                        orderDate: formatDate(orderResult.orderDate),
+                        firstname: orderResult.firstname,
+                        lastname: orderResult.lastname,
+                        contactNo: orderResult.contactNo,
+                        email: orderResult.email,
+                        address: orderResult.address,
+                        paymentMode: orderResult.paymentMode,
+                        paymentDate: formatDate(orderResult.paymentDate),
+                        deliveryMode: orderResult.deliveryMode,
+                        deliveryDate: formatDate(orderResult.deliveryDate),
+                        totalItems: orderResult.orderItems.length,
+                        delivered: delivered,
+        
+                        deliveryStatus: orderResult.deliveryStatus,
+                        paymentStatus: orderResult.paymentStatus,
+                        shippingFee: orderResult.shippingFee,
+                        basePrice: orderResult.basePrice,
+                        totalPrice: orderResult.totalPrice,
+        
+                        orderItems: orderItems,
+        
+                        title: 'Customer Cart'
+                    };
+        
+                    res.render('admin/cart', details);
+                })
+
+            }
             
         })
     },
@@ -75,6 +107,7 @@ const adminCartController = {
             res.redirect('/login');
             return;
         }
+
         let _id = sanitize(req.body.shippingFeeCartId);
         let shippingFee = Number(sanitize(req.body.shippingFeeInput));
         let js = req.body.js;
@@ -117,6 +150,72 @@ const adminCartController = {
     },
 
     updateDeliveryStatus: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+
+        let _id = sanitize(req.body.updateStatusId);
+        let deliveryStatus = sanitize(req.body.deliveryStatus);
+        let deliveryDate = parseDate(sanitize(req.body.deliveryDate));
+
+        Order.findOne({_id: _id})
+            .populate('orderItems')
+            .exec(function(err, result) {
+            if (!result) {
+                console.log("admincartcontroller error: no order id found for updating delivery status");
+                res.redirect(req.get('referer'));
+            }
+
+            console.log('1')
+
+            console.log(result.deliveryStatus)
+            console.log(deliveryStatus)
+            if (result.deliveryStatus == deliveryStatus) {
+                console.log('2')
+                if (deliveryDate != null && result.deliveryDate != null) {
+                    if (deliveryDate.getTime() < result.orderDate.getTime()) {
+                        console.log("error: delivery date earlier than order date");
+                        res.redirect(req.get('referer'));
+                        return;
+                    }
+                }
+
+                Order.updateOne({_id: _id}, {
+                    deliveryStatus: deliveryStatus,
+                    deliveryDate: deliveryDate
+                }).then((a) => {
+                    res.redirect(req.get('referer'));
+                })
+            }
+
+            if (result.deliveryStatus == 'PROCESSING' && deliveryStatus == 'DELIVERED') {
+                console.log('32323')
+                let deficits = new Array()
+                checkDeficit(result.orderItems, deficits).then((a) => {
+                    console.log(deficits)
+                    if (deficits.length > 0) {
+                        console.log('admincartcontroller: order has deficit. cannot update to delivered');
+                        res.redirect(req.get('referer'));
+                        return;
+                    }
+
+
+                    updateProductStats(result.orderItems).then((a) => {
+                        Order.updateOne({_id: _id}, {
+                            deliveryStatus: deliveryStatus,
+                            deliveryDate: deliveryDate
+                        }).then((a) => {
+                            res.redirect(req.get('referer'))
+                        })
+                    })
+                })
+            }
+          })
+    },
+
+
+    updateDeliveryStatus2: function(req, res) {
         if (!(req.session.user && req.cookies.user_sid)) {
             res.redirect('/login');
             return;
@@ -190,6 +289,12 @@ const adminCartController = {
         let _id =  sanitize(req.body._id);
         let deliveryDate = parseDate(sanitize(req.body.deliveryDate));
 
+        console.log(deliveryDate)
+        if (deliveryDate == null) {
+            res.send(true);
+            return;
+        }
+
         Order.findById(_id, function(err, result) {
             if (!result) {
                 console.log(err);
@@ -202,8 +307,83 @@ const adminCartController = {
 
             
         })
+    },
+    
+    checkDeliveryStatusUpdate: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+
+
+        let _id =  sanitize(req.body._id);
+        let deliveryStatus = sanitize(req.body.deliveryStatus);
+
+        Order.findOne({_id: _id})
+            .populate('orderItems')
+            .exec(function(err, result) {
+                if (!result) {
+                    console.log(err)
+                    res.redirect(req.get('referer'));
+                    return;
+                }
+                
+                console.log(result.deliveryStatus);
+                console.log(deliveryStatus)
+                if (result.deliveryStatus == deliveryStatus) {
+                    res.send(false);
+                    return;
+                }
+
+                let deficits = new Array()
+                checkDeficit(result.orderItems, deficits).then((a) => {
+                    let hasDeficit = deficits.length > 0;
+                    res.send(hasDeficit);
+                })
+            })
     }
 };
+
+async function updateProductStats(orderItems) {
+    for (let i = 0; i < orderItems.length; i++) {
+        let _id = orderItems[i].product;
+        let s = orderItems[i].smallAmount;
+        let m = orderItems[i].mediumAmount;
+        let l = orderItems[i].largeAmount;
+        let xl = orderItems[i].extraLargeAmount;
+
+        await Product.updateOne({_id: _id}, {
+            $inc: {
+                smallSold: s,
+                mediumSold: m,
+                largeSold: l,
+                extraLargeSold: xl,
+
+                smallAvailable: -s,
+                mediumAvailable: -m,
+                largeAvailable: -l,
+                extraLargeAvailable: -xl
+            }
+        })
+    }
+}
+
+async function checkDeficit(orderResultItems, d) {
+    for (let i = 0; i < orderResultItems.length; i++) {
+        let productResult = await Product.findOne(orderResultItems[i].product);
+        let smallDeficit = productResult.smallAvailable < orderResultItems[i].smallAmount ? (orderResultItems[i].smallAmount - productResult.smallAvailable) : 0;
+        let mediumDeficit = productResult.mediumAvailable < orderResultItems[i].mediumAmount ? (orderResultItems[i].mediumAmount - productResult.mediumAvailable) : 0;
+        let largeDeficit = productResult.largeAvailable < orderResultItems[i].largeAmount ? (orderResultItems[i].largeAmount - productResult.largeAvailable) : 0;
+        let extraLargeDeficit = productResult.extraLargeAvailable < orderResultItems[i].extraLargeAmount ? (orderResultItems[i].extraLargeAmount - productResult.extraLargeAvailable) : 0;
+
+        if (smallDeficit > 0 || mediumDeficit > 0 || largeDeficit > 0 || extraLargeDeficit > 0) {
+            d.push(1);
+            return;
+        }
+    
+    }
+}
+
 async function getOrderItems(orderResultItems, orderItems) {
     for (let i = 0; i < orderResultItems.length; i++) {
         let productResult = await Product.findOne(orderResultItems[i].product);
@@ -245,11 +425,14 @@ function updateDeliveryStatusHelper(_id, res, deliveryDate, js, deliveryStatus, 
                 return;
             }
 
-            if (deliveryDate.getTime() < orderResult.orderDate.getTime()) {
-                console.log("error: delivery date earlier than order date");
-                res.redirect(req.get('referer'));
-                return;
+            if (deliveryDate != null && orderResult.deliveryDate != null) {
+                if (deliveryDate.getTime() < orderResult.orderDate.getTime()) {
+                    console.log("error: delivery date earlier than order date");
+                    res.redirect(req.get('referer'));
+                    return;
+                }
             }
+           
             
             if (statusEnum.includes(orderResult.deliveryStatus)) {
                 Order.updateOne({ _id: _id }, {

@@ -26,7 +26,7 @@ const ordersController = {
 
         let deliveryStatus = sanitize(req.query.deliveryStatus);
         if (deliveryStatus == 'SELECT' || deliveryStatus == null || deliveryStatus == 'undefined') {
-            deliveryQueries.push('PROCESSING', 'DELIVERING', 'DELIVERED');
+            deliveryQueries.push('PROCESSING', 'DELIVERED');
         } else {
             deliveryQueries.push(deliveryStatus);
         }
