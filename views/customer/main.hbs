@@ -145,8 +145,19 @@
     <a href="https://shopee.ph/shopeeph"> <img src="https://cfshopeesg-a.akamaihd.net/file/f0bfbe61296cce0f59ec3d0ca279eeb5" id="shopee" style="object-fit:scale-down;min-height:150px;width:300px;background-color:#ffa500"></a>
 </div>
 
-<h3 style="width:140px;margin-top:100px;font-family: 'Lora';">Catalogues</h3>
-               
+<div id="catalogueHeader">
+    <div id="title" style="width:100%;margin-top:100px;font-family: 'Lora';float:left">
+        <h3 style="float:left">Catalogues</h3>
+        <form id="priceSort" name="priceSort" method="GET" style="float:right">
+            <i class="fas fa-sort"></i>
+            <select class="selectpicker show-tick" data-size="2" name="priceSorting" id="priceSorting" title="Sort by Price">
+                <option>Ascending</option>
+                <option>Descending</option>
+            </select>
+        </form>
+    </div>
+</div> 
+
 <div class="container page-wrapper">
   <div class="page-inner">
     <div class="row">
