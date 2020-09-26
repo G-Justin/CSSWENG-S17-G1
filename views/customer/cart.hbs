@@ -1,7 +1,9 @@
 <script>
+var arr = JSON.parse(localStorage.getItem('cart'));
+
  $(document).ready(function() {
 	var i;
-	var arr = JSON.parse(localStorage.getItem('cart'));
+
 	var table = document.getElementById("dataTable");
   
 
@@ -16,6 +18,7 @@
 		var cell6 = row.insertCell(6);
 		var cell7 = row.insertCell(7);
 		var cell8 = row.insertCell(8);
+		var cell9 = row.insertCell(9);
 
 		cell0.innerHTML = '<img src="" id="i" style="width:50px;height:50px">'
 		document.getElementById("i").id = i;
@@ -28,18 +31,18 @@
 		cell6.innerHTML = arr[i].mediumAmount;
 		cell7.innerHTML = arr[i].largeAmount;
 		cell8.innerHTML = arr[i].extraLargeAmount;
+		cell9.innerHTML = '<button id="del" class="btn btn-danger" onClick="clearOrder(this)"><i class="fa fa-trash-o"></i></button>';
+		document.getElementById("del").id = i;
 	 }
+
     });
 
-	function clearOrder(){
-		var array = [];
-		localStorage.setItem('cart', JSON.stringify(array));
+function clearOrder(param){
+		arr.splice(param.id, 1);
+		localStorage.setItem("cart", JSON.stringify(arr));
 
-     	document.location.reload(true);
-		
-		alert("Your order has been cleared!");
+		document.location.reload(true);
 	}
-
 	
 </script>
 
@@ -55,7 +58,6 @@
 		<div class="card mb-4">
 			<div class="card-header bg-dark text-light font-weight-bold">
     			Your Order/s
-				<button class="btn btn-danger" style="float:right" onclick="clearOrder()">Clear Order</button>
   			</div>
     		<table class="table table-default" id="dataTable">
 				<thead>
@@ -69,6 +71,7 @@
 						<th>Medium</th>
 						<th>Large</th>
 						<th>Extra Large</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
