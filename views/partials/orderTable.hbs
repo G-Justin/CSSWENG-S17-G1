@@ -52,6 +52,11 @@
     {{#if notPhasedOut}}
         <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_edit_{{_id}}" onclick="initVar('{{_id}}')" style="font-size:12px">Edit Product</button></td>
     {{else}}
+        <td> <form id="phaseInProduct" name="phaseInProduct" method="POST" action="/admin/inventory/phaseInProduct">
+            <textarea readonly="readonly" id="productId" name="productId" style="display: none;">{{_id}}</textarea>
+            <button class="btn btn-primary btn-sm" type="submit" style="font-size:12px">Phase In</button>
+        </form>
+        </td>
     {{/if}}
 </tr>
 	
