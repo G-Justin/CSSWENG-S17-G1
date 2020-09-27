@@ -288,6 +288,19 @@ const inventoryController = {
         })
     },
 
+    phaseIn: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+
+        let _id = sanitize(req.body.productId);
+
+        Product.updateOne({_id: _id}, {isPhasedOut: false}).then((a) => {
+            res.redirect('/admin/inventory');
+        })
+    },
+
     getProductImage: function(req, res) {
         if (!(req.session.user && req.cookies.user_sid)) {
             res.redirect('/login');

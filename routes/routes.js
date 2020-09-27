@@ -70,6 +70,7 @@ app.post('/admin/inventory/phaseOut', inventoryController.phaseOut);
 app.get('/admin/inventory/phasedout', inventoryController.getPhasedOut);
 app.get('/getProductImage', inventoryController.getProductImage)
 app.post('/updateProductImage', productImageUpload, inventoryController.updateProductImage)
+app.post('/admin/inventory/phaseInProduct', inventoryController.phaseIn);
 
 const adminCartController = require('../controller/adminCartController.js');
 app.get('/admin/orders/:_id', adminCartController.getOrder);
