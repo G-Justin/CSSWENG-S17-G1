@@ -12,6 +12,7 @@ const ordersController = require('./ordersController.js');
 const { deleteMany } = require('../model/order.js');
 const { response } = require('../routes/routes.js');
 const order = require('../model/order.js');
+const product = require('../model/product.js');
 
 const adminCartController = {
     getOrder: function(req, res) {
@@ -38,7 +39,15 @@ const adminCartController = {
             let orderResultItems = orderResult.orderItems;
             let orderItems = new Array();
             let delivered = orderResult.deliveryStatus == "DELIVERED";
-            if (delivered) {
+            
+            let basePrice = new Array();
+            getOrderItems(orderResultItems, orderItems, basePrice, delivered).then((a) => {
+                let totalPrice = 0;
+                if (orderResult.shippingFee != null) {
+                    totalPrice = basePrice[0] + Number(orderResult.shippingFee);
+                } else {
+                    totalPrice = basePrice[0];
+                }
                 let details = {
                     _id: orderResult._id,
                     orderDate: formatDate(orderResult.orderDate),
@@ -53,51 +62,21 @@ const adminCartController = {
                     deliveryDate: formatDate(orderResult.deliveryDate),
                     totalItems: orderResult.orderItems.length,
                     delivered: delivered,
-    
+        
                     deliveryStatus: orderResult.deliveryStatus,
                     paymentStatus: orderResult.paymentStatus,
                     shippingFee: orderResult.shippingFee,
-                    basePrice: orderResult.basePrice,
-                    totalPrice: orderResult.totalPrice,
-    
-                    orderItems: orderResultItems,
-    
+                    basePrice: basePrice[0],
+                    totalPrice: totalPrice,
+        
+                    orderItems: orderItems,
+        
                     title: 'Customer Cart'
                 };
-    
+        
                 res.render('admin/cart', details);
-            } else {
-                getOrderItems(orderResultItems, orderItems).then((a) => {
-                    let details = {
-                        _id: orderResult._id,
-                        orderDate: formatDate(orderResult.orderDate),
-                        firstname: orderResult.firstname,
-                        lastname: orderResult.lastname,
-                        contactNo: orderResult.contactNo,
-                        email: orderResult.email,
-                        address: orderResult.address,
-                        paymentMode: orderResult.paymentMode,
-                        paymentDate: formatDate(orderResult.paymentDate),
-                        deliveryMode: orderResult.deliveryMode,
-                        deliveryDate: formatDate(orderResult.deliveryDate),
-                        totalItems: orderResult.orderItems.length,
-                        delivered: delivered,
-        
-                        deliveryStatus: orderResult.deliveryStatus,
-                        paymentStatus: orderResult.paymentStatus,
-                        shippingFee: orderResult.shippingFee,
-                        basePrice: orderResult.basePrice,
-                        totalPrice: orderResult.totalPrice,
-        
-                        orderItems: orderItems,
-        
-                        title: 'Customer Cart'
-                    };
-        
-                    res.render('admin/cart', details);
-                })
+            })
 
-            }
             
         })
     },
@@ -121,6 +100,7 @@ const adminCartController = {
         }
 
         Order.findById(_id)
+        .populate('orderItems')
         .select('totalPrice shippingFee')
         .exec((err, orderResult) => {
             if (!orderResult) {
@@ -128,27 +108,40 @@ const adminCartController = {
                 return;
             }
 
-            let initialShippingFee = (orderResult.shippingFee == null) ? 0 : orderResult.shippingFee;
-            let totalPrice = (orderResult.totalPrice - initialShippingFee) + shippingFee;
-            if (totalPrice >= (Number.MAX_SAFE_INTEGER - 10)) {
-                res.redirect('/admin/orders/' + _id);
-                return;
-            }
+            let basePrice = new Array();
+            getBasePrice(orderResult.orderItems, basePrice).then((a) => {
+                let totalPrice = 0;
+                    if (orderResult.shippingFee != null) {
+                        totalPrice = basePrice[0] + Number(orderResult.shippingFee);
+                    } else {
+                        totalPrice = basePrice[0];
+                    }
 
-            Order.updateOne({_id: _id}, {shippingFee: shippingFee, totalPrice: totalPrice})
-            .then((a) => {
-                let data = {
-                    shippingFee: shippingFee,
-                    totalPrice: totalPrice
-                };
-
-                if (js) {
-                    res.send(data);
-                } else {
+                let initialShippingFee = (orderResult.shippingFee == null) ? 0 : orderResult.shippingFee;
+                totalPrice = (orderResult.totalPrice - initialShippingFee) + shippingFee;
+                if (totalPrice >= (Number.MAX_SAFE_INTEGER - 10)) {
                     res.redirect('/admin/orders/' + _id);
+                    return;
                 }
+
+                Order.updateOne({_id: _id}, {shippingFee: shippingFee, totalPrice: totalPrice})
+                .then((a) => {
+                    let data = {
+                        shippingFee: shippingFee,
+                        totalPrice: totalPrice
+                    };
+
+                    if (js) {
+                        res.send(data);
+                    } else {
+                        res.redirect('/admin/orders/' + _id);
+                    }
+                    
+                })
                 
+
             })
+            
             
         })
     },
@@ -316,6 +309,16 @@ const adminCartController = {
     }
 };
 
+async function getBasePrice(orderResultItems, basePrice) {
+    let price = 0;
+    for (let i = 0; i < orderResultItems.length; i++) {
+        let productResult = await Product.findOne({_id: orderResultItems[i].product});
+        
+        price += productResult.price * (Number(orderResultItems[i].smallAmount) + Number(orderResultItems[i].mediumAmount) + Number(orderResultItems[i].largeAmount) + Number(orderResultItems[i].extraLargeAmount));
+    }
+    basePrice.push(price);
+}
+
 async function updateProductStats(orderItems) {
     for (let i = 0; i < orderItems.length; i++) {
         let _id = orderItems[i].product;
@@ -356,13 +359,21 @@ async function checkDeficit(orderResultItems, d) {
     }
 }
 
-async function getOrderItems(orderResultItems, orderItems) {
+async function getOrderItems(orderResultItems, orderItems, basePrice, delivered) {
+    let price = 0;
     for (let i = 0; i < orderResultItems.length; i++) {
         let productResult = await Product.findOne({_id: orderResultItems[i].product});
-        let smallDeficit = productResult.smallAvailable < orderResultItems[i].smallAmount ? (orderResultItems[i].smallAmount - productResult.smallAvailable) : 0;
-        let mediumDeficit = productResult.mediumAvailable < orderResultItems[i].mediumAmount ? (orderResultItems[i].mediumAmount - productResult.mediumAvailable) : 0;
-        let largeDeficit = productResult.largeAvailable < orderResultItems[i].largeAmount ? (orderResultItems[i].largeAmount - productResult.largeAvailable) : 0;
-        let extraLargeDeficit = productResult.extraLargeAvailable < orderResultItems[i].extraLargeAmount ? (orderResultItems[i].extraLargeAmount - productResult.extraLargeAvailable) : 0;
+        let smallDeficit = null;
+        let mediumDeficit = null;
+        let largeDeficit = null;
+        let extraLargeDeficit = null;
+        
+        if (!delivered) {
+            smallDeficit = productResult.smallAvailable < orderResultItems[i].smallAmount ? (orderResultItems[i].smallAmount - productResult.smallAvailable) : 0;
+            mediumDeficit = productResult.mediumAvailable < orderResultItems[i].mediumAmount ? (orderResultItems[i].mediumAmount - productResult.mediumAvailable) : 0;
+            largeDeficit = productResult.largeAvailable < orderResultItems[i].largeAmount ? (orderResultItems[i].largeAmount - productResult.largeAvailable) : 0;
+            extraLargeDeficit = productResult.extraLargeAvailable < orderResultItems[i].extraLargeAmount ? (orderResultItems[i].extraLargeAmount - productResult.extraLargeAvailable) : 0;
+        }
 
         let orderItem = {
             color: productResult.color,
@@ -377,8 +388,10 @@ async function getOrderItems(orderResultItems, orderItems) {
             extraLargeDeficit: extraLargeDeficit
         };
 
+        price += productResult.price * (Number(orderResultItems[i].smallAmount) + Number(orderResultItems[i].mediumAmount) + Number(orderResultItems[i].largeAmount) + Number(orderResultItems[i].extraLargeAmount));
         orderItems.push(orderItem);
     }
+    basePrice.push(price);
 }
 
 function parseDate(s) {

@@ -148,12 +148,7 @@ $(document).ready(function(){
         let shippingFeeCartId = $('#shippingFeeCartId').val();
         let url = '/admin/orders/updateShippingFee';
 
-        $.post(url, {shippingFeeCartId: shippingFeeCartId, shippingFeeInput: shippingFeeInput, js: true}, (data) => {
-            $('#shippingFee').html('<b>Shipping Fee: </b> ' + data.shippingFee);
-            $('#totalPrice').html('<b>Total price: </b>' + data.totalPrice);
-
-            $('#shipping-fee-btn').prop('disabled', false);
-        });
+        $('#shippingFeeForm').submit();
     }); 
 
     $('#paginator').on('change', function (param) {
