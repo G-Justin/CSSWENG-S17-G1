@@ -59,6 +59,37 @@
 			document.location.reload(true);
 		}
 		
+		function deliveryOption(bool){
+			if (bool){
+				document.getElementById("customerDeliveryMode").value = "DHL";
+				document.getElementById("customerDeliveryMode").readOnly = true;
+			}
+			else
+			{
+				document.getElementById("customerDeliveryMode").value = "";
+				document.getElementById("customerDeliveryMode").readOnly = false;
+			}
+		}
+
+		function validateForm() { //unused function
+			var array = [];
+			array.push($("#customerFirstName").val());
+			array.push($("#customerLastName").val());
+			array.push($("#customerContact").val());
+			array.push($("#customerEmail").val());
+			array.push($("#customerAddress").val());
+			array.push($("#customerPaymentMode").val());
+			array.push($("#customerDeliveryMode").val());
+			
+			var i;
+
+			for (i=0; i<array.length; i++)
+			{
+				if (array[i] == "")
+					return false;
+			}
+				return true;
+		}
 </script>
 
 <style>
@@ -127,9 +158,57 @@
 		            
 		        </div>
 		        <div class="text-center">
-		            <button type="submit" id = "checkOut" name ="checkOut" class="btn bg-dark btn-primary mt-0 mb-2">Checkout</button>
+		            <button type="submit" id = "checkOut" name ="checkOut" class="btn bg-dark btn-primary mt-0 mb-2" data-toggle="modal" data-target="#modal_customerInfo">Checkout</button>
 		        </div>
 	    	</div>
 		</div>
 	</div>
+</div>
+
+<!-- checkout page starts here -->
+<div class="modal fade" id="modal_customerInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header text-center bg-dark">
+            <h4 class="modal-title w-100 font-weight-bold text-white">Delivery Order Form</h4>
+            <button type="button" class="close" data-dismiss="modal" id="customerClose" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        <form id="customerForm" name="customerForm" method="POST" action="/">
+            <div class="modal-body mx-3">
+				<div class="row md-form my-2 justify-content-center">
+				<input maxlength="20" type="text" class="col-sm-4 form-control validate" name="customerFirstName" id="customerFirstName" placeholder="Firstname" required> <input maxlength="20" type="text" class="col-sm-4 form-control validate" name="customerLastName" id="customerLastName" placeholder="Lastname" required>
+				</div>
+				<div class="row md-form my-2 justify-content-center">
+					<input min="0" max="9007199254740981"type="number" class="col-sm-8 form-control validate" name="customerContact" id="customerContact" placeholder="Contact #" required>
+				</div>
+				<div class="row md-form my-2 justify-content-center">
+					<input maxlength="20" type="text" class="col-sm-8 form-control validate" name="customerEmail" id="customerEmail" placeholder="Email Address" required>
+				</div>
+				<div class="row md-form my-2 justify-content-center">
+					<textarea class="col-sm-8 form-control validate" name="customerAddress" id="customerAddress" placeholder="Address" required></textarea>
+				</div>
+				<div class="row md-form my-2 justify-content-center">
+					<input maxlength="20" type="text" class="col-sm-8 form-control validate" name="customerPaymentMode" id="customerPaymentMode" placeholder="Payment Mode (e.g. Gcash, BDO)" required>
+				</div>
+				<div class="row md-form my-2 justify-content-center">
+					<div class="form-check" style="margin-right:5px;">
+						<input class="form-check-input" type="radio" name="customerResident" id="customerDomestic" value="domestic" onclick="deliveryOption(false)" checked>Domestic 
+					</div>
+					<div class="form-check" style="margin-left:5px;">
+						<input class="form-check-input" type="radio" name="customerResident" id="customerInternational" value="international" onclick="deliveryOption(true)">International
+					</div>
+				</div>
+				<div class="row md-form my-2 justify-content-center">
+					<input maxlength="20" type="text" class="col-sm-8 form-control validate" name="customerDeliveryMode" id="customerDeliveryMode" placeholder="Delivery Mode (e.g. Grab, DHL)" required>
+				</div>
+            </div>
+          <div class="modal-footer d-flex justify-content-center">
+           <button type="submit" id="customerBtn" name="customerBtn" class="btn btn-primary" >Submit</button>
+		   </div>
+          </div>
+        </form>
+    </div>
+  </div>
 </div>
