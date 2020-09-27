@@ -47,9 +47,16 @@ const dashboardController = {
                 } 
 
                 let shippingFee = (orderResult.shippingFee == null) ? "PROCESSING" : "₱" + orderResult.shippingFee;
-
+                let basePrice = new Array();
                 let orderItemsArray = new Array();
-                getOrderItems(orderResult.orderItems, orderItemsArray).then((a) => {
+                getOrderItems(orderResult.orderItems, orderItemsArray, basePrice).then((a) => {
+                    let totalPrice = 0;
+                    if (orderResult.shippingFee != null) {
+                        totalPrice = basePrice[0] + Number(orderResult.shippingFee);
+                    } else {
+                        totalPrice = basePrice[0];
+                    }
+
                     res.render('customer/track', {
                         title: "Track Order",
                         customer: true,
@@ -60,8 +67,8 @@ const dashboardController = {
                         address: orderResult.address,
                         firstname: orderResult.firstname,
                         lastname: orderResult.lastname,
-                        basePrice: orderResult.basePrice,
-                        totalPrice: orderResult.totalPrice,
+                        basePrice: basePrice[0],
+                        totalPrice: totalPrice,
                         orderItems: orderItemsArray
                     })
                 })
@@ -80,7 +87,8 @@ const dashboardController = {
 
 module.exports = dashboardController;
 
-async function getOrderItems(orderItems, array) {
+async function getOrderItems(orderItems, array, basePrice) {
+    let price = 0;
     for (let i = 0; i < orderItems.length; i++) {
         let product = await Product.findOne({_id: orderItems[i].product});
         let newOrder = {
@@ -88,13 +96,15 @@ async function getOrderItems(orderItems, array) {
             style: product.style,
             description: product.description,
             color: product.color,
-            price: orderItems[i].price,
+            price: product.price,
             smallAmount: orderItems[i].smallAmount,
             mediumAmount: orderItems[i].mediumAmount,
             largeAmount: orderItems[i].largeAmount,
             extraLargeAmount: orderItems[i].extraLargeAmount
         }
 
+        price += product.price * (Number(orderItems[i].smallAmount) + Number(orderItems[i].mediumAmount) + Number(orderItems[i].largeAmount) + Number(orderItems[i].extraLargeAmount));
         array.push(newOrder);
     }
+    basePrice.push(price)
 }

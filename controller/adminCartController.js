@@ -109,7 +109,10 @@ const adminCartController = {
         }
 
         let _id = sanitize(req.body.shippingFeeCartId);
-        let shippingFee = Number(sanitize(req.body.shippingFeeInput));
+        let shippingFee = sanitize(req.body.shippingFeeInput);
+        if (shippingFee != null) {
+            shippingFee = Number(shippingFee);
+        }
         let js = req.body.js;
         
         if (shippingFee < 0) {
@@ -125,7 +128,8 @@ const adminCartController = {
                 return;
             }
 
-            let totalPrice = (orderResult.totalPrice - orderResult.shippingFee) + shippingFee;
+            let initialShippingFee = (orderResult.shippingFee == null) ? 0 : orderResult.shippingFee;
+            let totalPrice = (orderResult.totalPrice - initialShippingFee) + shippingFee;
             if (totalPrice >= (Number.MAX_SAFE_INTEGER - 10)) {
                 res.redirect('/admin/orders/' + _id);
                 return;
@@ -354,7 +358,7 @@ async function checkDeficit(orderResultItems, d) {
 
 async function getOrderItems(orderResultItems, orderItems) {
     for (let i = 0; i < orderResultItems.length; i++) {
-        let productResult = await Product.findOne(orderResultItems[i].product);
+        let productResult = await Product.findOne({_id: orderResultItems[i].product});
         let smallDeficit = productResult.smallAvailable < orderResultItems[i].smallAmount ? (orderResultItems[i].smallAmount - productResult.smallAvailable) : 0;
         let mediumDeficit = productResult.mediumAvailable < orderResultItems[i].mediumAmount ? (orderResultItems[i].mediumAmount - productResult.mediumAvailable) : 0;
         let largeDeficit = productResult.largeAvailable < orderResultItems[i].largeAmount ? (orderResultItems[i].largeAmount - productResult.largeAvailable) : 0;

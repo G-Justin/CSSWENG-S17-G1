@@ -48,7 +48,6 @@ let newOrder = new Order({
     deliveryDate: new Date("2021-08-08"),
     basePrice: 1600,
     totalPrice: 1600,
-    shippingFee: 0
 });
 
 let newProduct = new Product({
