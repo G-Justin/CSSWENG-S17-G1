@@ -231,12 +231,20 @@ $(document).ready(function(){
         }
 
         $.post("/admin/inventory/validateNewProduct", {style: style, color: color, description: description}, (data) => {
-            if (data) {
+           
+
+            if (data.isPhasedOut == false) {
                 $('#newProductError').text("Product already exists in the inventory!")
                 return;
             }
 
+            if (data.isPhasedOut == true) {
+                $('#newProductError').text("Phased out product exists. Phase it back in instead.");
+                return;
+            }
+
             $('#newProductForm').submit();
+            
         })
     }) 
 
