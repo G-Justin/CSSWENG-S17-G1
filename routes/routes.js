@@ -71,7 +71,7 @@ app.get('/admin/inventory/phasedout', inventoryController.getPhasedOut);
 app.get('/getProductImage', inventoryController.getProductImage)
 app.post('/updateProductImage', productImageUpload, inventoryController.updateProductImage)
 app.post('/admin/inventory/phaseInProduct', inventoryController.phaseIn);
-app.get('/inventory/requestProductDetails', inventoryController.requestProductDetails);
+app.get('/inventory/getProductDetails', inventoryController.getProductDetails);
 
 const adminCartController = require('../controller/adminCartController.js');
 app.get('/admin/orders/:_id', adminCartController.getOrder);

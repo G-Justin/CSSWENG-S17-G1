@@ -481,6 +481,5 @@ $(document).ready(function(){
         CART.add(order)
     });
 
-    
 
 })

@@ -115,6 +115,7 @@
                             <img id="productImage" name="productImage" src="" class="card-img" alt="...">
                             
                         </div>
+                        <!--IMPORTANT FORM ATTRIBUTES AND CHILDREN-->
                         <form id="productImageForm" name="productImageForm" action="/updateProductImage" enctype="multipart/form-data" method="POST"> <!-- uploads the image-->
                             <textarea readonly="readonly" id="editImageProductId" name="editImageProductId" style="display: none;">{{_id}}</textarea>
                             <input type="file" id="newProductImage" name="newProductImage" accept="image/*" style="width:220px" required><br><br>

@@ -348,7 +348,7 @@ const inventoryController = {
         })
     },
 
-    requestProductDetails: function(req, res) {
+    getProductDetails: function(req, res) {
         if (!(req.session.user && req.cookies.user_sid)) {
             res.redirect('/login');
             return;
