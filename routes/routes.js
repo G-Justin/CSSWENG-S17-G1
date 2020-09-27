@@ -83,9 +83,9 @@ app.get('/admin/cart', (request, res) => {
     res.render('admin/cart',  { title: 'Cart Dashboard' });
 });
 
-app.get('/cart', function(req, res) {
-    res.render('customer/cart', {title: 'Cart'});
-});
+const customerCartController = require('../controller/customerCartController.js');
+app.get('/cart', customerCartController.getCustomerPage);
+app.post('/cart/getData', customerCartController.getData);
 
 //customer
 

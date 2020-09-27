@@ -2,49 +2,53 @@
 
 	$(document).ready(function() {
 		var i;
-		var arr = JSON.parse(localStorage.getItem('cart'));
+		var cart = JSON.parse(localStorage.getItem('cart'));
 		var table = document.getElementById("dataTable");
 		var quantity = 0;
 		var totalPrice = 0;
-		
-		for (i = arr.length-1; i >= 0; i--){
-			var row = table.insertRow(1);
-			var cell0 = row.insertCell(0);
-			var cell1 = row.insertCell(1);
-			var cell2 = row.insertCell(2);
-			var cell3 = row.insertCell(3);
-			var cell4 = row.insertCell(4);
-			var cell5 = row.insertCell(5);
-			var cell6 = row.insertCell(6);
-			var cell7 = row.insertCell(7);
-			var cell8 = row.insertCell(8);
-			var cell9 = row.insertCell(9);
 
-			cell0.innerHTML = '<img src="" id="i" style="width:50px;height:50px">'
-			document.getElementById("i").id = i;
-			document.getElementById(i).src = arr[i].image;
-			cell1.innerHTML = arr[i].color;
-			cell2.innerHTML = arr[i].description;
-			cell3.innerHTML = arr[i].style;
-			cell4.innerHTML = '₱' + arr[i].price;
-			cell5.innerHTML = arr[i].smallAmount;
-			cell6.innerHTML = arr[i].mediumAmount;
-			cell7.innerHTML = arr[i].largeAmount;
-			cell8.innerHTML = arr[i].extraLargeAmount;
-			cell9.innerHTML = '<button id="del" class="btn btn-danger" onClick="clearOrder(this)"><i class="fa fa-trash-o"></i></button>';
-			document.getElementById("del").id = i;
+		$.post('/cart/getData', {cart: cart}, (arr) => {
+			for (i = arr.length-1; i >= 0; i--){
+				var row = table.insertRow(1);
+				var cell0 = row.insertCell(0);
+				var cell1 = row.insertCell(1);
+				var cell2 = row.insertCell(2);
+				var cell3 = row.insertCell(3);
+				var cell4 = row.insertCell(4);
+				var cell5 = row.insertCell(5);
+				var cell6 = row.insertCell(6);
+				var cell7 = row.insertCell(7);
+				var cell8 = row.insertCell(8);
+				var cell9 = row.insertCell(9);
 
-			quantity += arr[i].smallAmount + arr[i].mediumAmount + arr[i].largeAmount + arr[i].extraLargeAmount;
+				cell0.innerHTML = '<img src="" id="i" style="width:50px;height:50px">'
+				document.getElementById("i").id = i;
+				document.getElementById(i).src = arr[i].image;
+				cell1.innerHTML = arr[i].color;
+				cell2.innerHTML = arr[i].description;
+				cell3.innerHTML = arr[i].style;
+				cell4.innerHTML = '₱' + arr[i].price;
+				cell5.innerHTML = arr[i].smallAmount;
+				cell6.innerHTML = arr[i].mediumAmount;
+				cell7.innerHTML = arr[i].largeAmount;
+				cell8.innerHTML = arr[i].extraLargeAmount;
+				cell9.innerHTML = '<button id="del" class="btn btn-danger" onClick="clearOrder(this)"><i class="fa fa-trash-o"></i></button>';
+				document.getElementById("del").id = i;
 
-			$("#productSummary").append("<label for='item' class='col-sm-4 col-form-label' style='font-size:12px'>"+arr[i].description+"-"+arr[i].color+"</label>");
-			$("#productSummary").append("<p for='item' class='text-right lead col-sm-3 col-form-label'>"+"Qty: "+quantity+"</p>");
-			$("#productSummary").append("<p for='item' class='text-right lead col-sm-4 col-form-label'>"+"₱ "+arr[i].price+"</p>");
+				quantity += Number(arr[i].smallAmount) + Number(arr[i].mediumAmount) + Number(arr[i].largeAmount) + Number(arr[i].extraLargeAmount);
 
-			totalPrice += arr[i].price;
-			quantity = 0;
-		}
+				$("#productSummary").append("<label for='item' class='col-sm-4 col-form-label' style='font-size:12px'>"+arr[i].description+"-"+arr[i].color+"</label>");
+				$("#productSummary").append("<p for='item' class='text-right lead col-sm-3 col-form-label'>"+"Qty: "+quantity+"</p>");
+				$("#productSummary").append("<p for='item' class='text-right lead col-sm-4 col-form-label'>"+"₱ "+arr[i].price+"</p>");
+
+				totalPrice = totalPrice + Number(arr[i].price);
+				quantity = 0;
+			}
+
 			$("#totalAmount").append("<label for='totalPrice' class='col-sm-4 col-form-label'>Total</label>");
 			$("#totalAmount").append("<p for='totalPrice' class='text-right lead col-sm-7 col-form-label'>"+"₱ "+totalPrice+"</p>");
+		})
+			
 		});
 
 		function clearOrder(param){
