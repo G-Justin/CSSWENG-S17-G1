@@ -296,8 +296,16 @@ const inventoryController = {
 
         let _id = sanitize(req.body.productId);
 
-        Product.updateOne({_id: _id}, {isPhasedOut: false}).then((a) => {
-            res.redirect('/admin/inventory');
+        Product.updateOne({_id: _id}, {
+            isPhasedOut: false
+        }, function(err, updateResult) {
+            if (!updateResult) {
+                console.log(err);
+                res.redirect(req.get('referer'));
+                return;
+            }
+
+            res.redirect('/admin/inventory')
         })
     },
 
@@ -348,8 +356,12 @@ module.exports = inventoryController;
 async function updateImage(_id, imageName, res) {
     let extension = imageName.substring(imageName.lastIndexOf("."))
     let filename = imageName.split('.').slice(0, -1).join('.');
-    console.log(_id)
-    Product.findByIdAndUpdate(_id, {image: imageName}).then((a) => {
+    
+    Product.updateOne({_id: _id}, {image: imageName}, function(err, result) {
+        if (!result) {
+            console.log(err);
+            res.redirect(req.get('referer'));
+        }
         switch (extension) {
             case '.jpg':
                 fs.unlink('./public/productimgs/' + filename + '.png', (fds) => {});
