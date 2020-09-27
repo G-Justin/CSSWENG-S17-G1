@@ -346,6 +346,27 @@ const inventoryController = {
         updateImage(_id, imageName, res).then((a) => {
             res.redirect(req.get('referer'));
         })
+    },
+
+    requestProductDetails: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+
+        let _id = sanitize(req.query._id);
+
+        Product.findOne({_id: _id})
+            .select('image style description color price')
+            .exec(function(err, result) {
+                if (!result) {
+                    console.log("no product found");
+                    res.redirect(req.get('referer'));
+                    return;
+                }
+
+                res.send(result);
+            })
     }
 
 }
