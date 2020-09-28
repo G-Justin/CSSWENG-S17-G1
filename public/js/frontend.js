@@ -499,11 +499,7 @@ $(document).ready(function(){
         e.preventDefault();
         e.stopImmediatePropagation();
         $('#submitCheckoutError').text("");
-        grecaptcha.ready(function() {
-            grecaptcha.execute('6LcxbNEZAAAAAPpqlfMtj9dKDTNy1Sip7uqeuKg5', {action: 'submit'}).then(function(token) {
-                // Add your logic to submit to your backend server here.
-            });
-          });
+        
         let items = CART.contents;
 
         let captcha = $('#g-recaptcha-response').val();
@@ -554,9 +550,12 @@ $(document).ready(function(){
             cart: items,
             captcha: captcha
         }, (data) => {
-            if (data) {
-                alert(data)
+            if (!data) {
+                $('#submitCheckoutError').text("Invalid captcha");
+                return;
             }
+
+            alert('success')
         })
 
 

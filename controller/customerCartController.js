@@ -24,7 +24,7 @@ const customerCartController = {
     newOrder: function(req, res) {
 
         if (req.body.captcha === undefined || req.body.captcha === '' || req.body.captcha === null) {
-            res.send("Invalid Captcha 1");
+            res.send(false);
             return;
         }
 
@@ -33,12 +33,12 @@ const customerCartController = {
         axios.get(verifyUrl).then(function(response) {
             console.log(response.data.success)
             if (!response.data.success) {
-                res.send("Invalid Captcha 2");
+                res.send(false);
                 return;
              }
  
              console.log('reached')
-             res.redirect('/');
+             res.send(true)
              return;
         })
 
