@@ -29,7 +29,9 @@ async function getCartItems(cart, items) {
 
     for (let i = 0; i < cart.length; i++) {
         let product = await Product.findOne({_id: cart[i].product});
-        console.log(product)
+        if (!product) {
+            continue;
+        }
         let item = {
             color: product.color,
             description: product.description,
