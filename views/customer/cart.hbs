@@ -158,6 +158,7 @@
 		            
 		        </div>
 		        <div class="text-center">
+					<div id="checkoutError" name="checkoutError" class="text-danger" style="text-align:center"></div>
 		            <button type="submit" id = "checkOut" name ="checkOut" class="btn bg-dark btn-primary mt-0 mb-2" data-toggle="modal" data-target="#modal_customerInfo">Checkout</button>
 		        </div>
 	    	</div>
@@ -184,7 +185,7 @@
 					<input min="0" max="9007199254740981"type="number" class="col-sm-8 form-control validate" name="customerContact" id="customerContact" placeholder="Contact #" required>
 				</div>
 				<div class="row md-form my-2 justify-content-center">
-					<input maxlength="20" type="text" class="col-sm-8 form-control validate" name="customerEmail" id="customerEmail" placeholder="Email Address" required>
+					<input maxlength="50" type="text" class="col-sm-8 form-control validate" name="customerEmail" id="customerEmail" placeholder="Email Address" required>
 				</div>
 				<div class="row md-form my-2 justify-content-center">
 					<textarea class="col-sm-8 form-control validate" name="customerAddress" id="customerAddress" placeholder="Address" required></textarea>
@@ -204,8 +205,10 @@
 					<input maxlength="20" type="text" class="col-sm-8 form-control validate" name="customerDeliveryMode" id="customerDeliveryMode" placeholder="Delivery Mode (e.g. Grab, DHL)" required>
 				</div>
             </div>
+			<div id="submitCheckoutError" name="submitCheckoutError" class="text-danger" style="text-align:center"></div>
           <div class="modal-footer d-flex justify-content-center">
-           <button type="submit" id="customerBtn" name="customerBtn" class="btn btn-primary" >Submit</button>
+			<div class="g-recaptcha" data-sitekey="6LcCbdEZAAAAACcOJCHbcrRNBa-jqAJv5zXrTGJt"></div>
+           <button type="submit" id="checkoutSubmit" name="checkoutSubmit" class="btn btn-primary" >Submit</button>
 		   </div>
           </div>
         </form>

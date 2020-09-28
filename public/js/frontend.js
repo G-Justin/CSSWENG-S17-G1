@@ -481,5 +481,86 @@ $(document).ready(function(){
         CART.add(order)
     });
 
+    $('#checkOut').click(function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $('#checkoutError').text('')
+        let items = CART.contents;
+        
+        //if (items === undefined || items.length == 0) {
+        //    $('#checkoutError').text('Cart empty!')
+        //    return;
+        //}
+        
+        $('#modal_customerInfo').modal('toggle')
+    })
+
+    $('#checkoutSubmit').click(function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $('#submitCheckoutError').text("");
+        grecaptcha.ready(function() {
+            grecaptcha.execute('6LcxbNEZAAAAAPpqlfMtj9dKDTNy1Sip7uqeuKg5', {action: 'submit'}).then(function(token) {
+                // Add your logic to submit to your backend server here.
+            });
+          });
+        let items = CART.contents;
+
+        let captcha = $('#g-recaptcha-response').val();
+        let firstname = $('#customerFirstName').val();
+        let lastName = $('#customerLastName').val();
+        let contactNo = $('#customerContact').val();
+        let email = $('#customerEmail').val();
+        let address = $('#customerAddress').val();
+        let region = $('#customerInternational').is(':checked') ? 'INTERNATIONAL' : 'DOMESTIC';
+        let paymentMode = $('#customerPaymentMode').val();
+        let deliveryMode = $('#customerDeliveryMode').val();
+        
+        firstname = firstname.trim();
+        lastName = lastName.trim();
+        contactNo = contactNo.trim();
+        email = email.trim();
+        address = address.trim();
+        paymentMode = paymentMode.trim();
+        deliveryMode = deliveryMode.trim();
+
+        
+        
+        if (firstname == "" || lastName == "" || contactNo == "" || email == "" || address  == "" || paymentMode == "" || deliveryMode == "") {
+            $('#submitCheckoutError').text("Fields required!");
+            return;
+        }
+
+        let regExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!regExp.test(email)) {
+            $('#submitCheckoutError').text("Please enter a valid email!");
+            return;
+        }
+
+        if (captcha == "" || captcha == null) {
+            $('#submitCheckoutError').text("Please prove that you are not a bot.");
+            return;
+        }
+
+        $.post('/customerCartController/newOrder', {
+            firstname: firstname,
+            lastname: lastName,
+            contactNo: contactNo,
+            email: email,
+            address: address,
+            paymentMode: paymentMode,
+            deliveryMode: deliveryMode,
+            region: region,
+            cart: items,
+            captcha: captcha
+        }, (data) => {
+            if (data) {
+                alert(data)
+            }
+        })
+
+
+    })
+
 
 })

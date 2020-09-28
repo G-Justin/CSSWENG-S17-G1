@@ -67,6 +67,11 @@ var OrderSchema = new mongoose.Schema({
         min: 0,
         default: 0
     },
+    region: {
+        type: String,
+        enum: ['DOMESTIC', 'INTERNATIONAL'],
+        default: 'DOMESTIC'
+    },
     orderItems:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'OrderItem'

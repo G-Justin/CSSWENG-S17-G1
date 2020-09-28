@@ -88,6 +88,7 @@ app.get('/admin/cart', (request, res) => {
 const customerCartController = require('../controller/customerCartController.js');
 app.get('/cart', customerCartController.getCustomerPage);
 app.post('/cart/getData', customerCartController.getData);
+app.post('/customerCartController/newOrder', customerCartController.newOrder);
 
 //customer
 
