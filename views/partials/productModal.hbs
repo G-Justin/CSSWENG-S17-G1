@@ -1,0 +1,123 @@
+<div id="modal_ttloutput_{{_id}}" class="modal fade" role="dialog">
+        <div id="divtest" class="modal-dialog" id = "md2">
+          <div class="modal-content" style="background-color: rgb(247, 242, 242); text-align:center">
+            <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
+              <h4 class="modal-title">Output Comparison</h4>
+              <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+            </div>
+            <form id="updateRemarksForm" name="updateRemarksForm" method="POST" action="/admin/production/updateRemarks">
+              <table class="table table-striped">
+                  <thead>
+                      <th></th>
+                      <th>S</th>
+                      <th>M</th>
+                      <th>L</th>
+                      <th>XL</th>
+                      <th>Total</th>
+                  </thead>
+                  <tbody>
+                      <tr>
+                        <th>Actual Output</th>
+                        <td>{{smallOutput}}</td>
+                        <td>{{mediumOutput}}</td>
+                        <td>{{largeOutput}}</td>
+                        <td>{{extraLargeOutput}}</td>
+                        <td>{{totalOutput}}</td>
+                      </tr>
+                      <tr>
+                        <th>Requested Output</th>
+                        <td>{{smallOrder}}</td>
+                        <td>{{mediumOrder}}</td>
+                        <td>{{largeOrder}}</td>
+                        <td>{{extraLargeOrder}}</td>
+                        <td>{{totalOrders}}</td>
+                      </tr>
+                  </tbody>
+              </table>
+              <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">Close</button>
+              </div>
+            </form>
+          </div>
+        </div>
+</div>
+
+
+
+<div id="modal_production_{{_id}}" class="modal fade" role="dialog">
+        <div id="divtest" class="modal-dialog" id = "md2">
+          <div class="modal-content" style="background-color: rgb(247, 242, 242); text-align:center">
+            <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
+              <h4 class="modal-title">Job Order Details</h4>
+              <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+            </div>
+            <form id="updateRemarksForm" name="updateRemarksForm" method="POST" action="/admin/production/updateRemarks">
+              <div class="modal-body mx-3" style="overflow:auto">
+                <table class="table table-striped">
+                    <thead>
+                        <th>S</th>
+                        <th>M</th>
+                        <th>L</th>
+                        <th>XL</th>
+                        <th>Yardage</th>
+                        <th>Remarks</th>
+                    </thead>
+                    <tbody>
+                        <td>{{smallOrder}}</td>
+                        <td>{{mediumOrder}}</td>
+                        <td>{{largeOrder}}</td>
+                        <td>{{extraLargeOrder}}</td>
+                        <td>{{yardage}}</td>
+                        <td ><textarea placeholder="Maximum 80 characters" id="newRemarks" name="newRemarks" maxlength="80">{{remarks}} </textarea></td>
+                    </tbody>
+                </table>
+                </div>
+                <div class="modal-footer">
+                        <textarea readonly="readonly" id="updateRemarkId" name="updateRemarkId" style="display: none;">{{_id}}</textarea>
+                        <button type="submit" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);">Confirm</button>
+                        <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">Close</button>
+                </div>
+              </form>
+            </div>
+        </div>
+</div>
+
+<div id="modal_actual_{{_id}}" class="modal fade" role="dialog">
+        <div id="divtest" class="modal-dialog" id = "md2">
+          <div class="modal-content" style="background-color: rgb(247, 242, 242); text-align:center">
+            <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
+              <h4 class="modal-title">Input Actual Outputs</h4>
+              <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+            </div>
+            <form id="resolveJobOrderForm" name="resolveJobOrderForm" method="POST" action="/admin/production/resolveJobOrder">
+                <div class="modal-body" style="overflow:auto margin:auto; text-align:center; margin-top:2%">
+                  <div><b>Note</b><hr> Resolving this job order will mark it as <b><i>DONE</i></b> and update the inventory accordingly.</div><br><br>
+                  <textarea readonly="readonly" id="resolveJobOrderId" name="resolveJobOrderId" style="display: none;">{{_id}}</textarea>
+                  <textarea readonly="readonly" id="resolveJobOrderProductId" name="resolveJobOrderProductId" style="display: none;">{{productId}}</textarea>
+                  <div class="row md-form my-2 justify-content-center">
+                    <label class="col-sm-3" for="resolveJobOrderSmallOutput">S: </label>
+                    <input style="width:auto" class="col-sm-3 form-control validate" min="0" max="9007199254740981" type="number" name="resolveJobOrderSmallOutput" id="resolveJobOrderSmallOutput" placeholder=" Enter Small Amount"><br>
+                  </div>
+                  <div class="row md-form my-2 justify-content-center">  
+                    <label class="col-sm-3" for="resolveJobOrderMediumOutput">M: </label>
+                    <input style="width:auto" class="col-sm-3 form-control validate" min="0" max="9007199254740981" type="number" name="resolveJobOrderMediumOutput" id="resolveJobOrderMediumOutput" placeholder=" Enter Medium Amount"><br>
+                   </div>
+                   <div class="row md-form my-2 justify-content-center">
+                    <label class="col-sm-3" for="resolveJobOrderLargeOutput">L: </label>
+                    <input style="width:auto" class="col-sm-3 form-control validate" min="0" max="9007199254740981" type="number" name="resolveJobOrderLargeOutput" id="resolveJobOrderLargeOutput" placeholder=" Enter Large Amount"><br>
+                  </div> 
+                  <div class="row md-form my-2 justify-content-center">
+                    <label class="col-sm-3" for="resolveJobOrderExtraLargeOutput">XL: </label>
+                    <input style="width:auto" class="col-sm-3 form-control validate" min="0" max="9007199254740981" type="number" name="resolveJobOrderExtraLargeOutput" id="resolveJobOrderExtraLargeOutput" placeholder=" Enter Extra Large Amount"><br>
+                  </div>  
+                    <div id="resolveJobOrderError" name="resolveJobOrderError" class="text-danger" style="text-align:center"></div>
+                </div>
+                <div class="modal-footer">
+                    <textarea class="col-sm-5 form-control validate" readonly="readonly" id="productId" name="productId" style="display: none;">{{_id}}</textarea>
+                    <button type="submit" id="resolveJobOrderBtn" name="resolveJobOrderBtn" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);">Confirm</button>
+                    <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+          </div>
+        </div>
+</div>
