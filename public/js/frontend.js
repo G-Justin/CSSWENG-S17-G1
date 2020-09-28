@@ -520,8 +520,6 @@ $(document).ready(function(){
         paymentMode = paymentMode.trim();
         deliveryMode = deliveryMode.trim();
 
-        
-        
         if (firstname == "" || lastName == "" || contactNo == "" || email == "" || address  == "" || paymentMode == "" || deliveryMode == "") {
             $('#submitCheckoutError').text("Fields required!");
             return;
@@ -538,27 +536,19 @@ $(document).ready(function(){
             return;
         }
 
-        $.post('/customerCartController/newOrder', {
-            firstname: firstname,
-            lastname: lastName,
-            contactNo: contactNo,
-            email: email,
-            address: address,
-            paymentMode: paymentMode,
-            deliveryMode: deliveryMode,
-            region: region,
-            cart: items,
-            captcha: captcha
-        }, (data) => {
+        $('#cart').val(JSON.stringify(items));
+        $('#region').val(region);
+
+        $.post('/cart/verifyCaptcha', {captcha: captcha}, (data) => {
             if (!data) {
                 $('#submitCheckoutError').text("Invalid captcha");
                 return;
             }
 
-            alert('success')
+            CART.contents = [];
+            CART.sync();
+            $(this.form).submit();
         })
-
-
     })
 
 

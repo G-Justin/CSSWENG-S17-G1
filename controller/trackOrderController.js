@@ -10,8 +10,8 @@ const orderitem = require('../model/orderitem');
 const dashboardController = {
     trackOrder: function(req, res) {
 
-        let _id = sanitize(req.query._id)
-        let validator = sanitize(req.query.validator);
+        let _id = sanitize(req.body._id)
+        let validator = sanitize(req.body.validator);
 
         Order.findOne({_id: _id})
             .populate('orderItems')
@@ -21,7 +21,8 @@ const dashboardController = {
                     res.render('error', {
                         title: 'Facemust',
                         error: '404',
-                        message: 'ORDER DOES NOT EXIST'
+                        message: 'ORDER DOES NOT EXIST',
+                        customer: true
                     })
                     return;
                 }
@@ -31,7 +32,8 @@ const dashboardController = {
                         res.render('error', {
                             title: 'Facemust',
                             error: '404',
-                            message: 'INVALID ORDER DETAILS'
+                            message: 'INVALID ORDER DETAILS',
+                            customer: true
                         })
                         return;
                     }
@@ -40,7 +42,8 @@ const dashboardController = {
                         res.render('error', {
                             title: 'Facemust',
                             error: '404',
-                            message: 'INVALID ORDER DETAILS'
+                            message: 'INVALID ORDER DETAILS',
+                            customer: true
                         })
                         return;
                     }
@@ -96,14 +99,14 @@ async function getOrderItems(orderItems, array, basePrice) {
             style: product.style,
             description: product.description,
             color: product.color,
-            price: product.price,
+            price: orderItems[i].price,
             smallAmount: orderItems[i].smallAmount,
             mediumAmount: orderItems[i].mediumAmount,
             largeAmount: orderItems[i].largeAmount,
             extraLargeAmount: orderItems[i].extraLargeAmount
         }
 
-        price += product.price * (Number(orderItems[i].smallAmount) + Number(orderItems[i].mediumAmount) + Number(orderItems[i].largeAmount) + Number(orderItems[i].extraLargeAmount));
+        price += orderItems[i].price;
         array.push(newOrder);
     }
     basePrice.push(price)

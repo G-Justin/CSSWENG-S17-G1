@@ -88,8 +88,8 @@ app.get('/admin/cart', (request, res) => {
 const customerCartController = require('../controller/customerCartController.js');
 app.get('/cart', customerCartController.getCustomerPage);
 app.post('/cart/getData', customerCartController.getData);
-app.post('/customerCartController/newOrder', customerCartController.newOrder);
-
+app.post('/cart/verifyCaptcha', customerCartController.verifyCaptcha);
+app.post('/cart/newOrder', customerCartController.newOrder);
 //customer
 
 const mainCustomerController = require('../controller/mainCustomerController.js');
@@ -109,7 +109,7 @@ const specificProductController = require('../controller/specificProductControll
 app.get('/item/:_id', specificProductController.getSpecificProduct);
 
 const trackOrderController = require('../controller/trackOrderController.js');
-app.get('/track/', trackOrderController.trackOrder);
+app.post('/track', trackOrderController.trackOrder);
 
 app.post('/editProductDetails', function(req, res) {
     res.redirect(req.get('referer'))

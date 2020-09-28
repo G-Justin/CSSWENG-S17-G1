@@ -176,7 +176,7 @@
                 <span aria-hidden="true">&times;</span>
             </button>
           </div>
-        <form id="customerForm" name="customerForm" method="POST" action="/">
+        <form id="customerForm" name="customerForm" method="POST" action="/cart/newOrder">
             <div class="modal-body mx-3">
 				<div class="row md-form my-2 justify-content-center">
 				<input maxlength="20" type="text" class="col-sm-4 form-control validate" name="customerFirstName" id="customerFirstName" placeholder="Firstname" required> <input maxlength="20" type="text" class="col-sm-4 form-control validate" name="customerLastName" id="customerLastName" placeholder="Lastname" required>
@@ -208,6 +208,8 @@
 			<div id="submitCheckoutError" name="submitCheckoutError" class="text-danger" style="text-align:center"></div>
           <div class="modal-footer d-flex justify-content-center">
 			<div class="g-recaptcha" data-sitekey="6LcCbdEZAAAAACcOJCHbcrRNBa-jqAJv5zXrTGJt"></div>
+			<textarea readonly="readonly" id="cart" name="cart" style="display: none;"></textarea>
+			<textarea readonly="readonly" id="region" name="region" style="display: none;"></textarea>
            <button type="submit" id="checkoutSubmit" name="checkoutSubmit" class="btn btn-primary" >Submit</button>
 		   </div>
           </div>

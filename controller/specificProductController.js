@@ -13,7 +13,8 @@ const specificProductController = {
                     res.render('error', {
                         title: 'Facemust',
                         error: '404',
-                        message: 'PRODUCT DOES NOT EXIST'
+                        message: 'PRODUCT DOES NOT EXIST',
+                        customer: true
                     })
                     return;
                 }
@@ -27,7 +28,8 @@ const specificProductController = {
                             res.render('error', {
                                 title: 'Facemust',
                                 error: '404',
-                                message: 'AN ERROR OCCURRED'
+                                message: 'AN ERROR OCCURRED',
+                                customer: true
                             });
                             return;
                         }

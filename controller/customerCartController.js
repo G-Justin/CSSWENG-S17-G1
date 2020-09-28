@@ -5,6 +5,8 @@ const OrderItem = require('../model/orderitem.js');
 const Order = require('../model/order.js');
 const https = require('https');
 const axios = require('axios').default;
+const User = require('../model/user.js');
+const orderitem = require('../model/orderitem.js');
 
 const customerCartController = {
     getCustomerPage: function(req, res) {
@@ -21,7 +23,7 @@ const customerCartController = {
         })
     },
     
-    newOrder: function(req, res) {
+    verifyCaptcha: function(req, res) {
 
         if (req.body.captcha === undefined || req.body.captcha === '' || req.body.captcha === null) {
             res.send(false);
@@ -36,37 +38,46 @@ const customerCartController = {
                 res.send(false);
                 return;
              }
- 
-             console.log('reached')
-             res.send(true)
-             return;
+             
+            res.send(true);   
         })
-
-        return;
-        axios.get(verifyUrl).then(function(response) {
-            
-        })
-
-        
-        
-        (verifyUrl, (err, response, body) => {
-            body = JSON.parse(body);
-            console.log(body)
-            
-            return;
-        })
-
-        let firstname = sanitize(req.body.firstname);
-        let lastname = sanitize(req.body.lastname);
-        let contactNo = sanitize(req.body.contactNo);
-        let email = sanitize(req.body.email);
-        let address = sanitize(req.body.address);
-        let paymentMode = sanitize(req.body.paymentMode);
-        let deliveryMode = sanitize(req.body.deliveryMode);
+    },
+    
+    newOrder: function(req, res) {
+        let firstname = sanitize(req.body.customerFirstName);
+        let lastname = sanitize(req.body.customerLastName);
+        let contactNo = sanitize(req.body.customerContact);
+        let email = sanitize(req.body.customerEmail);
+        let address = sanitize(req.body.customerAddress);
+        let paymentMode = sanitize(req.body.customerPaymentMode);
+        let deliveryMode = sanitize(req.body.customerDeliveryMode);
         let region = sanitize(req.body.region);
         let cart = sanitize(req.body.cart);
 
-        if (region == "" || region != 'INTERNATIONAL' || region != 'DOMESTIC') {
+        firstname = firstname.trim();
+        lastname = lastname.trim();
+        contactNo = contactNo.trim();
+        email = email.trim();
+        address = address.trim();
+        paymentMode = paymentMode.trim();
+        deliveryMode = deliveryMode.trim();
+        region = region.trim();
+        cart = JSON.parse(cart);
+
+        let regExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!regExp.test(email)) {
+            console.log("customercartcontroller: invalid email format");
+            res.render('error', {
+                title: 'Facemust',
+                error: '404',
+                message: 'AN ERROR OCCURRED',
+                customer: true
+            });
+            return;
+        }
+
+        let regions = Order.schema.path('region').enumValues;
+        if (!regions.includes(region)) {
             console.log("customercartcontroller: region is empty or is not valid");
             res.render('error', {
                 title: 'Facemust',
@@ -79,7 +90,7 @@ const customerCartController = {
 
         if (firstname == "" || lastname == "" || contactNo == "" || email == "" ||
         address == "" || paymentMode == "" || deliveryMode == "" || cart == null || cart.length == 0) {
-            console.log("customercartcontroller: empty fields");
+            console.log("customercartcontroller: region is empty or is not valid");
             res.render('error', {
                 title: 'Facemust',
                 error: '404',
@@ -90,22 +101,73 @@ const customerCartController = {
         }
 
         let orderItems = new Array();
-        console.log('hello')
-        res.send(true);
+        let order = new Order({
+            firstname: firstname,
+            lastname: lastname,
+            contactNo: contactNo,
+            email: email,
+            address: address,
+            deliveryMode: deliveryMode,
+            paymentMode: paymentMode,
+            //totalItems
+            //basePrice
+            //totalPrice
+            region: region
+        });
+
+        getOrderItemsFromCart(orderItems, order, cart).then((a) => {
+            OrderItem.insertMany(orderItems, function(err, docs) {
+                if (err) {
+                    console.log("customercartcontroller" + err);
+                    res.render('error', {
+                        title: 'Facemust',
+                        error: '404',
+                        message: 'AN ERROR OCCURRED',
+                        customer: true
+                    });
+                    return;
+                }
+                Order.create(order, function(err, result) {
+                    if (err) {
+                        console.log("customercartcontroller" + err);
+                    res.render('error', {
+                        title: 'Facemust',
+                        error: '404',
+                        message: 'AN ERROR OCCURRED',
+                        customer: true
+                    });
+                    return;
+                    }
+
+                    res.redirect('/')
+                })
+                
+            })
+        })
+
 
     }
 }
 
-async function getOrderItemsFromCart(orderItems, cart) {
+async function getOrderItemsFromCart(orderItems, order, cart) {
     for (let i = 0; i < cart.length; i++) {
         let product = await Product.findOne({_id: cart[i].product});
         if (!product) {
             continue;
         }
 
-        //let orderItem = new OrderItem({
+        let orderItem = new OrderItem({
+            parentOrder: order._id,
+            product: product._id,
+            smallAmount: cart[i].smallAmount,
+            mediumAmount: cart[i].mediumAmount,
+            largeAmount: cart[i].largeAmount,
+            extraLargeAmount: cart[i].extraLargeAmount,
+            price: product.price * (Number(cart[i].smallAmount) + Number(cart[i].mediumAmount) + Number(cart[i].largeAmount) + Number(cart[i].extraLargeAmount)),
+        })
 
-        //})
+        orderItems.push(orderItem);
+        order.orderItems.push(orderItem._id);
     }
 }
 

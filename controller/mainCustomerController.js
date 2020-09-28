@@ -39,7 +39,8 @@ const mainCustomerController = {
                 res.render('error', {
                     title: 'Facemust',
                     error: '404',
-                    message: 'AN ERROR OCCURRED'
+                    message: 'AN ERROR OCCURRED',
+                    customer: true
                 })
                 return;
             }

@@ -311,10 +311,8 @@ const adminCartController = {
 
 async function getBasePrice(orderResultItems, basePrice) {
     let price = 0;
-    for (let i = 0; i < orderResultItems.length; i++) {
-        let productResult = await Product.findOne({_id: orderResultItems[i].product});
-        
-        price += productResult.price * (Number(orderResultItems[i].smallAmount) + Number(orderResultItems[i].mediumAmount) + Number(orderResultItems[i].largeAmount) + Number(orderResultItems[i].extraLargeAmount));
+    for (let i = 0; i < orderResultItems.length; i++) { 
+        price += orderResultItems[i].price * (Number(orderResultItems[i].smallAmount) + Number(orderResultItems[i].mediumAmount) + Number(orderResultItems[i].largeAmount) + Number(orderResultItems[i].extraLargeAmount));
     }
     basePrice.push(price);
 }
