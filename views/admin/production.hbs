@@ -1,5 +1,31 @@
-<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.13/css/jquery.dataTables.css">
-<script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.5/js/responsive.bootstrap.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+      var table = $('#pTable').DataTable({ 
+        responsive: true
+      }); 
+  });
+
+  window.onresize = function(event) //refreshes a window once a viewport size changes
+  {
+    document.location.reload(true);
+  }
+
+  function imgFlip(td){ //flips the +,- icon upon click
+        var bg = $(td).css('background-image');
+        bg = bg.replace('url("','').replace('")','');
+        if (bg === 'http://localhost:3001/assets/add.png')
+            $(td).css('background-image','url(../assets/minus.png)')
+        else
+            $(td).css('background-image','url(../assets/add.png)')
+    }
+</script>
 
 <style>
   .media-text{
@@ -35,14 +61,18 @@
   input{
     width:150px;
   }
+  .row{
+      width:100%;
+      margin-top:2%;
+  }
+  th{
+    font-size:12px;
+  }
 </style>
 
 <div class="jumbotron shadow p-4 text-center">
-    <h4>Filter: {{resultsMessage}}</h4><hr>
+  <h4>{{resultsMessage}}</h4>
     <form class="form-inline justify-content-center" id="searchInventory" name="searchInventory" mehtod="get" action="#">
-        <input class="form-control col-sm-1 my-2" type="text" name="style" id="style" placeholder="Style">
-        <input class="form-control col-sm-1 my-2 mx-sm-3" type="text" name="color" id="color" placeholder="Color">
-        <input class="form-control col-sm-2 my-2" type="text" name="description" id="description" placeholder="Description">
         <select class="form-control custom-select col-sm-2 my-2 mx-sm-3" id="status" name="status">
           <option hidden disabled selected value>Status...</option>
           <option value = "CUTTING">Cutting</option>
@@ -55,38 +85,51 @@
         <input placeholder="Start Date" class="form-control my-2 col-sm-2" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="dateStart" name="dateStart"/>
         <input placeholder="End Date" class="form-control my-2 mx-sm-3" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="dateEnd" name="dateEnd"/>
         <button class="btn btn-primary mt-2" id="btn" type="submit">Apply Filter</button>
-        <button type="button" class="btn btn-primary mt-2 mx-3" id="add" data-toggle="modal" data-target="#modal_joborder">Add New Job Order</button>
     </form>
 </div>
 
-<div id="jobOrderCardContainer"class="row justify-content-center">
-    <div class="col-sm-4 col-md-12">
-      <div class="card" style="width:100%; overflow-y:hidden">
-          <table style="text-align: center; table-layout:fixed; width: 1000px; margin:auto; height:50px; margin-top:25px">
+
+      <div class="jumbotron shadow p-4 text-center" style="width:100%;overflow:auto" id="jobOrderCardContainer">
+          <table class="table table-hover" id="pTable">
               <thead>
+                <button type="button" class="btn btn-primary" id="add" data-toggle="modal" data-target="#modal_joborder" style="float:right;margin-right:30px">Add New Job Order</button>
+                <tr>
+                  <th class="d-xl-none"></th>
                   <th>Date Encoded</th>
                   <th>Batch No</th>
                   <th>Style</th>
                   <th>Description</th>
                   <th>Color</th>
                   <th>TTL</th>
-                  <th>Status Update</th>
+                  <th>Status</th>
                   <th>Actual Output</th>
+                  <th></th>
+                </tr>
               </thead>
+              <tbody>
+                {{#each jobOrderCards}}
+                  <tr>
+                    <td class="d-xl-none"  onclick="imgFlip(this)" style="background-image: url(../assets/add.png); background-size:25px; background-repeat:no-repeat; background-position: center;"></td>
+                    {{> jobOrderCard}}
+                  </tr>
+                  
+                {{/each}}
+              </tbody>
           </table>
-      </div><hr>
+          
+          {{#each jobOrderCards}}
+          {{> productModal}}
+          {{/each}}
+        </div>
 
-        {{#each jobOrderCards}}
+        {{!-- {{#each jobOrderCards}}
             {{> jobOrderCard}}
         {{/each}}
 
         {{#if noResults}}
           <h4 class="col-sm-4 col-md-4">No results returned</h4><hr>
-        {{/if}}
-      
-      
-    </div>
-</div>
+        {{/if}} --}}
+
 
 <div class="modal fade" id="modal_joborder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -154,49 +197,154 @@
   </div>
 </div>
 
-<!--
-<div id="modal_joborder" class="modal fade" role="dialog">
-        <div id="div" class="modal-dialog">
+<div id="modal_production_5f7229861602f91ec410164b" class="modal fade" role="dialog">
+        <div id="divtest" class="modal-dialog" id = "md2">
           <div class="modal-content" style="background-color: rgb(247, 242, 242); text-align:center">
-                <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
-                <h4 class="modal-title">Add a new Job Order</h4>
-                <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+            <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
+              <h4 class="modal-title">Job Order Details</h4>
+              <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+            </div>
+            <form id="updateRemarksForm" name="updateRemarksForm" method="POST" action="/admin/production/updateRemarks">
+              <div class="modal-body mx-3" style="overflow:auto">
+                <table class="table table-striped">
+                    <thead>
+                        <th>S</th>
+                        <th>M</th>
+                        <th>L</th>
+                        <th>XL</th>
+                        <th>Yardage</th>
+                        <th>Remarks</th>
+                    </thead>
+                    <tbody>
+                        <td>{{smallOrder}}</td>
+                        <td>{{mediumOrder}}</td>
+                        <td>{{largeOrder}}</td>
+                        <td>{{extraLargeOrder}}</td>
+                        <td>{{yardage}}</td>
+                        <td ><textarea placeholder="Maximum 80 characters" id="newRemarks" name="newRemarks" maxlength="80">{{remarks}} </textarea></td>
+                    </tbody>
+                </table>
                 </div>
-                <form id="newJobOrderForm" name="newJobOrderForm" method="POST" action="/admin/production/addJobOrder">
-                    <div class="modal-body" style="overflow:auto margin:auto; text-align:center; margin-top:2%">
-                        <label for="newJobOrderBatchNo">Batch no: </label>
-                        <input maxlength="16" type="text" name="newJobOrderBatchNo" id="newJobOrderBatchNo" placeholder=" Enter Batch Number"><br>
-                        <label for="newJobOrderStyle">Style: </label>
-                        <input maxlength="16" type="text" name="newJobOrderStyle" id="newJobOrderStyle" placeholder=" Enter Style"><br>
-                        <label for="newJobOrderDescription">Description: </label>
-                        <input maxlength="20" type="text" name="newJobOrderDescription" id="newJobOrderDescription" placeholder=" Enter Description"><br>
-                        <label for="newJobOrderColor">Color: </label>
-                        <input maxlength="16" type="text" name="newJobOrderColor" id="newJobOrderColor" placeholder=" Enter Color"><br>
-                        <label for="newJobOrderSmall">S: </label>
-                        <input type="number" min="0" max="9007199254740981" id="newJobOrderSmall" name="newJobOrderSmall" placeholder="Enter small amount"><br>
-                        <label for="newJobOrderMedium">M: </label>
-                        <input type="number" min="0" max="9007199254740981" id="newJobOrderMedium" name="newJobOrderMedium" placeholder="Enter medium amount"><br>
-                        <label for="newJobOrderLarge">L: </label>
-                        <input type="number" min="0" max="9007199254740981" id="newJobOrderLarge" name="newJobOrderLarge" placeholder="Enter large amount"><br>
-                        <label for="newJobOrderExtraLarge">XL: </label>
-                        <input type="number" min="0" max="9007199254740981" id="newJobOrderExtraLarge" name="newJobOrderExtraLarge" placeholder="Enter extra large amount"><br>
-                        <label for="newJobOrderYardage">Yardage: </label>
-                        <input type="number" min="0" max="9007199254740981" id="newJobOrderYardage" name="newJobOrderYardage" placeholder="Yardage (optional)"><br>
-                        <label for="newJobOrderRemarks">Remarks: </label>
-                        <input maxlength="80" id="newJobOrderRemarks" name="newJobOrderRemarks" placeholder="Remarks (optional)"><br>
-                        <div id="newJobOrderError" name="newJobOrderError" class="text-danger" style="text-align:center"></div>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="submit" id="newJobOrderBtn" name="newJobOrderBtn" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);">Confirm</button>
-                      <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">Close</button>
-                    </div>
-                </form>
+                <div class="modal-footer">
+                        <textarea readonly="readonly" id="updateRemarkId" name="updateRemarkId" style="display: none;">{{_id}}</textarea>
+                        <button type="submit" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);">Confirm</button>
+                        <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">Close</button>
+                </div>
+              </form>
             </div>
         </div>
 </div>
--->
-
-{{> paginator}}
 
 
 
+
+
+<div id="modal_ttloutput_{{_id}}" class="modal fade" role="dialog">
+        <div id="divtest" class="modal-dialog" id = "md2">
+          <div class="modal-content" style="background-color: rgb(247, 242, 242); text-align:center">
+            <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
+              <h4 class="modal-title">Actual Output</h4>
+              <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+            </div>
+            <form id="updateRemarksForm" name="updateRemarksForm" method="POST" action="/admin/production/updateRemarks">
+              <table class="table table-striped">
+                  <thead>
+                      <th>S</th>
+                      <th>M</th>
+                      <th>L</th>
+                      <th>XL</th>
+                  </thead>
+                  <tbody>
+                      <td>{{smallOutput}}</td>
+                      <td>{{mediumOutput}}</td>
+                      <td>{{largeOutput}}</td>
+                      <td>{{extraLargeOutput}}</td>
+                  </tbody>
+              </table>
+              <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">Close</button>
+              </div>
+            </form>
+          </div>
+        </div>
+</div>
+
+
+
+<div id="modal_production_{{_id}}" class="modal fade" role="dialog">
+        <div id="divtest" class="modal-dialog" id = "md2">
+          <div class="modal-content" style="background-color: rgb(247, 242, 242); text-align:center">
+            <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
+              <h4 class="modal-title">Job Order Details</h4>
+              <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+            </div>
+            <form id="updateRemarksForm" name="updateRemarksForm" method="POST" action="/admin/production/updateRemarks">
+              <div class="modal-body mx-3" style="overflow:auto">
+                <table class="table table-striped">
+                    <thead>
+                        <th>S</th>
+                        <th>M</th>
+                        <th>L</th>
+                        <th>XL</th>
+                        <th>Yardage</th>
+                        <th>Remarks</th>
+                    </thead>
+                    <tbody>
+                        <td>{{smallOrder}}</td>
+                        <td>{{mediumOrder}}</td>
+                        <td>{{largeOrder}}</td>
+                        <td>{{extraLargeOrder}}</td>
+                        <td>{{yardage}}</td>
+                        <td ><textarea placeholder="Maximum 80 characters" id="newRemarks" name="newRemarks" maxlength="80">{{remarks}} </textarea></td>
+                    </tbody>
+                </table>
+                </div>
+                <div class="modal-footer">
+                        <textarea readonly="readonly" id="updateRemarkId" name="updateRemarkId" style="display: none;">{{_id}}</textarea>
+                        <button type="submit" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);">Confirm</button>
+                        <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">Close</button>
+                </div>
+              </form>
+            </div>
+        </div>
+</div>
+
+<div id="modal_actual_{{_id}}" class="modal fade" role="dialog">
+        <div id="divtest" class="modal-dialog" id = "md2">
+          <div class="modal-content" style="background-color: rgb(247, 242, 242); text-align:center">
+            <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
+              <h4 class="modal-title">Input Actual Outputs</h4>
+              <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+            </div>
+            <form id="resolveJobOrderForm" name="resolveJobOrderForm" method="POST" action="/admin/production/resolveJobOrder">
+                <div class="modal-body" style="overflow:auto margin:auto; text-align:center; margin-top:2%">
+                  <div><b>Note</b><hr> Resolving this job order will mark it as <b><i>DONE</i></b> and update the inventory accordingly.</div><br><br>
+                  <textarea readonly="readonly" id="resolveJobOrderId" name="resolveJobOrderId" style="display: none;">{{_id}}</textarea>
+                  <textarea readonly="readonly" id="resolveJobOrderProductId" name="resolveJobOrderProductId" style="display: none;">{{productId}}</textarea>
+                  <div class="row md-form my-2 justify-content-center">
+                    <label class="col-sm-3" for="resolveJobOrderSmallOutput">S: </label>
+                    <input style="width:auto" class="col-sm-3 form-control validate" min="0" max="9007199254740981" type="number" name="resolveJobOrderSmallOutput" id="resolveJobOrderSmallOutput" placeholder=" Enter Small Amount"><br>
+                  </div>
+                  <div class="row md-form my-2 justify-content-center">  
+                    <label class="col-sm-3" for="resolveJobOrderMediumOutput">M: </label>
+                    <input style="width:auto" class="col-sm-3 form-control validate" min="0" max="9007199254740981" type="number" name="resolveJobOrderMediumOutput" id="resolveJobOrderMediumOutput" placeholder=" Enter Medium Amount"><br>
+                   </div>
+                   <div class="row md-form my-2 justify-content-center">
+                    <label class="col-sm-3" for="resolveJobOrderLargeOutput">L: </label>
+                    <input style="width:auto" class="col-sm-3 form-control validate" min="0" max="9007199254740981" type="number" name="resolveJobOrderLargeOutput" id="resolveJobOrderLargeOutput" placeholder=" Enter Large Amount"><br>
+                  </div> 
+                  <div class="row md-form my-2 justify-content-center">
+                    <label class="col-sm-3" for="resolveJobOrderExtraLargeOutput">XL: </label>
+                    <input style="width:auto" class="col-sm-3 form-control validate" min="0" max="9007199254740981" type="number" name="resolveJobOrderExtraLargeOutput" id="resolveJobOrderExtraLargeOutput" placeholder=" Enter Extra Large Amount"><br>
+                  </div>  
+                    <div id="resolveJobOrderError" name="resolveJobOrderError" class="text-danger" style="text-align:center"></div>
+                </div>
+                <div class="modal-footer">
+                    <textarea class="col-sm-5 form-control validate" readonly="readonly" id="productId" name="productId" style="display: none;">{{_id}}</textarea>
+                    <button type="submit" id="resolveJobOrderBtn" name="resolveJobOrderBtn" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);">Confirm</button>
+                    <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+          </div>
+        </div>
+</div>
