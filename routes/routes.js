@@ -115,5 +115,8 @@ app.post('/editProductDetails', function(req, res) {
     res.redirect(req.get('referer'))
 })
 
+app.get('/admin/control', function(req, res) {
+    res.render('admin/control', {title: "Change Account Settings"})
+})
 
 module.exports = app;
