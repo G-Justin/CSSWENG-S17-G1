@@ -1,3 +1,10 @@
+<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.5/js/responsive.bootstrap.min.js"></script>
+
 <style>
   .media-text{
     float:left;
@@ -19,10 +26,19 @@
     margin:auto;
     justify-content: center;
   }
+  .row{
+    width:100%;
+  }
 </style>
 
+<script>
+  $(document).ready(function() {
+      $('#orderTable').DataTable({});
+    });
+</script>
+
 <div class="jumbotron shadow p-4 text-center">
-    <h4>Filter: {{resultsMessage}}</h4><hr>
+    <h4>{{resultsMessage}}</h4><hr>
     <form class="form-inline justify-content-center"  name="searchInventory" mehtod="get" action="#">
         <select class="form-control custom-select col-sm-2 my-2" id="deliveryStatus" name="deliveryStatus">
           <option value="SELECT" hidden selected>Delivery Status...</option>
@@ -38,16 +54,23 @@
         <input placeholder="End Date" class="form-control my-2 mx-sm-3" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="dateEnd" name="dateEnd"/>
         <button class="btn btn-primary my-2" id="btn" type="submit">Apply Filter</button>
     </form><hr>
-    <form class="form-inline justify-content-center" mehtod="get" action="/admin/orders">
-        <input type="text" class="form-control col-sm-2 mt-2 mx-sm-3" id="orderId" name="orderId" placeholder="Order ID">
-        <button class="btn btn-primary mt-2" id="btn" type="submit">Search</button>
-    </form>
 </div>
 
-<div class="row">
-    {{#each orderCards}}
-        {{> orderCard}}
-    {{/each}}
+<div class="jumbotron p-4 text-center" style="width:100%;overflow:auto">
+    <table class="table table-striped" id="orderTable">
+        <thead>
+          <tr>
+            <th>Order Id</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Delivery Status</th>
+            <th>Payment Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each orderCards}}
+            {{> orderCard}}
+          {{/each}}
+        </tbody>
+    </table>
 </div>
-
-{{> paginator}}
