@@ -1,6 +1,7 @@
 const Product = require('../model/product.js');
 const InventoryRecord = require('../model/inventoryRecord.js');
 const OrderItem = require("../model/orderitem.js");
+const Order = require('../model/order.js');
 const sanitize = require('mongo-sanitize');
 const orderitem = require('../model/orderitem.js');
 const { findSeries } = require('async');
@@ -481,7 +482,17 @@ async function getInventoryRecords(inventoryRecords, results) {
 
 async function updateDeficits(products) {
     for (let i = 0; i < products.length; i++) {
-        let orderItems = await OrderItem.find({product: products[i]._id});
+        let items = await OrderItem.find({product: products[i]._id});
+        let orderItems = new Array();
+        for (let j = 0; j < items.length; j++) {
+            let order = await Order.findOne({_id: items[j].parentOrder, deliveryStatus: 'PROCESSING'});
+            if (!order) {
+                continue;
+            }
+            console.log(order)
+            orderItems.push(items[j])
+        }
+        
         let smallAmount = 0;
         let mediumAmount = 0;
         let largeAmount = 0;

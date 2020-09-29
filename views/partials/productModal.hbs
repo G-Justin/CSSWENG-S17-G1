@@ -25,7 +25,7 @@
                         <td>{{totalOutput}}</td>
                       </tr>
                       <tr>
-                        <th>Requested Output</th>
+                        <th>Requested Order</th>
                         <td>{{smallOrder}}</td>
                         <td>{{mediumOrder}}</td>
                         <td>{{largeOrder}}</td>
@@ -96,19 +96,19 @@
                   <textarea readonly="readonly" id="resolveJobOrderProductId" name="resolveJobOrderProductId" style="display: none;">{{productId}}</textarea>
                   <div class="row md-form my-2 justify-content-center">
                     <label class="col-sm-3" for="resolveJobOrderSmallOutput">S: </label>
-                    <input style="width:auto" class="col-sm-3 form-control validate" min="0" max="9007199254740981" type="number" name="resolveJobOrderSmallOutput" id="resolveJobOrderSmallOutput" placeholder=" Enter Small Amount"><br>
+                    <input style="width:auto" class="col-sm-3 form-control validate" min="0" max="9007199254740981" type="number" name="resolveJobOrderSmallOutput" id="resolveJobOrderSmallOutput" placeholder=" Enter Small Amount" required><br>
                   </div>
                   <div class="row md-form my-2 justify-content-center">  
                     <label class="col-sm-3" for="resolveJobOrderMediumOutput">M: </label>
-                    <input style="width:auto" class="col-sm-3 form-control validate" min="0" max="9007199254740981" type="number" name="resolveJobOrderMediumOutput" id="resolveJobOrderMediumOutput" placeholder=" Enter Medium Amount"><br>
+                    <input style="width:auto" class="col-sm-3 form-control validate" min="0" max="9007199254740981" type="number" name="resolveJobOrderMediumOutput" id="resolveJobOrderMediumOutput" placeholder=" Enter Medium Amount" required><br>
                    </div>
                    <div class="row md-form my-2 justify-content-center">
                     <label class="col-sm-3" for="resolveJobOrderLargeOutput">L: </label>
-                    <input style="width:auto" class="col-sm-3 form-control validate" min="0" max="9007199254740981" type="number" name="resolveJobOrderLargeOutput" id="resolveJobOrderLargeOutput" placeholder=" Enter Large Amount"><br>
+                    <input style="width:auto" class="col-sm-3 form-control validate" min="0" max="9007199254740981" type="number" name="resolveJobOrderLargeOutput" id="resolveJobOrderLargeOutput" placeholder=" Enter Large Amount" required><br>
                   </div> 
                   <div class="row md-form my-2 justify-content-center">
                     <label class="col-sm-3" for="resolveJobOrderExtraLargeOutput">XL: </label>
-                    <input style="width:auto" class="col-sm-3 form-control validate" min="0" max="9007199254740981" type="number" name="resolveJobOrderExtraLargeOutput" id="resolveJobOrderExtraLargeOutput" placeholder=" Enter Extra Large Amount"><br>
+                    <input style="width:auto" class="col-sm-3 form-control validate" min="0" max="9007199254740981" type="number" name="resolveJobOrderExtraLargeOutput" id="resolveJobOrderExtraLargeOutput" placeholder=" Enter Extra Large Amount" required><br>
                   </div>  
                     <div id="resolveJobOrderError" name="resolveJobOrderError" class="text-danger" style="text-align:center"></div>
                 </div>

@@ -25,9 +25,11 @@ const productionController = {
 
         let dateStart = parseDate(sanitize(req.query.dateStart));
         let dateEnd = parseDate(sanitize(req.query.dateEnd));
+        let resultsMsg = getResultsMessage(status, dateStart, dateEnd);
         dateStart = (dateStart == null) ? new Date(-8640000000000000) : dateStart;
         dateEnd = (dateEnd == null) ? new Date(8640000000000000) : dateEnd;
         query.date = {$gte: dateStart.toISOString(), $lte: dateEnd.toISOString()};
+        
 
         JobOrder.find(query)
             .sort({created: -1})
@@ -56,6 +58,7 @@ const productionController = {
                                 title: 'Production Dashboard',
                                 layout: 'main',
                                 products: products,
+                                resultsMessage: resultsMsg,
                 
                                 jobOrderCards: jobOrders,
                                 noResults: jobOrders.length == 0,
@@ -346,7 +349,8 @@ async function getJobOrders(jobOrders, results) {
             mediumOutput: results[i].mediumOutput,
             largeOutput: results[i].largeOutput,
             extraLargeOutput: results[i].extraLargeOutput,
-            totalOutput: results[i].totalOutput
+            totalOutput: results[i].totalOutput,
+            hasDeficit: (results[i].totalOrders > results[i].totalOutput)
         }
 
         jobOrders.push(jobOrder);
