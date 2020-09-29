@@ -1,0 +1,127 @@
+<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js"></script>
+
+
+<script>
+    $(document).ready(function() {
+        $('#accountTable tfoot th').each( function (){
+            var title = $(this).text();
+            $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+        });
+
+        $('#accountTable').DataTable({ 
+          "bInfo":false,
+          "bLengthChange": false,
+          initComplete: function () {
+            // Apply the search
+            this.api().columns().every( function () {
+                var that = this;
+           
+ 
+                $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                    if ( that.search() !== this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                });
+            });
+        }
+      }); 
+  });
+</script>
+
+<style>
+    .row{
+    width:100%;
+    margin-top:2%;  
+    }
+    @media only screen and (max-width: 1200px) {
+        #changeInfo{
+            min-width:100%;
+        }
+        #changePicture{
+            min-width:100%;
+            border-right:none;
+        }
+    }
+    .dataTables_wrapper .dataTables_filter {
+        visibility: hidden;
+        margin-top:-100px;
+    }
+</style>
+
+<div class="jumbotron p-4 text-center" style="width:100%;overflow:auto">
+    <h4>Accounts</h4>
+    <table class="table table-striped" id="accountTable">
+        <thead>
+            <tr>
+                <th>Account Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr> <!-- dummy template -->
+                <td>name</td>
+                <td><button class="btn btn-danger"><i class="fa fa-trash-o"></i></button></td>
+            </tr>
+            <tr>
+                <td>name2</td>
+                <td><button class="btn btn-danger"><i class="fa fa-trash-o"></i></button></td>
+            </tr> <!-- until here -->
+            {{#each accounts}}
+            {{> account}}
+            {{/each}}
+        </tbody>
+        <tfoot>
+            <th>Account Name</th>
+            <th style="display:none"></th>
+        </tfoot>
+    </table>
+</div>
+
+<div class="jumbotron p-4 text-center" id="changeInfo" style="width:50%;overflow:auto;float:left;border-right: 1px solid gray;">
+    <h4>Change Password</h4>
+    <form id="controlForm" name="controlForm" method="POST" action="/">
+        <div class="modal-body mx-3">
+            <div class="row md-form my-2 justify-content-center">
+                <input maxlength="20" type="password" class="col-sm-8 form-control validate" name="currentPassword" id="currentPassword" placeholder="Current Password" required>
+            </div>
+            <div class="row md-form my-2 justify-content-center">
+                <input maxlength="20" type="password" class="col-sm-8 form-control validate" name="currentPasswordConfirm" id="currentPasswordConfirm" placeholder="Retype Current Password" required>
+            </div>
+            <div class="row md-form my-2 justify-content-center">
+                <input maxlength="20" type="password" class="col-sm-8 form-control validate" name="newPassword" id="newPassword" placeholder="New Password" required>
+            </div>
+            <div class="row md-form my-2 justify-content-center">
+                <input maxlength="20" type="password" class="col-sm-8 form-control validate" name="newPasswordConfirm" id="newtPasswordConfirm" placeholder="Retype New Password" required>
+            </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+            <button type="submit" id="passwordSubmit" name="passwordSubmit" class="btn btn-primary" >Submit</button>
+        </div>
+</div>
+
+<div class="jumbotron p-4 text-center" id="changePicture" style="width:25%;overflow:auto;float:left;border-right: 1px solid gray;height:378px">
+    <h5>Change Best Seller Catalogue</h5><br>
+    <form id="catalogueImageForm1" name="catalogueImageForm1" action="/" enctype="multipart/form-data" method="POST"> <!-- uploads the image-->
+        <input type="file" id="newCatalogueImage1" name="newCatalogueImage1" accept="image/*" style="width:220px" required><br><br>
+        <input type="file" id="newCatalogueImage2" name="newCatalogueImage2" accept="image/*" style="width:220px" required><br><br>
+        <input type="file" id="newCatalogueImage3" name="newCatalogueImage3" accept="image/*" style="width:220px" required><br><br><br>
+        <button id="submitCataloguetImage1" type="submit" class="btn btn-primary" style="width:220px;margin-top:20.5px">Submit</button>
+    </form>
+</div>
+
+<div class="jumbotron p-4 text-center" id="changePicture" style="width:25%;overflow:auto;float:left;height:378px">
+    <h6>Change Advertisement Catalogue</h6><br>
+    <form id="catalogueImageForm2" name="catalogueImageForm2" action="/" enctype="multipart/form-data" method="POST"> <!-- uploads the image-->
+        <input type="file" id="newCatalogueImage4" name="newCatalogueImage4" accept="image/*" style="width:220px" required><br><br>
+        <input type="file" id="newCatalogueImage5" name="newCatalogueImage5" accept="image/*" style="width:220px" required><br><br>
+        <input type="file" id="newCatalogueImage6" name="newCatalogueImage6" accept="image/*" style="width:220px" required><br><br>
+        <input type="file" id="newCatalogueImage7" name="newCatalogueImage7" accept="image/*" style="width:220px" required><br><br>
+        <button id="submitCataloguetImage2" type="submit" class="btn btn-primary" style="width:220px">Submit</button>
+    </form>
+</div>
