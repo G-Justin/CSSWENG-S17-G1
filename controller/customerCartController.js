@@ -141,8 +141,9 @@ const customerCartController = {
                     }
 
                     sendEmail(email, order._id).then((a) => {
-                        res.redirect('/')
+                        
                     })
+                    res.redirect('/')
                 })
                 
             })
