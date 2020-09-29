@@ -61,11 +61,19 @@
     //new $.fn.dataTable.FixedHeader(table3); 
     });
 
+    $(document).ready(function() {
+          var table3 = $('#soldTable').DataTable( {
+          responsive: true
+      });
+    //new $.fn.dataTable.FixedHeader(table3); 
+    });
+
     //who knows why but the datatable responsive view only works when the tab class is initially set to "show active"
     //so we have to make those who aren't the front page "not active" when we launch the app
     $(document).ready(function(){                                       
         document.getElementById('deficit').className = 'tab-pane fade';
         document.getElementById('log').className = 'tab-pane fade';
+        document.getElementById('sold').className = 'tab-pane fade';
     });
       
     function warning(form) //shows the warning when the user press the phase out button
@@ -228,6 +236,12 @@
       {{else}}
       {{/if}}
     </li>
+    <li class="nav-item">
+      {{#if notPhasedOut}}
+        <a class="nav-link" id="sold-tab" data-toggle="tab" href="#sold" role="tab" aria-controls="sold" aria-selected="false">Sold</a>
+      {{else}}
+      {{/if}}
+    </li>
 </ul>
 
 <!-- START OF TABS -->
@@ -304,7 +318,7 @@
       {{#each products}}
       {{> deficitTable}}
       {{/each}}
-       </tbody>
+    </tbody>
 </table>
 
     <!-- PLACE CODES HERE -->
@@ -335,6 +349,29 @@
     </tbody>
     </table>
     <!-- PLACE CODES HERE -->
+  </div>
+  <!-- SOLD TAB -->
+  <div class="tab-pane fade show active" id="sold" role="tabpanel" aria-labelledby="sold-tab">
+    <table class="table table-striped" id="soldTable" style="padding:0; width:100%">
+    <thead>
+        <tr>
+            <th class="d-xl-none"></th>
+            <th>Color</th>
+            <th>Style</th>
+            <th>Description</th>
+            <th>Small</th>
+            <th>Medium</th>
+            <th>Large</th>
+            <th>Extra Large</th>
+            <th>Total Sold</th>
+        </tr>
+    </thead>
+    <tbody>
+      {{#each products}}
+      {{> soldTable}}
+      {{/each}}
+    </tbody>
+</table
   </div>
 </div>
 <!-- END OF TABS -->
