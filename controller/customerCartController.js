@@ -143,7 +143,11 @@ const customerCartController = {
                     sendEmail(email, order._id).then((a) => {
                         
                     })
-                    res.redirect('/')
+                    res.render('customer/confirmPage', {
+                        title: "Thank You!",
+                        customer: true,
+                        _id: order._id
+                    })
                 })
                 
             })
