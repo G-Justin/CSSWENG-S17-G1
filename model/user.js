@@ -12,7 +12,11 @@ var UserSchema = new mongoose.Schema({
     },
     userType: {
         type: String, 
-        enum: ['ADMIN'] //and more
+        enum: ['ADMIN', 'EMPLOYEE'] //and more
+    },
+    dateCreated: {
+        type: Date,
+        default: Date.now
     }
 });
 

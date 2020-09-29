@@ -550,5 +550,49 @@ $(document).ready(function(){
         })
     })
 
+    $('#createAccountBtn').click(function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $('#createAccountError').text('');
+
+        let username = $('#createAccountUsername').val();
+        let password = $('#createAccountPassword').val();
+        let confirmPassword = $('#createAccountConfirmPassword').val();
+
+        username = username.trim();
+        
+        if (username == "" || password == "" || confirmPassword == "") {
+            $('#createAccountError').text('All fields required!');
+            return;
+        }
+
+        let userExp = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{3,16}$/;
+        if (!userExp.test(username)) {
+            $('#createAccountError').text('Username must be between 4 -16 characters and with no special characters.');
+            return;
+        }
+
+        let passExp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+        if (!passExp.test(password)) {
+            $('#createAccountError').text('Password should be at least 8 in length, have 1 uppercase, 1 lowercase, 1 number');
+            return;
+        }
+
+        if (password != confirmPassword) {
+            $('#createAccountError').text('Passwords do not match!');
+            return;
+        }
+
+        $.get("/admin/control/checkUsername", {username: username}, (usernameExists) => {
+            if (usernameExists) {
+                $('#createAccountError').text('Username already exists!');
+                return;
+            }
+
+            $('#createAccountForm').submit();
+        })
+
+    })
+
 
 })

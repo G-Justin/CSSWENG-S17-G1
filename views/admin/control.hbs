@@ -100,19 +100,20 @@
 
 <div class="jumbotron p-4 text-center" id="makeAccount" style="width:50%;overflow:auto;float:left;height:400px">
     <h4>Create Account</h4><hr>
-    <form id="accountForm" name="accountForm" method="POST" action="/">
+    <form id="createAccountForm" name="createAccountForm" method="POST" action="/admin/control/createAccount">
             <div class="modal-body mx-3">
 				<div class="row md-form my-2 justify-content-center">
-					<input maxlength="20" type="text" class="col-sm-8 form-control validate" name="username" id="username" placeholder="Input username" required>
+					<input maxlength="20" type="text" class="col-sm-8 form-control validate" name="createAccountUsername" id="createAccountUsername" placeholder="4 - 17 characters. No special characters." required>
 				</div>
                 <div class="row md-form my-2 justify-content-center">
-					<input maxlength="20" type="password" class="col-sm-8 form-control validate" name="password" id="password" placeholder="Input password" required>
+					<input maxlength="20" type="password" class="col-sm-8 form-control validate" name="createAccountPassword" id="createAccountPassword" placeholder="8 characters, 1 numer, upper, lower" required>
 				</div>
                 <div class="row md-form my-2 justify-content-center">
-					<input maxlength="20" type="password" class="col-sm-8 form-control validate" name="confirmPassword" id="confirmPassword" placeholder="Confirm password" required>
+					<input maxlength="20" type="password" class="col-sm-8 form-control validate" name="createAccountConfirmPassword" id="createAccountConfirmPassword" placeholder="Confirm password" required>
 				</div>
             </div>
-            <button type="submit" id="checkoutSubmit" name="checkoutSubmit" class="btn btn-primary" >Submit</button>
+            <div id="createAccountError" name="createAccountError" class="text-danger" style="text-align:center"></div>
+            <button type="submit" id="createAccountBtn" name="createAccountBtn" class="btn btn-primary" >Submit</button>
 </div>
 
 <div class="jumbotron p-4 text-center center" id="changeInfo" style="width:100%;overflow:auto;">

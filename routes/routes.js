@@ -115,8 +115,8 @@ app.post('/editProductDetails', function(req, res) {
     res.redirect(req.get('referer'))
 })
 
-app.get('/admin/control', function(req, res) {
-    res.render('admin/control', {title: "Change Account Settings"})
-})
-
+let controlPageController = require('../controller/controlPageController.js');
+app.get('/admin/control', controlPageController.getControlPage)
+app.get('/admin/control/checkUsername', controlPageController.checkUsername);
+app.post('/admin/control/createAccount', controlPageController.createAccount)
 module.exports = app;
