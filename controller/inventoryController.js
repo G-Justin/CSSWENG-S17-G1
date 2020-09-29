@@ -424,6 +424,7 @@ function getInventory(req, res, phasedOut) {
 
             for (let i = 0; i < productResults.length; i++) {
                 productResults[i].notPhasedOut = !phasedOut;
+                productResults[i].totalSold = productResults[i].smallSold + productResults[i].mediumSold + productResults[i].largeSold + productResults[i].extraLargeSold
             }
 
             updateDeficits(productResults).then((a) => {
@@ -467,8 +468,7 @@ async function getInventoryRecords(inventoryRecords, results) {
             smallUpdate: results[i].smallUpdate,
             mediumUpdate: results[i].mediumUpdate,
             largeUpdate: results[i].largeUpdate,
-            extraLargeUpdate: results[i].extraLargeUpdate,
-            extraLargeUpdate: results[i].extraLargeUpdate,
+            extraLargeUpdate: results[i].extraLargeUpdate
         }
 
         inventoryRecords.push(inventoryRecord);
