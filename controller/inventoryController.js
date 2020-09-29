@@ -437,18 +437,13 @@ function getInventory(req, res, phasedOut) {
                             return;
                         }
 
-                        let inventoryRecords = new Array();
-                        getInventoryRecords(inventoryRecords, inventoryRecordsResult).then((a) => {
-                            
-                            res.render('admin/inventory', {
-                                title: 'Inventory',
-                    
-                                products: productResults,
-                                inventoryRecords: inventoryRecords,
-                                notPhasedOut: !phasedOut,
-                            });
-                        })
-                        
+                        res.render('admin/inventory', {
+                            title: 'Inventory',
+                
+                            products: productResults,
+                            inventoryRecords: inventoryRecordsResult,
+                            notPhasedOut: !phasedOut,
+                        });                  
                     })
             })
         })

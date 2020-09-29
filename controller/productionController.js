@@ -33,6 +33,7 @@ const productionController = {
 
         JobOrder.find(query)
             .sort({created: -1})
+            .lean()
             .exec(function(err, results) {
                 if (err) {
                     res.render('error', {
@@ -44,30 +45,30 @@ const productionController = {
                     return;
                 }
 
-                let jobOrders = new Array();
-                getJobOrders(jobOrders, results).then((a) => {
-                    for (let i = 0; i < jobOrders.length; i++) {
-                        jobOrders[i].date = jobOrders[i].date.toISOString().split('T')[0];
-                    }
-
-                    Product.find({isPhasedOut: false})
-                        .select('style description color')
-                        .lean()
-                        .exec(function(err, products) {
-                            res.render('admin/production', {
-                                title: 'Production Dashboard',
-                                layout: 'main',
-                                products: products,
-                                resultsMessage: resultsMsg,
                 
-                                jobOrderCards: jobOrders,
-                                noResults: jobOrders.length == 0,
+                for (let i = 0; i < results.length; i++) {
+                     results[i].date = results[i].date.toISOString().split('T')[0];
+                    results.hasDeficit = (results[i].totalOrders > results[i].totalOutput);
+                }
+
+                Product.find({isPhasedOut: false})
+                .select('style description color')
+                .lean()
+                .exec(function(err, products) {
+                    res.render('admin/production', {
+                        title: 'Production Dashboard',
+                        layout: 'main',
+                        products: products,
+                        resultsMessage: resultsMsg,
+                
+                        jobOrderCards: results,
+                        noResults: results.length == 0,
             
-                        })
                     })
+                })
                     
             })
-        })
+       
           
         
     },
