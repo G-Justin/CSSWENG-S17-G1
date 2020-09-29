@@ -436,16 +436,47 @@ function getInventory(req, res, phasedOut) {
                             return;
                         }
 
-                        res.render('admin/inventory', {
-                            title: 'Inventory',
-                
-                            products: productResults,
-                            inventoryRecords: inventoryRecordsResult,
-                            notPhasedOut: !phasedOut,
-                        });
+                        let inventoryRecords = new Array();
+                        getInventoryRecords(inventoryRecords, inventoryRecordsResult).then((a) => {
+                            
+                            res.render('admin/inventory', {
+                                title: 'Inventory',
+                    
+                                products: productResults,
+                                inventoryRecords: inventoryRecords,
+                                notPhasedOut: !phasedOut,
+                            });
+                        })
+                        
                     })
             })
         })
+}
+
+async function getInventoryRecords(inventoryRecords, results) {
+    for (let i = 0; i < results.length; i++) {
+        let product = await Product.findOne({_id: results[i].parentRecord});
+        
+        if (!product) {
+            console.log("did not find the parent product record for a log");
+            continue;
+        }
+
+        let inventoryRecord = {
+            parentRecord: product._id,
+            color: product.color,
+            style: product.style,
+            description: product.description,
+            date: results[i].date,
+            smallUpdate: results[i].smallUpdate,
+            mediumUpdate: results[i].mediumUpdate,
+            largeUpdate: results[i].largeUpdate,
+            extraLargeUpdate: results[i].extraLargeUpdate,
+            extraLargeUpdate: results[i].extraLargeUpdate,
+        }
+
+        inventoryRecords.push(inventoryRecord);
+    }
 }
 
 async function updateDeficits(products) {
