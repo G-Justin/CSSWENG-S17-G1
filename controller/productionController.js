@@ -45,7 +45,7 @@ const productionController = {
                 let jobOrders = new Array();
                 getJobOrders(jobOrders, results).then((a) => {
                     for (let i = 0; i < jobOrders.length; i++) {
-                        jobOrders[i].date = formatDate(jobOrders[i].date);
+                        jobOrders[i].date = jobOrders[i].date.toISOString().split('T')[0];
                     }
 
                     Product.find({isPhasedOut: false})
@@ -181,16 +181,10 @@ const productionController = {
         }
 
         let batchNo = sanitize(req.body.batchNo);
-        let style = sanitize(req.body.style);
-        let color = sanitize(req.body.color);
-        let description = sanitize(req.body.description);
+        let _id = sanitize(req.body._id);
 
-        style = style.trim().toUpperCase();
-        color = color.trim().toUpperCase();
-        description = description.toUpperCase();
-
-        JobOrder.exists({batchNo: batchNo, style: style, color: color, description: description}, function(err, jobOrderExists) {
-            Product.exists({style: style, color: color, description: description}, function(err, productExists) {
+        JobOrder.exists({batchNo: batchNo, productId: _id}, function(err, jobOrderExists) {
+            Product.exists({_id: _id}, function(err, productExists) {
                 let data = {
                     jobOrderExists: jobOrderExists,
                     productExists: productExists
