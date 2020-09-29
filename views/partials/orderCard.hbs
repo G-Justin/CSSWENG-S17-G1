@@ -10,9 +10,9 @@
 </div> -->
 
 <tr>
-	<td><a href="/admin/orders/{{_id}}">{{_id}}</a></td>
-	<td>firstname{{firstname}}</td>
-	<td>lastname{{lastname}}</td>
+	<td><a href="/admin/orders/{{_id}}" {{#if hasDeficit}} style="color:#FF0000;" {{/if}}>{{_id}}</a></td>
+	<td>{{firstname}}</td>
+	<td>{{lastname}}</td>
 	<td>{{paymentStatus}}</td>
 	<td>{{deliveryStatus}}</td>
 </tr>
