@@ -38,7 +38,7 @@ const adminCartController = {
 
             let orderResultItems = orderResult.orderItems;
             let orderItems = new Array();
-            let delivered = orderResult.deliveryStatus == "DELIVERED";
+            let delivered = orderResult.deliveryStatus == "DELIVERED" || orderResult.deliveryStatus == "VOIDED";
             
             let basePrice = new Array();
             getOrderItems(orderResultItems, orderItems, basePrice, delivered).then((a) => {
@@ -62,6 +62,8 @@ const adminCartController = {
                     deliveryDate: formatDate(orderResult.deliveryDate),
                     totalItems: orderResult.orderItems.length,
                     delivered: delivered,
+                    voided: orderResult.paymentStatus == 'VOIDED',
+                    canBeVoided: (orderResult.paymentStatus == 'TO PAY' && orderResult.deliveryStatus == 'PROCESSING'),
         
                     deliveryStatus: orderResult.deliveryStatus,
                     paymentStatus: orderResult.paymentStatus,
@@ -236,13 +238,23 @@ const adminCartController = {
         }
 
         let _id = sanitize(req.body.voidId);
+        Order.updateOne({_id: _id}, {
+            deliveryStatus: 'VOIDED',
+            paymentStatus: 'VOIDED'
+        }, function(err, result) {
+            if (err) {
+                res.render('error', {
+                    title: 'Facemust',
+                    error: '404',
+                    message: 'AN ERROR OCCURRED',
+                    customer: false
+                })
+                return;
+            }
 
-        Order.deleteOne({_id: _id})
-        .then((a) => {
-            OrderItem.deleteMany({parentOrder: _id}).then((a) => {
-                res.redirect('/admin/orders');
-            })
+            res.redirect(req.get('referer'))
         })
+        
     }, 
 
     checkDeliveryUpdate: function(req, res) {

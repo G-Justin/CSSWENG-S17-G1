@@ -25,12 +25,12 @@ var OrderSchema = new mongoose.Schema({
     },
     deliveryStatus: {
         type: String,
-        enum: ['PROCESSING', 'DELIVERED'],
+        enum: ['PROCESSING', 'DELIVERED', 'VOIDED'],
         default: 'PROCESSING'
     },
     paymentStatus: {
         type: String,
-        enum: ['TO PAY', 'PAID'],
+        enum: ['TO PAY', 'PAID', 'VOIDED'],
         default: 'TO PAY'
     },
     paymentMode: {

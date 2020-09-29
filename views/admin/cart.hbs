@@ -14,10 +14,16 @@
 <div class="mt-5 row">
 	<div class="container-fluid">
 		<h5 style = "text-align: center;">ORDER NUMBER {{_id}}</h5><br>
-		<form method="POST" action="/admin/orders/void"  style="display: flex; justify-content: center;">
-			<textarea id="voidId" name="voidId" readonly="readonly" style="display: none;">{{_id}}</textarea><br>
-			<button type="submit" class="btn btn-primary" style = "background-color: rgb(163, 47, 47); color:white">Void Order</button>	
-		</form><hr>
+		{{#if voided}}
+		<h5 style = "text-align: center;">VOIDED</h5><br>
+		{{else}}
+			{{#if canBeVoided}}
+				<div style="display: flex; justify-content: center;">
+					<textarea id="voidId" name="voidId" readonly="readonly" style="display: none;">{{_id}}</textarea><br>
+					<button class="btn btn-primary" style = "background-color: rgb(163, 47, 47); color:white" data-toggle="modal" data-target="#voidModal">Void Order</button>	
+				</div>
+			{{/if}}
+		{{/if}}
 		<div class="hi" style=" width:auto; margin:0">
 				<div class="card" style = "float:left; width:275px; height:424px; overflow:auto">
 					<br><h3 class="card-title" style="text-align: center;"> Customer Details</h3><hr>
@@ -37,7 +43,11 @@
 					<div class="card-body">
 						<form id="updateDeliveryStatusForm" name="updateDeliveryStatusForm" method="POST" action="/admin/orders/updateDeliveryStatus">
 							<textarea id="updateStatusId" name="updateStatusId" readonly="readonly" style="display: none;">{{_id}}</textarea>
-							<p class="card-text"><b>Edit Delivery Status:</b>
+							
+							{{#if voided}}
+							<div>VOIDED</div>
+							{{else}}
+								<p class="card-text"><b>Edit Delivery Status:</b>
 								{{#if delivered}}
 									<div>DELIVERED</div>
 									<textarea id="deliveryStatus" name="deliveryStatus" readonly="readonly" style="display: none;">DELIVERED</textarea>
@@ -47,9 +57,11 @@
 									<option value="{{deliveryStatus}}" hidden="hidden" selected="selected">{{deliveryStatus}}</option>
 								</select></p>
 								{{/if}}
+							
 							<label class="card-text">Delivery Date: {{deliveryDate}} <input type="date" class="form-control" id="deliveryDate" name="deliveryDate" style="width:100%"></label> 
 							<div id="updateDeliveryDateError" name="updateDeliveryDateError" class="text-danger" style="text-align:center"></div>
 							<button id="updateDeliveryDateBtn" name="updateDeliveryDateBtn" class="btn btn-primary" type="submit" style = "background-color: rgb(52, 58, 64); color:white;margin-left:85.615px;margin-top:10%">Save</a>
+							{{/if}}
 						</form>
 						
 					</div>
@@ -58,25 +70,31 @@
 				<div class="card" style = "float: left; width:275px; height:424px;">
 					<br><h3 class="card-title" style="text-align: center;"> Payment Details</h3><hr>
 					<div class="card-body">
+						{{#if voided}}
+							<div>VOIDED</div>
+						{{else}}
 						<form method="POST" action="/admin/orders/updatePaymentStatus">
 							<textarea id="updateStatusId" name="updateStatusId" readonly="readonly" style="display: none;">{{_id}}</textarea>
 							<p class="card-text"><b>Payment Status: </b> <select id="paymentStatus" name="paymentStatus" class="browser-default custom-select"><option value="TO PAY">TO PAY</option><option value="PAID">PAID</option><option value="{{paymentStatus}}" hidden="hidden" selected="selected">{{paymentStatus}}</option></select></p>
 							<label class="card-text">Payment Date: {{paymentDate}} <input type="date" class="form-control" id="paymentDate" name="paymentDate" style="width:100%"></label> 
 							<button class="btn btn-primary" type="submit" style = "background-color: rgb(52, 58, 64); color:white;margin-left:85.615px;margin-top:10%">Save</a>
 						</form>
-						
+						{{/if}}
 					</div>
 				</div>
 
 				<div class="card" style = "float:left; width:275px; height:424px; overflow:auto">
 					<br><h3 class="card-title" style="text-align: center;">Shipping Fees</h3><hr>
 					<div class="card-body">
+						{{#if voided}}<div>VOIDED</div> {{else}}
 					<p id="shippingFee" name="shippingFee" class="card-text"><b>Shipping Fee:</b> {{shippingFee}}</p>
+					
 						<form name="shippingFeeForm" id="shippingFeeForm" method="POST" action="/admin/orders/updateShippingFee">
 							<input type="number" id="shippingFeeInput" name="shippingFeeInput" style="width:70%"> <button id="shipping-fee-btn" class="btn btn-primary" name="shipping-fee-btn" type="submit" style = "background-color: rgb(52, 58, 64); color:white;width:auto;height:30px;margin-bottom:5px;padding:0">Confirm</button>
 							<textarea id="shippingFeeCartId" name="shippingFeeCartId" readonly="readonly" style="display: none;">{{_id}}</textarea>
 						</form>
-							<br><br><p id="basePrice" name="basePrice" class="card-text"><b>Base Price:</b> {{basePrice}} </p>
+					{{/if}}
+							<br><br><p id="basePrice" name="basePrice" class="card-text"><b>Price w/o shipping:</b> {{basePrice}} </p>
 							<p id="totalPrice" name="totalPrice" class="card-text"><b>Total price:</b> {{totalPrice}}</p>
 							<div id="shippingFeeError" name="shippingFeeError" class="text-danger"></div>
 							<p class="card-text"><b>Total Item:</b> {{totalItems}}</p>
@@ -119,4 +137,22 @@
 	</div>
 </div>
 
+<div id="voidModal" class="modal fade" role="dialog">
+          <div id="divtest" class="modal-dialog" id = "md2">
+          <div class="modal-content" style="background-color: rgb(247, 242, 242); text-align:center">
+              <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
+              <h4 class="modal-title">Void Order</h4>
+              <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+              </div>
+              
+            <form method="POST" action="/admin/cart/voidOrder"  style="margin-bottom:30px">
+                <textarea id="voidId" name="voidId" readonly="readonly" style="display: none;">{{_id}}</textarea>
+                <h2 style="color:red">Warning</h2><hr>
+                <h4>Are you sure you want to VOID this order?</h4><br>
+                <button type="submit" class="btn btn-danger" style="color:white;" >Yes</button>	
+                <button type="button" class="btn btn-primary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">No</button>
+            </form>
+          </div>
+          </div>
+  </div>
 

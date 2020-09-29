@@ -67,12 +67,13 @@ const dashboardController = {
                         deliveryStatus: orderResult.deliveryStatus,
                         paymentStatus: orderResult.paymentStatus,
                         shippingFee: shippingFee,
-                        address: orderResult.address,
+                        address: orderResult.address, 
                         firstname: orderResult.firstname,
                         lastname: orderResult.lastname,
                         basePrice: basePrice[0],
                         totalPrice: totalPrice,
-                        orderItems: orderItemsArray
+                        orderItems: orderItemsArray,
+                        canBeVoided: (orderResult.paymentStatus != 'PAID' && orderResult.deliveryStatus != 'DELIVERED' && orderResult.paymentStatus != 'VOIDED')
                     })
                 })
 
@@ -80,12 +81,29 @@ const dashboardController = {
 
                 
             })
+    },
 
+    voidOrder: function(req, res) {
+        let _id = sanitize(req.body.voidId);
 
-        
+        Order.updateOne({_id: _id}, {
+            deliveryStatus: 'VOIDED',
+            paymentStatus: 'VOIDED'
+        }, function(err, result) {
+            if (err) {
+                res.render('error', {
+                    title: 'Facemust',
+                    error: '404',
+                    message: 'AN ERROR OCCURRED',
+                    customer: true
+                })
+                return;
+            }
 
-       
+            res.redirect(req.get('referer'))
+        })
     }
+
 }
 
 module.exports = dashboardController;

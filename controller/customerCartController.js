@@ -186,7 +186,7 @@ async function sendEmail(email, trackingId) {
 
 async function getOrderItemsFromCart(orderItems, order, cart) {
     for (let i = 0; i < cart.length; i++) {
-        let product = await Product.findOne({_id: cart[i].product});
+        let product = await Product.findOne({_id: cart[i].product, isPhasedOut: false});
         if (!product) {
             continue;
         }

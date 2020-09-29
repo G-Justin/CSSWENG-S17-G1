@@ -80,7 +80,7 @@ app.post('/admin/orders/updateShippingFee', adminCartController.updateShippingFe
 app.post('/admin/orders/updateDeliveryStatus', adminCartController.updateDeliveryStatus);
 app.post('/admin/orders/updatePaymentStatus', adminCartController.updatePaymentStatus);
 app.post('/admin/cart/checkDeliveryStatusUpdate', adminCartController.checkDeliveryStatusUpdate)
-app.post('/admin/orders/void', adminCartController.voidOrder);
+app.post('/admin/cart/voidOrder', adminCartController.voidOrder);
 app.get('/admin/cart', (request, res) => {
     res.render('admin/cart',  { title: 'Cart Dashboard' });
 });
@@ -110,6 +110,7 @@ app.get('/item/:_id', specificProductController.getSpecificProduct);
 
 const trackOrderController = require('../controller/trackOrderController.js');
 app.post('/track', trackOrderController.trackOrder);
+app.post('/track/voidOrder', trackOrderController.voidOrder);
 
 app.post('/editProductDetails', function(req, res) {
     res.redirect(req.get('referer'))
