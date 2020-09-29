@@ -19,11 +19,35 @@ const controlPageController = {
                 return;
             }
 
-            res.render('admin/control', {
-                title: "Change Account Settings",
-                customer: false,
-                isMaster: result.userType == 'ADMIN'
-            })
+            User.find()
+                .select('username userType dateCreated')
+                .sort({dateCreated: -1})
+                .lean()
+                .exec((err, users) => {
+                    if (err) {
+                        res.render('error', {
+                            title: 'Facemust',
+                            error: '404',
+                            message: 'AN ERROR OCCURED'
+                        })
+                        return;
+                    }
+
+                    console.log(users)
+                    for (let i = 0; i < users.length; i++) {
+                        users[i].isAdmin = users[i].userType == 'ADMIN'
+                    }
+
+                    res.render('admin/control', {
+                        title: "Change Account Settings",
+                        customer: false,
+                        isMaster: result.userType == 'ADMIN',
+                        users: users
+                    })
+                    
+                })
+
+            
         })
     },
 

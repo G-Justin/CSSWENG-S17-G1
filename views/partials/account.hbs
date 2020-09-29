@@ -1,4 +1,8 @@
 <tr>
     <td>{{username}}</td>
+    {{#if isAdmin}}
+    <td>(ADMIN)</td>
+    {{else}}
     <td><button class="btn btn-danger"><i class="fa fa-trash-o"></i></button></td>
+    {{/if}}
 </tr>

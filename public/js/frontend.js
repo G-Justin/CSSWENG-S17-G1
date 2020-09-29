@@ -568,7 +568,7 @@ $(document).ready(function(){
 
         let userExp = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{3,16}$/;
         if (!userExp.test(username)) {
-            $('#createAccountError').text('Username must be between 4 -16 characters and with no special characters.');
+            $('#createAccountError').text('Username must be between 4 -17 characters and with no special characters.');
             return;
         }
 
