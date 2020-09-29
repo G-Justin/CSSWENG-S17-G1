@@ -20,15 +20,15 @@ var JobOrderSchema = new mongoose.Schema({
     },
     style: {
         type: String, 
-        required: true
+        //required: true
     },
     description: {
         type: String,
-        required: true
+        //required: true
     },
     color: {
         type: String, 
-        required: true
+        //required: true
     },
     status: {
         type: String,

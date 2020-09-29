@@ -7,15 +7,15 @@ var InventoryRecordSchema = new mongoose.Schema({
     },
     color: {
         type: String,
-        required: true
+        //required: true
     },
     style: {
         type: String,
-        required: true
+        //required: true
     },
     description: {
         type: String,
-        required: true
+        //required: true
     },
     date: {
         type: Date,

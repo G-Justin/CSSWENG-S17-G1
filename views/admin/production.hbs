@@ -143,20 +143,15 @@
         <form id="newJobOrderForm" name="newJobOrderForm"method="POST" action="/admin/production/addJobOrder">
             <div class="modal-body mx-3">
               <div class="row md-form my-2 justify-content-center">
+                <select data-size="10" class="selectpicker show-tick" name="newJobOrderSelect" id="newJobOrderSelect" data-live-search="true" title="Select Product" data-width="250px" required>
+                {{#each products}}
+                  <option value={{_id}}>{{style}} {{description}} {{color}}</option>
+                {{/each}}
+              </select>
+              </div>
+              <div class="row md-form my-2 justify-content-center">
                 <label class="col-sm-3">Batch No: </label>
                 <input maxlength="16" type="text" class="col-sm-3 form-control validate" name="newJobOrderBatchNo" id="newJobOrderBatchNo" required>
-              </div>
-              <div class="row md-form my-2 justify-content-center">
-                <label class="col-sm-3">Style: </label>
-                <input maxlength="16" type="text" class="col-sm-3 form-control validate" name="newJobOrderStyle" id="newJobOrderStyle" required>
-              </div>
-              <div class="row md-form my-2 justify-content-center">
-                <label class="col-sm-3">Description: </label>
-                <input maxlength="20" type="text" class="col-sm-3 form-control validate" name="newJobOrderDescription" id="newJobOrderDescription" required>
-              </div>
-              <div class="row md-form my-2 justify-content-center">
-                <label class="col-sm-3">Color: </label>
-                <input maxlength="16" type="text" class="col-sm-3 form-control validate" name="newJobOrderColor" id="newJobOrderColor" required>
               </div>
               <hr>
               <h5 class="text-center my-2 justify-content-center">Order Breakdown</h5>

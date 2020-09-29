@@ -249,9 +249,7 @@ $(document).ready(function(){
         $('#newJobOrderError').text('');
 
         let batchNo = $('#newJobOrderBatchNo').val();
-        let style  =  $('#newJobOrderStyle').val();
-        let color =  $('#newJobOrderColor').val();
-        let description =  $('#newJobOrderDescription').val();
+        let newJobOrderSelect = $('#newJobOrderSelect').val();
         let smallOrder =  $('#newJobOrderSmall').val();
         let mediumOrder = $('#newJobOrderMedium').val();
         let largeOrder =  $('#newJobOrderLarge').val();
@@ -259,52 +257,38 @@ $(document).ready(function(){
         let yardage =  $('#newJobOrderYardage').val();
         let remarks =  $('#newJobOrderRemarks').val();
 
-        if (batchNo.trim() == "" || style.trim() == "" || color.trim() == "" || description.trim() == "" ||
-        smallOrder == "" || mediumOrder == "" || largeOrder == "" || extraLargeOrder == "") {
+        if (newJobOrderSelect == "" || batchNo.trim() == "" || smallOrder == "" || mediumOrder == "" || largeOrder == "" || extraLargeOrder == "") {
             $('#newJobOrderError').text("All fields except optional ones required!");
             return;
         } 
-
+        alert('1')
         if (smallOrder > MAX_INT || smallOrder < MIN_INT) {
             $('#newJobOrderError').text("Invalid small amount!");
             return;
         }
-
+        alert('2')
         if (mediumOrder > MAX_INT || mediumOrder < MIN_INT) {
             $('#newJobOrderError').text("Invalid medium amount!");
             return;
         }
-
+        alert('3')
         if (largeOrder > MAX_INT || mediumOrder < MIN_INT) {
             $('#newJobOrderError').text("Invalid large amount!");
             return;
         }
-
+        alert('4')
         if (extraLargeOrder > MAX_INT || mediumOrder < MIN_INT) {
             $('#newJobOrderError').text("Invalid extra-large amount!");
             return;
         }
-
+        alert('5')
         if (smallOrder % 1 != 0 || mediumOrder % 1 != 0 || largeOrder % 1 != 0 || extraLargeOrder % 1 != 0) {
             $('#newJobOrderError').text("Orders must be in whole numbers!");
             return;
         }
 
-        $.post('/admin/production/validateNewJobOrder', {batchNo: batchNo, style: style, color: color, description: description}, (data) => {
-            if(data.jobOrderExists) {
-                $('#newJobOrderError').text("Job order with the same batch number already exists!");
-                return;
-            }
-
-            if (!data.productExists) {
-                $('#newJobOrderError').text(style + " " + color + " " + description + " does not exist in the inventory!");
-                return;
-            }
-
-
-
-            $('#newJobOrderForm').submit();
-        })
+        alert('test')
+        $('#newJobOrderForm').submit();
     })
 
     $('#jobOrderCardContainer').on('click', '#resolveJobOrderBtn', function(e) {
