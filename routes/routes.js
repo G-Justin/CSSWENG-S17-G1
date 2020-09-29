@@ -119,4 +119,5 @@ let controlPageController = require('../controller/controlPageController.js');
 app.get('/admin/control', controlPageController.getControlPage)
 app.get('/admin/control/checkUsername', controlPageController.checkUsername);
 app.post('/admin/control/createAccount', controlPageController.createAccount)
+app.post('/admin/control/deleteUser', controlPageController.deleteUser);
 module.exports = app;

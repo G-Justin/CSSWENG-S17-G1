@@ -149,6 +149,29 @@ const controlPageController = {
                 })
             })
         })
+    },
+
+    deleteUser: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+
+        let username = sanitize(req.body.deleteUserName);
+
+        User.deleteOne({username: username}, function(err, result) {
+            if (err) {
+                console.log(err)
+                res.render('error', {
+                    title: 'Facemust',
+                    error: '404',
+                    message: 'AN ERROR OCCURRED'
+                })
+                return;
+            }
+
+            res.redirect(req.get('referer'))
+        })
     }
 }
 
