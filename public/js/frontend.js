@@ -594,5 +594,42 @@ $(document).ready(function(){
 
     })
 
+    $('#myTabContent').on('click', "#editProductBtn", function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        let id = $(this.form).attr('name')
+        $('#editProductError' + id).text('')
+
+        
+        let style = $('#editProductStyle' + id).val();
+        let description = $('#editProductDescription' + id).val();
+        let color = $('#editProductColor' + id).val();
+        let price = $('#editProductPrice' + id).val();
+
+        style = style.trim();
+        description = description.trim();
+        color = color.trim();
+        
+        if (style == "" || color == "" || description == "" || price == "" ) {
+            $('#editProductError' + id).text('Fields required!')
+            return;
+        }
+
+        $.post('/admin/inventory/checkEdit', {_id: id, style: style, color: color, description: description}, (hasDuplicate) => {
+            if (hasDuplicate) {
+                $('#editProductError' + id).text('Product with same details already exists')
+                return;
+            }
+
+
+            $('#editProductStyle' + id).attr("id", "editProductStyle");
+            $('#editProductDescription' + id).attr("id", "editProductDescription");
+            $('#editProductColor' + id).attr("id", "editProductColor");
+            $('#editProductPrice' + id).attr("id", "editProductColor");
+            $(this.form).submit();
+        })
+    })
+
 
 })

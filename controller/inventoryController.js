@@ -5,7 +5,8 @@ const Order = require('../model/order.js');
 const sanitize = require('mongo-sanitize');
 const orderitem = require('../model/orderitem.js');
 const { findSeries } = require('async');
-const fs = require('fs')
+const fs = require('fs');
+const JobOrder = require('../model/jobOrder.js');
 const PAGE_LIMIT = 10;
 
 const inventoryController = {
@@ -368,6 +369,88 @@ const inventoryController = {
 
                 res.send(result);
             })
+    },
+
+    checkEdit: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+
+        let id = sanitize(req.body._id)
+        let style = sanitize(req.body.style);
+        let description = sanitize(req.body.description);
+        let color = sanitize(req.body.color);
+
+        style = style.toUpperCase();
+        description = description.toUpperCase();
+        color = color.toUpperCase();
+
+        Product.findOne({_id: {$ne: id}, color: color, style: style, description: description}, function (err, result) {
+            if (err) {
+                console.log("error");
+                res.redirect(req.get('referer'))
+                return;
+            }
+
+            let hasDuplicate = result != null;
+            res.send(hasDuplicate)
+          })
+
+    },
+
+    editProductDetails: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+
+        let _id = sanitize(req.body.editProductId);
+        let style = sanitize(req.body.editProductStyle);
+        let color = sanitize(req.body.editProductColor)
+        let description = sanitize(req.body.editProductDescription)
+        let price = sanitize(req.body.editProductPrice);
+
+        Product.findOneAndUpdate({_id: _id}, {style: style, color: color, description: description, price: price}, function (err, result) {
+            if (err) {
+                console.log(err)
+                res.render('error', {
+                    title: 'Facemust',
+                    error: '404',
+                    message: 'AN ERROR OCCURED'
+                })
+                return;
+            }
+            console.log(result);
+            
+            InventoryRecord.update({parentRecord: _id}, {color: color, style: style, description: description}, function(err, result2) {
+                if (err) {
+                    console.log(err)
+                    res.render('error', {
+                        title: 'Facemust',
+                        error: '404',
+                        message: 'AN ERROR OCCURED'
+                    })
+                    return;
+                }
+
+                 JobOrder.update({productId: _id}, {style: style, color: color, description: description}, function(err, result3) {
+                    if (err) {
+                        console.log(err)
+                        res.render('error', {
+                            title: 'Facemust',
+                            error: '404',
+                            message: 'AN ERROR OCCURED'
+                        })
+                        return;
+                    }
+
+                    res.redirect(req.get('referer'));
+                    return;
+                 })
+            })
+
+          })
     }
 
 }

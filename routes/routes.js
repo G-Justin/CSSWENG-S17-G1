@@ -72,6 +72,8 @@ app.get('/getProductImage', inventoryController.getProductImage)
 app.post('/updateProductImage', productImageUpload, inventoryController.updateProductImage)
 app.post('/admin/inventory/phaseInProduct', inventoryController.phaseIn);
 app.get('/inventory/getProductDetails', inventoryController.getProductDetails);
+app.post('/admin/inventory/checkEdit', inventoryController.checkEdit)
+app.post('/admin/inventory/editProductDetails', inventoryController.editProductDetails)
 
 const adminCartController = require('../controller/adminCartController.js');
 app.get('/admin/orders/:_id', adminCartController.getOrder);
@@ -111,10 +113,6 @@ app.get('/item/:_id', specificProductController.getSpecificProduct);
 const trackOrderController = require('../controller/trackOrderController.js');
 app.post('/track', trackOrderController.trackOrder);
 app.post('/track/voidOrder', trackOrderController.voidOrder);
-
-app.post('/editProductDetails', function(req, res) {
-    res.redirect(req.get('referer'))
-})
 
 let controlPageController = require('../controller/controlPageController.js');
 app.get('/admin/control', controlPageController.getControlPage)

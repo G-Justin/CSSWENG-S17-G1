@@ -125,26 +125,27 @@
                     </div>
                     <!-- Product Detail TAB -->
                     <div class="tab-pane fade show" id="pd{{_id}}" role="tabpanel" aria-labelledby="detail-tab"> <!-- edits the inventory-->
-                        <form id="editProductDetailsForm" name="editProductDetailsForm" method="POST" action="/editProductDetails">
+                        <form id="editProductDetailsForm" name="{{_id}}" method="POST" action="/admin/inventory/editProductDetails">
+                            <textarea readonly="readonly" id="editProductId" name="editProductId" style="display: none;">{{_id}}</textarea>
                             <h5 class="text-center my-2 justify-content-center">Product Details</h5>
                             <div class="modal-body mx-3">
                             <div class="row md-form my-2 justify-content-center">
                                 <label class="col-sm-4">Style: </label>
-                                <input maxlength="16" type="text" class="col-sm-3 form-control validate" name="editProductStyle" id="editProductStyle" value='{{style}}' required>
+                                <input maxlength="16" type="text" class="col-sm-3 form-control validate" name="editProductStyle" id="editProductStyle{{_id}}" value='{{style}}' required>
                             </div>
                             <div class="row md-form my-2 justify-content-center">
                                 <label class="col-sm-4">Description: </label>
-                                <input maxlength="20" type="text" class="col-sm-3 form-control validate" name="editProductDescription" id="editProductDescription"  value='{{description}}' required>
+                                <input maxlength="20" type="text" class="col-sm-3 form-control validate" name="editProductDescription" id="editProductDescription{{_id}}"  value='{{description}}' required>
                             </div>
                             <div class="row md-form my-2 justify-content-center">
                                 <label class="col-sm-4">Color: </label>
-                                <input maxlength="16" type="text" class="col-sm-3 form-control validate" name="editProductColor" id="editProductColor"  value='{{color}}' required>
+                                <input maxlength="16" type="text" class="col-sm-3 form-control validate" name="editProductColor" id="editProductColor{{_id}}"  value='{{color}}' required>
                             </div>
                             <div class="row md-form my-2 justify-content-center">
                                 <label class="col-sm-4">Price: </label>
-                                <input min="0" max="9007199254740981" type="number" class="col-sm-3 form-control validate" id="editProductPrice" name="editProductPrice" value='{{price}}' required>
+                                <input min="0" max="9007199254740981" type="number" class="col-sm-3 form-control validate" id="editProductPrice{{_id}}" name="editProductPrice" value='{{price}}' required>
                             </div>                      
-                            <div id="editProductError" name="editProductError" class="text-danger" style="text-align:center"></div>
+                            <div id="editProductError{{_id}}" name="editProductError" class="text-danger" style="text-align:center"></div>
                             <!--<p id="msgEd1" class="text-danger mb-0 mt-2 text-center"></p>-->
                             </div>
                         <div class="modal-footer d-flex justify-content-center">
