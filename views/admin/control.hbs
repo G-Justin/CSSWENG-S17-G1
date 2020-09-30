@@ -95,18 +95,23 @@
     <h4>Create Account</h4><hr>
     <form id="createAccountForm" name="createAccountForm" method="POST" action="/admin/control/createAccount">
             <div class="modal-body mx-3">
-				<div class="row md-form my-2 justify-content-center">
-					<input maxlength="60" type="text" class="col-sm-8 form-control validate" name="createAccountUsername" id="createAccountUsername" placeholder="4 - 17 characters. No special characters." required>
+				<div class="row md-form my-2 ">
+                    <label for="newUname">Username:</label>
+                    <input maxlength="60" type="text" class="form-control validate" name="createAccountUsername" id="createAccountUsername" placeholder="4 - 17 characters. No special characters." required>
 				</div>
-                <div class="row md-form my-2 justify-content-center">
-					<input maxlength="60" type="password" class="col-sm-8 form-control validate" name="createAccountPassword" id="createAccountPassword" placeholder="8 characters, 1 numer, upper, lower" required>
+                    
+                <div class="row md-form my-2 ">
+                    <label for="newUname">Password:</label>
+					<input maxlength="60" type="password" class="form-control validate" name="createAccountPassword" id="createAccountPassword" placeholder="8 characters, 1 number, upper, lower" required>
 				</div>
-                <div class="row md-form my-2 justify-content-center">
-					<input maxlength="60" type="password" class="col-sm-8 form-control validate" name="createAccountConfirmPassword" id="createAccountConfirmPassword" placeholder="Confirm password" required>
+                <div class="row md-form my-2 ">
+                    <label for="newUname">Retype Password:</label>
+					<input maxlength="60" type="password" class="form-control validate" name="createAccountConfirmPassword" id="createAccountConfirmPassword" placeholder="Confirm password" required>
 				</div>
             </div>
             <div id="createAccountError" name="createAccountError" class="text-danger" style="text-align:center"></div>
             <button type="submit" id="createAccountBtn" name="createAccountBtn" class="btn btn-primary" >Submit</button>
+    </form>
 </div>
 {{/if}}
 
