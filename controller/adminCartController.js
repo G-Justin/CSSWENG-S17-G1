@@ -39,8 +39,9 @@ const adminCartController = {
             let orderResultItems = orderResult.orderItems;
             let orderItems = new Array();
             let delivered = orderResult.deliveryStatus == "DELIVERED" || orderResult.deliveryStatus == "VOIDED";
-            
+            let paid = orderResult.paymentStatus == "PAID" || orderResult.paymentStatus == "PAID"
             let basePrice = new Array();
+            console.log(orderResult)
             getOrderItems(orderResultItems, orderItems, basePrice, delivered).then((a) => {
                 let totalPrice = 0;
                 if (orderResult.shippingFee != null) {
@@ -62,6 +63,7 @@ const adminCartController = {
                     deliveryDate: formatDate(orderResult.deliveryDate),
                     totalItems: orderResult.orderItems.length,
                     delivered: delivered,
+                    paid: paid,
                     voided: orderResult.paymentStatus == 'VOIDED',
                     canBeVoided: (orderResult.paymentStatus == 'TO PAY' && orderResult.deliveryStatus == 'PROCESSING'),
         

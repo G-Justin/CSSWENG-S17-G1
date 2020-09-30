@@ -75,7 +75,13 @@
 						{{else}}
 						<form method="POST" action="/admin/orders/updatePaymentStatus">
 							<textarea id="updateStatusId" name="updateStatusId" readonly="readonly" style="display: none;">{{_id}}</textarea>
-							<p class="card-text"><b>Payment Status: </b> <select id="paymentStatus" name="paymentStatus" class="browser-default custom-select"><option value="TO PAY">TO PAY</option><option value="PAID">PAID</option><option value="{{paymentStatus}}" hidden="hidden" selected="selected">{{paymentStatus}}</option></select></p>
+							{{#if paid}}
+								<p class="card-text"><b>Payement Status: </b>
+								<div>PAID</div>
+								<textarea id="paymentStatus" name="paymentStatus" readonly="readonly" style="display: none;">PAID</textarea></p>
+							{{else}}
+								<p class="card-text"><b>Payment Status: </b> <select id="paymentStatus" name="paymentStatus" class="browser-default custom-select"><option value="TO PAY">TO PAY</option><option value="PAID">PAID</option><option value="{{paymentStatus}}" hidden="hidden" selected="selected">{{paymentStatus}}</option></select></p>
+							{{/if}}
 							<label class="card-text">Payment Date: {{paymentDate}} <input type="date" class="form-control" id="paymentDate" name="paymentDate" style="width:100%"></label> 
 							<button class="btn btn-primary" type="submit" style = "background-color: rgb(52, 58, 64); color:white;margin-left:85.615px;margin-top:10%">Save</a>
 						</form>
