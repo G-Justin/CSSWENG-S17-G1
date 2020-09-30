@@ -1,3 +1,10 @@
+<script>
+  $(document).ready(function() {
+        var cart = JSON.parse(localStorage.getItem('cart'));
+        document.getElementById("cartNumber").innerHTML = cart.length;
+    });
+</script>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -59,7 +66,14 @@
               </li>
             
         </div>
-       
+        <div class="col m-0 p-0">
+            
+              <li class='nav-item'>
+                <input type="text" class="form-control" id="validator" name= "validator" placeholder="Contact #/Email" size="15%" required>
+                
+              </li>
+            
+        </div>
             <li class = "nav-item">
                 <button type="submit" class="btn btn-primary">
                   Track My Order
@@ -70,7 +84,7 @@
     </ul>
     
     <a class="nav-link" href="/"><i class="fas fa-home" style='font-size:24px'></i></a>
-    <a class="nav-link" href="/cart"><span><small>0</small><i class='fas fa-shopping-cart' style='font-size:24px'></i></span></a>
+    <a class="nav-link" href="/cart"><span ><small id="cartNumber"></small><i class='fas fa-shopping-cart' style='font-size:24px'></i></span></a>
    
 </div>
 </nav>
