@@ -388,6 +388,7 @@ async function getOrderItems(orderResultItems, orderItems, basePrice, delivered)
         let orderItem = {
             color: productResult.color,
             style: productResult.style,
+            description: productResult.description,
             smallAmount: orderResultItems[i].smallAmount,
             mediumAmount: orderResultItems[i].mediumAmount,
             largeAmount: orderResultItems[i].largeAmount,
