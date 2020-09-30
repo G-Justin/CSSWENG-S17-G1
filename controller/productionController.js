@@ -47,12 +47,8 @@ const productionController = {
 
                 
                 for (let i = 0; i < results.length; i++) {
-                    results[i].date = results[i].date.toISOString().split('T')[0];
-                    results[i].hasDeficit = (results[i].totalOrders > results[i].totalOutput);
-                    results[i].hasDiscrepancy = false;
-                    if (results[i].smallOutput != results[i].smallOrder || results[i].mediumOutput != results[i].mediumOrder || results[i].largeOutput != results[i].largeOrder || results[i].extraLargeOutput != results[i].extraLargeOrder) {
-                        results[i].hasDiscrepancy = true;
-                    }
+                     results[i].date = results[i].date.toISOString().split('T')[0];
+                    results.hasDeficit = (results[i].totalOrders > results[i].totalOutput);
                 }
 
                 Product.find({isPhasedOut: false})
@@ -305,19 +301,8 @@ const productionController = {
             return;
         }
 
-        let yardage = sanitize(req.body.newYardage);
         let _id = sanitize(req.body.updateRemarkId);
-        let smallOrder = sanitize(req.body.newSmall);
-        let mediumOrder = sanitize(req.body.newMedium);
-        let largeOrder = sanitize(req.body.newLarge);
-        let extraLargeOrder = sanitize(req.body.newExtraLarge);
         let remarks = sanitize(req.body.newRemarks);
-
-        if (!isValidJobOrderAmount(smallOrder) || !isValidJobOrderAmount(mediumOrder) || !isValidJobOrderAmount(largeOrder) || !isValidJobOrderAmount(extraLargeOrder)) {
-            console.log('not valid job order amounts');
-            res.redirect(req.get('referer'));
-            return;
-        }
 
         if (remarks.length > 80) {
             console.log('remarks exceeds the 80 character limit');
@@ -325,8 +310,7 @@ const productionController = {
             return;
         }
 
-        let totalOrders = Number(smallOrder) + Number(mediumOrder) + Number(largeOrder) + Number(extraLargeOrder);
-        JobOrder.updateOne({_id: _id}, {remarks: remarks, totalOrders: totalOrders, smallOrder: smallOrder, mediumOrder: mediumOrder, largeOrder: largeOrder, extraLargeOrder: extraLargeOrder, yardage: yardage}, function(err, result) {
+        JobOrder.updateOne({_id: _id}, {remarks: remarks}, function(err, result) {
             if (!result) {
                 console.log(err)
                 res.redirect(req.get('referer'));
