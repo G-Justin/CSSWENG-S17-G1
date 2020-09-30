@@ -86,6 +86,7 @@ async function getOrders(ordersResult, orders) {
             _id: ordersResult[i]._id,
             firstname: ordersResult[i].firstname,
             lastname: ordersResult[i].lastname,
+            orderDate: ordersResult[i].orderDate.toISOString().split('T')[0],
             paymentStatus: ordersResult[i].paymentStatus,
             deliveryStatus: ordersResult[i].deliveryStatus,
             hasDeficit: false
