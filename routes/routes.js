@@ -97,7 +97,7 @@ app.post('/cart/newOrder', customerCartController.newOrder);
 const mainCustomerController = require('../controller/mainCustomerController.js');
 app.get('', mainCustomerController.getMainCustomerPage)
 app.get('/', mainCustomerController.getMainCustomerPage)
-
+app.get('/ascending/', mainCustomerController.getMainCustomerAscending)
 
 app.get('/checkout', function(req, res) {
     res.render('customer/checkout', {title: "Checkout"})

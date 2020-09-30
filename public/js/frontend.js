@@ -631,5 +631,26 @@ $(document).ready(function(){
         })
     })
 
+    $('#priceSorting').change(function(e) {
+        if ($(this).val() == "1") {
+            window.location.replace(window.location.origin + "/ascending/" + window.location.search)
+        } else if ($(this).val() == "-1") {
+            window.location.replace(window.location.origin + "/" + window.location.search)
+        }
+        
+        alert(window.location.search)
+        return;
+        if (window.location.search.length == "0") {
+            window.location.replace(window.location.href + "?sort=" + $(this).val());
+            return;
+        } else {
+            window.location.replace(window.location.href + "&sort=" + $(this).val());
+            return;
+        }
+
+        
+        
+    })
+
 
 })

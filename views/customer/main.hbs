@@ -147,8 +147,8 @@
         <form id="priceSort" name="priceSort" method="GET" style="float:right">
             <i class="fas fa-sort"></i>
             <select class="selectpicker show-tick" data-size="2" name="priceSorting" id="priceSorting" title="Sort by Price">
-                <option>Ascending</option>
-                <option>Descending</option>
+                <option value="1" {{#ifCond sort "ASC"}}selected{{/ifCond}}>Ascending</option>
+                <option value="-1" {{#ifCond sort "DSC"}} selected {{/ifCond}}>Descending</option>
             </select>
         </form>
     </div>
@@ -164,7 +164,7 @@
             
             <form id="customerFilter" name="customerFilter" method="GET">
                 <div class="container">
-                <select class="selectpicker show-tick" data-size="10" name="selectDescription" id="selectDescription" data-live-search="true" title="Select Description" multiple data-actions-box="true" multiple>
+                <select class="selectpicker show-tick" data-size="10" name="selectDescription" id="selectDescription" data-live-search="true" title="Select Shape" multiple data-actions-box="true" multiple>
                     {{#each descriptions}}
                         <option>{{this}}</option>
                     {{/each}}
