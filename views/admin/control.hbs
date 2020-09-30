@@ -110,18 +110,18 @@
 </div>
 {{/if}}
 
-<div class="jumbotron p-4 text-center center" id="changeInfo" style="width:100%;overflow:auto;">
+<div class="jumbotron p-4 text-center center" id="changeInfo" style="width:30%;overflow:auto;float:left;border-right: 1px solid gray;">
     <h4>Change Password</h4>
     <form id="changePasswordForm" name="changePasswordForm" method="POST" action="">
         <div class="modal-body mx-3">
             <div class="row md-form my-2 justify-content-center">
-                <input maxlength="60" type="password" class="col-sm-8 form-control validate" name="changePasswordCurrent" id="changePasswordCurrent" placeholder="Current Password" required>
+                <input maxlength="60" type="password" class="col-sm-9 form-control validate" name="changePasswordCurrent" id="changePasswordCurrent" placeholder="Current Password" required>
             </div>
             <div class="row md-form my-2 justify-content-center">
-                <input maxlength="60" type="password" class="col-sm-8 form-control validate" name="changePasswordNew" id="changePasswordNew" placeholder="New Password" required>
+                <input maxlength="60" type="password" class="col-sm-9 form-control validate" name="changePasswordNew" id="changePasswordNew" placeholder="New Password" required>
             </div>
             <div class="row md-form my-2 justify-content-center">
-                <input maxlength="60" type="password" class="col-sm-8 form-control validate" name="changePasswordConfirm" id="changePasswordConfirm" placeholder="Retype New Password" required>
+                <input maxlength="60" type="password" class="col-sm-9 form-control validate" name="changePasswordConfirm" id="changePasswordConfirm" placeholder="Retype New Password" required>
             </div>
         </div>
         <div id="changePasswordError" name="changePasswordError" class="text-danger" style="text-align:center"></div>
@@ -132,7 +132,7 @@
     </form>
 </div>
 
-<div class="jumbotron p-4 text-center" id="changePicture" style="width:50%;overflow:auto;float:left;border-right: 1px solid gray;">
+<div class="jumbotron p-4 text-center" id="changePicture" style="width:35%;overflow:auto;float:left;border-right: 1px solid gray;">
     <h6>Change Best Seller Catalogue</h6><br>
     <form id="catalogueImageForm1" name="catalogueImageForm1" action="/" enctype="multipart/form-data" method="POST"> <!-- uploads the image-->
         <img src="/bestCatalogue/1.png" style="width:100px;height:100px">
@@ -145,7 +145,7 @@
     </form>
 </div>
 
-<div class="jumbotron p-4 text-center" id="changeAd" style="width:50%;overflow:auto;float:left;">
+<div class="jumbotron p-4 text-center" id="changeAd" style="width:35%;overflow:auto;float:left;">
     <h6>Change Advertisement Catalogue</h6><br>
     <form id="catalogueImageForm2" name="catalogueImageForm2" action="/" enctype="multipart/form-data" method="POST"> <!-- uploads the image-->
         <img src="/adCatalogue/1.png" style="width:100px;height:100px">
