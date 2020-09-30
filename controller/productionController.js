@@ -12,11 +12,7 @@ const productionController = {
             return;
         }
 
-        let style = sanitize(req.query.style);
-        let color = sanitize(req.query.color);
-        let description = sanitize(req.query.description);
-        let query = getQueries(style, color, description)
-
+        let query = {};
         let status = sanitize(req.query.status);
         let statusQueries = new Array();
         let statusEnums = JobOrder.schema.path('status').enumValues;
@@ -29,68 +25,56 @@ const productionController = {
 
         let dateStart = parseDate(sanitize(req.query.dateStart));
         let dateEnd = parseDate(sanitize(req.query.dateEnd));
-        let resultsMessage = getResultsMessage(style, color, description, status, dateStart, dateEnd);
+        let resultsMsg = getResultsMessage(status, dateStart, dateEnd);
         dateStart = (dateStart == null) ? new Date(-8640000000000000) : dateStart;
         dateEnd = (dateEnd == null) ? new Date(8640000000000000) : dateEnd;
         query.date = {$gte: dateStart.toISOString(), $lte: dateEnd.toISOString()};
+        
 
-        let page = sanitize(req.query.page);
-        if (page == null) {
-            page = 1;
-        }
+        JobOrder.find(query)
+            .sort({created: -1})
+            .lean()
+            .exec(function(err, results) {
+                if (err) {
+                    res.render('error', {
+                        title: 'Facemust',
+                        error: '404',
+                        message: 'AN ERROR OCCURRED',
+                        customer: false
+                    })
+                    return;
+                }
 
-        let options = {
-            lean: true,
-            page: page,
-            limit: 10, //test
+                
+                for (let i = 0; i < results.length; i++) {
+                    results[i].date = results[i].date.toISOString().split('T')[0];
+                    results[i].hasDeficit = (results[i].totalOrders > results[i].totalOutput);
+                    results[i].hasDiscrepancy = false;
+                    if (results[i].smallOutput != results[i].smallOrder || results[i].mediumOutput != results[i].mediumOrder || results[i].largeOutput != results[i].largeOrder || results[i].extraLargeOutput != results[i].extraLargeOrder) {
+                        results[i].hasDiscrepancy = true;
+                    }
+                }
 
-            sort: {
-                date: -1
-            }
-        }
-
-        JobOrder.paginate(query, options, function (err, results) {
-            if (!results) {
-                console.log(err);
-                res.redirect(req.get('referer'));
-                return;
-            }
-            console.log(results)
-
-            for (let i = 0; i < results.docs.length; i++) {
-                results.docs[i].date = formatDate(results.docs[i].date);
-            }
-
-            let selectOptions = new Array();
-            for (let i = 0; i < results.totalPages; i++) {
-                let no = i + 1;
-                let options = {
-                    pageLink: "/admin/production?style=" + style + "&color=" + color + "&description=" + description + "&status=" + status + "&dateStart=" + req.query.dateStart + "&dateEnd=" + req.query.dateEnd + "&page=" + no,
-                    pageNo: no,
-                    isSelected: (results.page == no),
-                };
-
-                selectOptions.push(options);
-            }
-
-            let prevPageLink = results.hasPrevPage ? "/admin/production?style=" + style + "&color=" + color + "&description=" + description + "&status=" + status + "&dateStart=" + req.query.dateStart + "&dateEnd=" + req.query.dateEnd + "&page=" + results.prevPage : ""
-            let nextPageLink = results.hasNextPage ? "/admin/production?style=" + style + "&color=" + color + "&description=" + description + "&status=" + status + "&dateStart=" + req.query.dateStart + "&dateEnd=" + req.query.dateEnd + "&page=" + results.nextPage : ""
-            res.render('admin/production', {
-                title: 'Production Dashboard',
-                layout: 'main',
-
-                jobOrderCards: results.docs,
-                noResults: results.docs.length == 0,
-                resultsMessage: resultsMessage,
-
-                //pagination
-                selectOptions: selectOptions,
-                hasPrev: results.hasPrevPage,
-                hasNext: results.hasNextPage,
-                prevPageLink: prevPageLink,
-                nextPageLink: nextPageLink
-            });
-        })
+                Product.find({isPhasedOut: false})
+                .select('style description color')
+                .lean()
+                .exec(function(err, products) {
+                    res.render('admin/production', {
+                        title: 'Production Dashboard',
+                        layout: 'main',
+                        products: products,
+                        resultsMessage: resultsMsg,
+                
+                        jobOrderCards: results,
+                        noResults: results.length == 0,
+            
+                    })
+                })
+                    
+            })
+       
+          
+        
     },
 
     addJobOrder: function(req, res) {
@@ -100,9 +84,7 @@ const productionController = {
         }
 
         let batchNo = sanitize(req.body.newJobOrderBatchNo);
-        let style = sanitize(req.body.newJobOrderStyle);
-        let color = sanitize(req.body.newJobOrderColor)
-        let description = sanitize(req.body.newJobOrderDescription);
+        let _id = sanitize(req.body.newJobOrderSelect);
         let smallOrder = Number(sanitize(req.body.newJobOrderSmall));
         let mediumOrder = Number(sanitize(req.body.newJobOrderMedium));
         let largeOrder = Number(sanitize(req.body.newJobOrderLarge));
@@ -110,10 +92,15 @@ const productionController = {
         let yardage = Number(sanitize(req.body.newJobOrderYardage));
         let remarks = sanitize(req.body.newJobOrderRemarks);
 
-        if (isEmpty(batchNo) || isEmpty(style) || isEmpty(color) || isEmpty(description) ||
-         smallOrder == "" || mediumOrder == "" || largeOrder == "" || extraLargeOrder == "") {
+        if (isEmpty(batchNo) || isEmpty(_id) || smallOrder == "" || mediumOrder == "" || largeOrder == "" || extraLargeOrder == "") {
              console.log('empty fields');
-             res.redirect(req.get('referer'));
+             res.render('error', {
+                title: 'Facemust',
+                error: '404',
+                message: 'AN ERROR OCCURRED',
+                customer: false
+            })
+            return;
              return;
          }
 
@@ -123,30 +110,43 @@ const productionController = {
          if (!isValidJobOrderAmount(yardage) || !isValidJobOrderAmount(smallOrder) || !isValidJobOrderAmount(mediumOrder) ||
          !isValidJobOrderAmount(largeOrder) || !isValidJobOrderAmount(extraLargeOrder)) {
              console.log('not a valid job order input');
-             res.redirect(req.get('referer'));
+             res.render('error', {
+                title: 'Facemust',
+                error: '404',
+                message: 'AN ERROR OCCURRED',
+                customer: false
+            })
+            return;
              return;
          };
 
          batchNo = batchNo.trim().toUpperCase();
-         style = style.trim().toUpperCase();
-         color = color.trim().toUpperCase();
-         description = description.trim().toUpperCase();
          remarks = remarks.trim();
 
-         if (remarks.length > 80 || batchNo.length > 16 || style.length > 16 || color.length > 16 || description.length > 20) {
-            console.log('style/color/description exceeds maximum allowed characters');
-            res.redirect(req.get('referer'));
+         if (remarks.length > 80 || batchNo.length > 16) {
+            console.log('exceeds maximum allowed characters');
+            res.render('error', {
+                title: 'Facemust',
+                error: '404',
+                message: 'AN ERROR OCCURRED',
+                customer: false
+            })
             return;
         }
 
-        JobOrder.exists({batchNo: batchNo, style: style, color: color, description: description}, function(err, jobOrderExists) {
+        JobOrder.exists({batchNo: batchNo, productId: _id}, function(err, jobOrderExists) {
             if (jobOrderExists) {
                 console.log('job order exists already');
-                res.redirect(req.get('referer'));
+                res.render('error', {
+                    title: 'Facemust',
+                    error: '404',
+                    message: 'AN ERROR OCCURRED',
+                    customer: false
+                })
                 return;
             }
 
-            Product.findOne({style: style, color: color, description: description})
+            Product.findOne({_id: _id})
             .exec((err, productResult) => {
                 if (!productResult) {
                     console.log(err)
@@ -157,11 +157,11 @@ const productionController = {
                 let date = new Date();
                 let jobOrder = new JobOrder({
                     productId: productResult._id,
-                    date: date.toISOString(),
+                    date: new Date(date.toISOString().split("T")[0]),
                     batchNo: batchNo,
-                    style: style,
-                    color: color,
-                    description: description,
+                    style: productResult.style,
+                    color: productResult.color,
+                    description: productResult.description,
                     smallOrder: smallOrder,
                     mediumOrder: mediumOrder,
                     largeOrder: largeOrder,
@@ -189,16 +189,10 @@ const productionController = {
         }
 
         let batchNo = sanitize(req.body.batchNo);
-        let style = sanitize(req.body.style);
-        let color = sanitize(req.body.color);
-        let description = sanitize(req.body.description);
+        let _id = sanitize(req.body._id);
 
-        style = style.trim().toUpperCase();
-        color = color.trim().toUpperCase();
-        description = description.toUpperCase();
-
-        JobOrder.exists({batchNo: batchNo, style: style, color: color, description: description}, function(err, jobOrderExists) {
-            Product.exists({style: style, color: color, description: description}, function(err, productExists) {
+        JobOrder.exists({batchNo: batchNo, productId: _id}, function(err, jobOrderExists) {
+            Product.exists({_id: _id}, function(err, productExists) {
                 let data = {
                     jobOrderExists: jobOrderExists,
                     productExists: productExists
@@ -240,29 +234,29 @@ const productionController = {
 
         let _id = sanitize(req.body.resolveJobOrderId);
         let productId = sanitize(req.body.resolveJobOrderProductId);
-        let smallOuput = Number(sanitize(req.body.resolveJobOrderSmallOutput));
+        let smallOutput = Number(sanitize(req.body.resolveJobOrderSmallOutput));
         let mediumOutput = Number(sanitize(req.body.resolveJobOrderMediumOutput));
         let largeOutput = Number(sanitize(req.body.resolveJobOrderLargeOutput));
         let extraLargeOutput = Number(sanitize(req.body.resolveJobOrderExtraLargeOutput));
 
-        if (smallOuput == "" && mediumOutput == "" && largeOutput == "" && extraLargeOutput == "") {
+        if (smallOutput == "" && mediumOutput == "" && largeOutput == "" && extraLargeOutput == "") {
             console.log("all actual output fields are empty");
             res.redirect(req.get('referer'));
             return;
         }
 
-        if(!isValidJobOrderAmount(smallOuput) || !isValidJobOrderAmount(mediumOutput) || !isValidJobOrderAmount(largeOutput) || !isValidJobOrderAmount(extraLargeOutput)) {
+        if(!isValidJobOrderAmount(smallOutput) || !isValidJobOrderAmount(mediumOutput) || !isValidJobOrderAmount(largeOutput) || !isValidJobOrderAmount(extraLargeOutput)) {
             console.log('not valid job order resolution');
             res.redirect(req.get('referer'));
             return;
         }
 
         JobOrder.updateOne({_id: _id}, {
-            smallOuput: smallOuput,
+            smallOutput: smallOutput,
             mediumOutput: mediumOutput,
             largeOutput: largeOutput,
             extraLargeOutput: extraLargeOutput,
-            totalOutput: smallOuput + mediumOutput + largeOutput + extraLargeOutput,
+            totalOutput: smallOutput + mediumOutput + largeOutput + extraLargeOutput,
             status: 'DONE',
             isDone: true
         }, (err, result) => {
@@ -274,13 +268,14 @@ const productionController = {
             
             let inventoryRecord = new InventoryRecord({
                 parentRecord: productId,
-                smallUpdate: smallOuput,
+                smallUpdate: smallOutput,
                 mediumUpdate: mediumOutput,
                 largeUpdate: largeOutput,
                 extraLargeUpdate: extraLargeOutput
             });
 
             InventoryRecord.create(inventoryRecord, function(err, result) {
+                console.log(result)
                 if (!result) {
                     console.log(err);
                     res.redirect(req.get('referer'));
@@ -290,11 +285,11 @@ const productionController = {
                 Product.updateOne({_id: productId}, {
                     $push: {inventoryRecords: inventoryRecord._id},
                     $inc: {
-                        smallAvailable: smallOuput, 
+                        smallAvailable: smallOutput, 
                         mediumAvailable: mediumOutput, 
                         largeAvailable: largeOutput, 
                         extraLargeAvailable: extraLargeOutput,
-                        totalAvailable: smallOuput + mediumOutput + largeOutput + extraLargeOutput}
+                        totalAvailable: smallOutput + mediumOutput + largeOutput + extraLargeOutput}
                 }).then((a) => {
                     res.redirect(req.get('referer'));
                     return;
@@ -310,8 +305,19 @@ const productionController = {
             return;
         }
 
+        let yardage = sanitize(req.body.newYardage);
         let _id = sanitize(req.body.updateRemarkId);
+        let smallOrder = sanitize(req.body.newSmall);
+        let mediumOrder = sanitize(req.body.newMedium);
+        let largeOrder = sanitize(req.body.newLarge);
+        let extraLargeOrder = sanitize(req.body.newExtraLarge);
         let remarks = sanitize(req.body.newRemarks);
+
+        if (!isValidJobOrderAmount(smallOrder) || !isValidJobOrderAmount(mediumOrder) || !isValidJobOrderAmount(largeOrder) || !isValidJobOrderAmount(extraLargeOrder)) {
+            console.log('not valid job order amounts');
+            res.redirect(req.get('referer'));
+            return;
+        }
 
         if (remarks.length > 80) {
             console.log('remarks exceeds the 80 character limit');
@@ -319,7 +325,8 @@ const productionController = {
             return;
         }
 
-        JobOrder.updateOne({_id: _id}, {remarks: remarks}, function(err, result) {
+        let totalOrders = Number(smallOrder) + Number(mediumOrder) + Number(largeOrder) + Number(extraLargeOrder);
+        JobOrder.updateOne({_id: _id}, {remarks: remarks, totalOrders: totalOrders, smallOrder: smallOrder, mediumOrder: mediumOrder, largeOrder: largeOrder, extraLargeOrder: extraLargeOrder, yardage: yardage}, function(err, result) {
             if (!result) {
                 console.log(err)
                 res.redirect(req.get('referer'));
@@ -331,11 +338,43 @@ const productionController = {
       }
 }
 
-function getResultsMessage(style, color, description, status, dateStart, dateEnd) {
-    let styleMsg = !isEmpty(style) ? style : "";
-    let colorMsg = !isEmpty(color) ? color : "";
-    let descriptionMsg = !isEmpty(description) ? description : "";
-    
+async function getJobOrders(jobOrders, results) {
+    for (let i = 0; i < results.length; i++) {
+        let product = await Product.findOne({_id: results[i].productId});
+        if (!product) {
+            console.log("no product found in a job order: " + results[i].productId);
+            continue;
+        }
+        let jobOrder = {
+            _id: results[i]._id,
+            productId: product._id,
+            date: results[i].date,
+            batchNo: results[i].batchNo,
+            style: product.style,
+            color: product.color,
+            description: product.description,
+            status: results[i].status,
+            isDone: results[i].isDone,
+            remarks: results[i].remarks,
+            yardage: results[i].yardage,
+            smallOrder: results[i].smallOrder,
+            mediumOrder: results[i].mediumOrder,
+            largeOrder: results[i].largeOrder,
+            extraLargeOrder: results[i].extraLargeOrder,
+            totalOrders: results[i].totalOrders,
+            smallOutput: results[i].smallOutput,
+            mediumOutput: results[i].mediumOutput,
+            largeOutput: results[i].largeOutput,
+            extraLargeOutput: results[i].extraLargeOutput,
+            totalOutput: results[i].totalOutput,
+            hasDeficit: (results[i].totalOrders > results[i].totalOutput)
+        }
+
+        jobOrders.push(jobOrder);
+    }
+}
+
+function getResultsMessage(status, dateStart, dateEnd) {
 
     let statusMsg = (status == 'SELECT' || status == null || status == 'undefined') ? "" : status;
 
@@ -350,11 +389,11 @@ function getResultsMessage(style, color, description, status, dateStart, dateEnd
         dateMsg = " between dates " + formatDate(dateStart) + " and " + formatDate(dateEnd);
     }
 
-    if (styleMsg == "" && colorMsg == "" && description == "" && dateMsg == "" && statusMsg == "") {
+    if (dateMsg == "" && statusMsg == "") {
         return "";
     }
 
-    return styleMsg + " " + colorMsg + " " + descriptionMsg + " " + statusMsg + dateMsg;
+    return statusMsg + dateMsg;
 }
 
 function isValidJobOrderAmount(n) {
@@ -379,24 +418,6 @@ function isEmpty(input) {
     }
 
     return false;
-}
-
-function getQueries(style, color, description, isPhasedOut) {
-    let query = {};
-
-    if (!isEmpty(style)) {
-        query.style = new RegExp(style, 'i')
-    }
-
-    if (!isEmpty(color)) {
-        query.color = new RegExp(color, 'i')
-    }
-
-    if (!isEmpty(description)) {
-        query.description = new RegExp(description, 'i');
-    }
-
-    return query;
 }
 
 function formatDate(dt) {

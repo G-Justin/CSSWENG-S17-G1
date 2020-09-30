@@ -1,0 +1,169 @@
+<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js"></script>
+
+
+<script>
+    $(document).ready(function() {
+        $('#accountTable tfoot th').each( function (){
+            var title = $(this).text();
+            $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+        });
+
+        $('#accountTable').DataTable({ 
+          "bInfo":false,
+          "bLengthChange": false,
+          initComplete: function () {
+            // Apply the search
+            this.api().columns().every( function () {
+                var that = this;
+           
+ 
+                $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                    if ( that.search() !== this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                });
+            });
+        }
+      }); 
+  });
+</script>
+
+<style>
+    .row{
+    width:100%;
+    margin-top:2%;  
+    }
+    @media only screen and (max-width: 1200px) {
+        #changeInfo{
+            min-width:100%;
+        }
+        #changePicture{
+            min-width:100%;
+        }
+        #changeAd{
+            min-width:100%;
+        }
+        #account{
+            min-width:100%;
+        }
+        #makeAccount{
+            min-width:100%;
+        }
+    }
+    .dataTables_wrapper .dataTables_filter {
+        visibility: hidden;
+        margin-top:-100px;
+    }
+
+    .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+    }
+</style>
+
+<div class="jumbotron shadow p-4 mb-2 text-center">
+    <h4>Control Panel</h4>
+</div>
+
+{{#if isMaster}}
+<div class="jumbotron p-4 text-center" id="account" style="width:50%;overflow:auto;float:left;height:400px;border-right: 1px solid gray;">
+    <h4>Accounts</h4>
+    <table class="table table-striped" id="accountTable">
+        <thead>
+            <tr>
+                <th>Account Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            {{#each users}}
+            {{> account}}
+            {{/each}}
+        </tbody>
+        <tfoot>
+            <th>Account Name</th>
+            <th style="display:none"></th>
+        </tfoot>
+    </table>
+</div>
+
+<div class="jumbotron p-4 text-center" id="makeAccount" style="width:50%;overflow:auto;float:left;height:400px">
+    <h4>Create Account</h4>
+    <form id="createAccountForm" name="createAccountForm" method="POST" action="/admin/control/createAccount">
+            <div class="modal-body mx-3">
+				<div class="row md-form my-2 ">
+                    <label for="newUname"><small>Username</small></label>
+                    <input maxlength="60" type="text" class="form-control validate" name="createAccountUsername" id="createAccountUsername" placeholder="4 - 17 characters. No special characters." required>
+				</div>
+                    
+                <div class="row md-form my-2 ">
+                    <label for="newUname"><small>Password</small></label>
+					<input maxlength="60" type="password" class="form-control validate" name="createAccountPassword" id="createAccountPassword" placeholder="8 characters, 1 number, upper, lower" required>
+				</div>
+                <div class="row md-form my-2 ">
+                    <label for="newUname"><small>Retype Password</small></label>
+					<input maxlength="60" type="password" class="form-control validate" name="createAccountConfirmPassword" id="createAccountConfirmPassword" placeholder="Confirm password" required>
+				</div>
+            </div>
+            <div id="createAccountError" name="createAccountError" class="text-danger" style="text-align:center"></div>
+            <button type="submit" id="createAccountBtn" name="createAccountBtn" class="btn btn-primary" >Submit</button>
+    </form>
+</div>
+{{/if}}
+
+<div class="jumbotron p-4 text-center center" id="changeInfo" style="width:30%;overflow:auto;float:left;border-right: 1px solid gray;">
+    <h4>Change Password</h4>
+    <form id="changePasswordForm" name="changePasswordForm" method="POST" action="">
+        <div class="modal-body mx-3">
+            <div class="row md-form my-2 justify-content-center">
+                <input maxlength="60" type="password" class="col-sm-9 form-control validate" name="changePasswordCurrent" id="changePasswordCurrent" placeholder="Current Password" required>
+            </div>
+            <div class="row md-form my-2 justify-content-center">
+                <input maxlength="60" type="password" class="col-sm-9 form-control validate" name="changePasswordNew" id="changePasswordNew" placeholder="New Password" required>
+            </div>
+            <div class="row md-form my-2 justify-content-center">
+                <input maxlength="60" type="password" class="col-sm-9 form-control validate" name="changePasswordConfirm" id="changePasswordConfirm" placeholder="Retype New Password" required>
+            </div>
+        </div>
+        <div id="changePasswordError" name="changePasswordError" class="text-danger" style="text-align:center"></div>
+        <div id="changePasswordSuccess" name="changePasswordSuccess" class="text-success" style="text-align:center"></div>
+        <div class="modal-footer d-flex justify-content-center">
+            <button type="submit" id="changePasswordBtn" name="changePasswordBtn" class="btn btn-primary" >Submit</button>
+        </div>
+    </form>
+</div>
+
+<div class="jumbotron p-4 text-center" id="changePicture" style="width:35%;overflow:auto;float:left;border-right: 1px solid gray;">
+    <h6>Change Best Seller Catalogue</h6><br>
+    <form id="catalogueImageForm1" name="catalogueImageForm1" action="/" enctype="multipart/form-data" method="POST"> <!-- uploads the image-->
+        <img src="/bestCatalogue/1.png" style="width:100px;height:100px">
+        <input type="file" id="newCatalogueImage1" name="newCatalogueImage1" accept="image/*" style="width:220px" required><br><br>
+        <img src="/bestCatalogue/2.png" style="width:100px;height:100px">
+        <input type="file" id="newCatalogueImage2" name="newCatalogueImage2" accept="image/*" style="width:220px" required><br><br>
+        <img src="/bestCatalogue/3.jpg" style="width:100px;height:100px">
+        <input type="file" id="newCatalogueImage3" name="newCatalogueImage3" accept="image/*" style="width:220px" required><br><br>
+        <button id="submitCataloguetImage1" type="submit" class="btn btn-primary" style="width:220px;margin-top:20.5px">Submit</button>
+    </form>
+</div>
+
+<div class="jumbotron p-4 text-center" id="changeAd" style="width:35%;overflow:auto;float:left;">
+    <h6>Change Advertisement Catalogue</h6><br>
+    <form id="catalogueImageForm2" name="catalogueImageForm2" action="/" enctype="multipart/form-data" method="POST"> <!-- uploads the image-->
+        <img src="/adCatalogue/1.png" style="width:100px;height:100px">
+        <input type="file" id="newCatalogueImage4" name="newCatalogueImage4" accept="image/*" style="width:220px" required><br><br>
+        <img src="/adCatalogue/2.jpg" style="width:100px;height:100px">
+        <input type="file" id="newCatalogueImage5" name="newCatalogueImage5" accept="image/*" style="width:220px" required><br><br>
+        <img src="/adCatalogue/3.jpg" style="width:100px;height:100px">
+        <input type="file" id="newCatalogueImage6" name="newCatalogueImage6" accept="image/*" style="width:220px" required><br><br>
+        <button id="submitCataloguetImage2" type="submit" class="btn btn-primary" style="width:220px;margin-top:20.5px">Submit</button>
+    </form>
+</div>

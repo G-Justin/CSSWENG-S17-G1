@@ -1,99 +1,83 @@
-<br><div class="card" style="width:100%; overflow-y:hidden">
-          <table style="text-align: center; table-layout:fixed; width: 1000px; margin:auto; overflow-y:hidden; margin-top:1%;">
-                  <td>{{date}}</td>
-                  <td>{{batchNo}}</td>
-                  <td>{{style}}</td>
-                  <td>{{description}}</td>
-                  <td>{{color}}</td>
-                  <td>{{totalOrders}}</td>
-                  <td>
-                    {{#if isDone}}
-                      <td>DONE</td>
-                    {{else}}
-                        <textarea readonly="readonly" id="productId" name="productId" style="display: none;">{{_id}}</textarea>
-                        <select id="jobOrderStatusDropdown" name="jobOrderStatusDropdown" class="btn btn-primary" style = "background-color: rgb(52, 58, 64)">
-                              <option value="CUTTING" {{#ifCond status "CUTTING"}} selected {{/ifCond}}>Cutting</option>
-                              <option value="SEWING" {{#ifCond status "SEWING"}} selected {{/ifCond}}>Sewing</option>
-                              <option value="PRINTING" {{#ifCond status "PRINTING"}} selected {{/ifCond}}>Printing</option>
-                              <option value="WASHING" {{#ifCond status "WASHING"}} selected {{/ifCond}}>Washing</option>
-                              <option value="CANCELLED" {{#ifCond status "CANCELLED"}} selected {{/ifCond}}>Cancelled</option>
-                          </select>
-                    {{/if}}
-                  </td>
-                  <td>{{totalOutput}}</td>
-          </table><br>
-          <div style="justify-content: center; display:flex; margin-bottom:1%">
-              <button class="btn btn-primary" data-toggle="modal" data-target="#modal_production_{{_id}}">Production Details</button>&nbsp;
-              {{#if isDone}}{{else}}
-                <button class="btn btn-primary" data-toggle="modal" data-target="#modal_actual_{{_id}}">Resolve Order</button>
-              {{/if}}
-          </div>
+<style>
+   .hide {
+  display: none;
+}
+    
+</style>
+
+<script>
+  function clickTTL(param, bool){
+    if (bool){
+      $("#hide"+param.id).css("display", "block");
+      $("#hide"+param.id+"2").css("display", "block");
+    }
+    else{
+      $("#hide"+param.id+"2").click(function (e) {
+      e.stopPropagation();  // Prevents the event from bubbling up the DOM tree
+      $("#hide"+param.id).hide();
+      $("#hide"+param.id+"2").hide();
+      });
+    }
+  }
+</script>
+
+<td>{{date}}</td>
+<td>{{batchNo}}</td>
+<td>{{style}}</td>
+<td>{{description}}</td>
+<td>{{color}}</td>
+<td><div class="myDIV" onclick="clickTTL(this, true)" id='{{_id}}' style="color:rgb(0, 72, 206); cursor:pointer"><u>{{totalOrders}}</u></div>
+  <form id="updateRemarksForm" name="updateRemarksForm" method="POST" action="/admin/production/updateRemarks">
+    <div class="hide" id="hide{{_id}}" style="overflow:auto;width:300px">
+      <div class="row md-form my-2 justify-content-center">
+        <label class="col-sm-6">Small: </label>
+        <input min="0" max="9007199254740981" type="number" class="col-sm-6 form-control validate" id="newSmall" name="newSmall" value={{smallOrder}} required>
       </div>
+      <div class="row md-form my-2 justify-content-center">
+        <label class="col-sm-6">Medium: </label>
+        <input min="0" max="9007199254740981" type="number" class="col-sm-6 form-control validate" id="newMedium" name="newMedium" value={{mediumOrder}} required>
+      </div>
+      <div class="row md-form my-2 justify-content-center">
+        <label class="col-sm-6">Large: </label>
+        <input min="0" max="9007199254740981" type="number" class="col-sm-6 form-control validate" id="newLarge" name="newLarge" value={{largeOrder}} required>
+      </div>
+      <div class="row md-form my-2 justify-content-center">
+        <label class="col-sm-6">Extra Large: </label>
+        <input min="0" max="9007199254740981" type="number" class="col-sm-6 form-control validate" id="newExtraLarge" name="newExtraLarge" value={{extraLargeOrder}} required>
+      </div>
+      <div class="row md-form my-2 justify-content-center">
+        <label class="col-sm-6">Yardage: </label>
+        <input min="0" max="9007199254740981" type="number" class="col-sm-6 form-control validate" id="newYardage" name="newYardage" value={{yardage}}>
+      </div>
+      <div class="row md-form my-2 justify-content-center">
+        <label class="col-sm-6">Remarks</label>
+        <textarea placeholder="Maximum 80 characters" id="newRemarks" name="newRemarks" maxlength="80" >{{remarks}} </textarea>
+      </div>
+    </div>
+      <div class="modal-footer hide" id="hide{{_id}}2">
+              <textarea readonly="readonly" id="updateRemarkId" name="updateRemarkId" style="display: none;">{{_id}}</textarea>
+              <button type="submit" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);">Confirm</button>
+              <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" onclick="clickTTL(this, false)" id='{{_id}}'>Close</button>
+      </div>
+    </form></td>
 
-<div id="modal_production_{{_id}}" class="modal fade" role="dialog">
-        <div id="divtest" class="modal-dialog" id = "md2">
-          <div class="modal-content" style="background-color: rgb(247, 242, 242); text-align:center">
-            <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
-              <h4 class="modal-title">Job Order Details</h4>
-              <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
-            </div>
-            <form id="updateRemarksForm" name="updateRemarksForm" method="POST" action="/admin/production/updateRemarks">
-              <table class="table table-striped">
-                  <thead>
-                      <th>S</th>
-                      <th>M</th>
-                      <th>L</th>
-                      <th>XL</th>
-                      <th>Yardage</th>
-                      <th>Remarks</th>
-                  </thead>
-                  <tbody>
-                      <td>{{smallOrder}}</td>
-                      <td>{{mediumOrder}}</td>
-                      <td>{{largeOrder}}</td>
-                      <td>{{extraLargeOrder}}</td>
-                      <td>{{yardage}}</td>
-                      <td ><textarea placeholder="Maximum 80 characters" id="newRemarks" name="newRemarks" maxlength="80">{{remarks}} </textarea></td>
-                  </tbody>
-              </table>
-              <div class="modal-footer">
-                      <textarea readonly="readonly" id="updateRemarkId" name="updateRemarkId" style="display: none;">{{_id}}</textarea>
-                      <button type="submit" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);">Confirm</button>
-                      <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">Close</button>
-              </div>
-            </form>
-          </div>
-        </div>
-</div>
+{{#if isDone}}
+<td>DONE</td>
+{{else}}
+<td>
+  <textarea readonly="readonly" id="productId" name="productId" style="display: none;">{{_id}}</textarea>
+  <select id="jobOrderStatusDropdown" name="jobOrderStatusDropdown" class="btn btn-primary">
+  <option value="CUTTING" {{#ifCond status "CUTTING"}} selected {{/ifCond}}>Cutting</option>
+  <option value="SEWING" {{#ifCond status "SEWING"}} selected {{/ifCond}}>Sewing</option>
+  <option value="PRINTING" {{#ifCond status "PRINTING"}} selected {{/ifCond}}>Printing</option>
+  <option value="WASHING" {{#ifCond status "WASHING"}} selected {{/ifCond}}>Washing</option>
+  <option value="CANCELLED" {{#ifCond status "CANCELLED"}} selected {{/ifCond}}>Cancelled</option>
+  </select>
+</td>
+{{/if}}
 
-<div id="modal_actual_{{_id}}" class="modal fade" role="dialog">
-        <div id="divtest" class="modal-dialog" id = "md2">
-          <div class="modal-content" style="background-color: rgb(247, 242, 242); text-align:center">
-            <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
-              <h4 class="modal-title">Input Actual Outputs</h4>
-              <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
-            </div>
-            <form id="resolveJobOrderForm" name="resolveJobOrderForm" method="POST" action="/admin/production/resolveJobOrder">
-                <div class="modal-body" style="overflow:auto margin:auto; text-align:center; margin-top:2%">
-                  <div>Note: resolving this job order will mark it as 'DONE' and update the inventory accordingly.</div>
-                  <textarea readonly="readonly" id="resolveJobOrderId" name="resolveJobOrderId" style="display: none;">{{_id}}</textarea>
-                  <textarea readonly="readonly" id="resolveJobOrderProductId" name="resolveJobOrderProductId" style="display: none;">{{productId}}</textarea>
-                    <label for="resolveJobOrderSmallOutput">S: </label>
-                    <input min="0" max="9007199254740981" type="number" name="resolveJobOrderSmallOutput" id="resolveJobOrderSmallOutput" placeholder=" Enter Small Amount"><br>
-                    <label for="resolveJobOrderMediumOutput">M: </label>
-                    <input min="0" max="9007199254740981" type="number" name="resolveJobOrderMediumOutput" id="resolveJobOrderMediumOutput" placeholder=" Enter Medium Amount"><br>
-                    <label for="resolveJobOrderLargeOutput">L: </label>
-                    <input min="0" max="9007199254740981" type="number" name="resolveJobOrderLargeOutput" id="resolveJobOrderLargeOutput" placeholder=" Enter Large Amount"><br>
-                    <label for="resolveJobOrderExtraLargeOutput">XL: </label>
-                    <input min="0" max="9007199254740981" type="number" name="resolveJobOrderExtraLargeOutput" id="resolveJobOrderExtraLargeOutput" placeholder=" Enter Extra Large Amount"><br>
-                    <div id="resolveJobOrderError" name="resolveJobOrderError" class="text-danger" style="text-align:center"></div>
-                </div>
-                <div class="modal-footer">
-                    <textarea readonly="readonly" id="productId" name="productId" style="display: none;">{{_id}}</textarea>
-                    <button type="submit" id="resolveJobOrderBtn" name="resolveJobOrderBtn" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);">Confirm</button>
-                    <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">Close</button>
-                </div>
-            </form>
-          </div>
-        </div>
-</div>
+{{#if totalOutput}} <td><button {{#if hasDeficit}} class="btn btn-danger btn-block" {{else}}{{#if hasDiscrepancy}}class="btn btn-warning btn-block"{{else}}class="btn btn-primary btn-block"{{/if}}{{/if}}  data-toggle="modal" data-target="#modal_ttloutput_{{_id}}">{{totalOutput}}</button></td>
+{{else}}
+<td><button class="btn btn-danger btn-block" data-toggle="modal" data-target="#modal_actual_{{_id}}">Resolve</button></td>
+{{/if}}
+

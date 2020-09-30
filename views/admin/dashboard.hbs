@@ -1,4 +1,4 @@
-<div class="jumbotron shadow" style="background-image: linear-gradient(to bottom, rgba(255,255,255,0.6) 0%,rgba(255,255,255,0.9) 100%), url(../assets/work.jpg); background-size:cover;">
+<div class="jumbotron shadow" style="background-image: linear-gradient(to bottom, rgba(255,255,255,0.6) 0%,rgba(255,255,255,0.9) 100%), url(../assets/icon.png); background-size:contain;background-repeat:no-repeat;background-position:center">
   <div style="margin:auto; text-align:center">
     <h1 class="display-5"><b>Welcome <i>Admin</i></b></h1>
     <h2 >to the Dashboard</h1>
@@ -11,7 +11,7 @@
           	<div class="card-body text-center">
             	<img src="/assets/boymask.png" width="100" height="100" class="d-inline-block align-top mb-1" alt="Colleges">
             	<h5 class="card-title">Orders</h5>
-           		<p class="card-text">There are {{pendingCount}} pending orders.</p>
+           		<p class="card-text">View all orders and their corresponding statuses.</p>
            		<a href="/admin/orders" class="btn btn-primary">Manage Orders</a>
        		</div>
        	</div>
@@ -21,7 +21,7 @@
             <div class="card-body text-center">
               <img src="/assets/boymask.png" width="100" height="100" class="d-inline-block align-top mb-1" alt="Colleges">
               <h5 class="card-title">Inventory</h5>
-              <p class="card-text">There are {{onstockCount}} onstock variants.</p>
+              <p class="card-text">View all products and their supply level.</p>
               <a href="/admin/inventory" class="btn btn-primary">Manage Inventory</a>
           </div>
         </div>
@@ -31,7 +31,7 @@
             <div class="card-body text-center">
               <img src="/assets/boymask.png" width="100" height="100" class="d-inline-block align-top mb-1" alt="Colleges">
               <h5 class="card-title">Production</h5>
-              <p class="card-text">There are {{joCount}} ongoing job orders.</p>
+              <p class="card-text">View all job orders and their corresponding statuses.</p>
               <a href="/admin/production" class="btn btn-primary">Manage Job Orders</a>
           </div>
         </div>
@@ -40,9 +40,9 @@
         <div class="card">
             <div class="card-body text-center">
               <img src="/assets/boymask.png" width="100" height="100" class="d-inline-block align-top mb-1" alt="Colleges">
-              <h5 class="card-title">Users</h5>
-              <p class="card-text">There are {{pendingCount}} registered users.</p>
-              <a href="/#" class="btn btn-primary">Manage Users</a>
+              <h5 class="card-title">Control Panel</h5>
+              <p class="card-text">Manage your account and best-seller products.</p>
+              <a href="/admin/control" class="btn btn-primary">Enter Panel</a>
           </div>
         </div>
     </div>

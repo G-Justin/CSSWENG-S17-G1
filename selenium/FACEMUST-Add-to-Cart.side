@@ -1,0 +1,441 @@
+{
+  "id": "7185a687-7192-475b-8b87-630480898ce9",
+  "version": "2.0",
+  "name": "FACEMUST - Add to Cart",
+  "url": "http://localhost:3001",
+  "tests": [{
+    "id": "a58569d5-9dde-4112-9e49-28fcdd3ea846",
+    "name": "Add to Cart",
+    "commands": [{
+      "id": "8257bfca-8945-4da3-a36a-55adc149747d",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "5861a272-612f-4781-ad99-6cda97deba1d",
+      "comment": "",
+      "command": "click",
+      "target": "id=productImage",
+      "targets": [
+        ["id=productImage", "id"],
+        ["name=productImage", "name"],
+        ["css=.el-wrapper:nth-child(2) #productImage", "css:finder"],
+        ["xpath=//img[@alt='...']", "xpath:img"],
+        ["xpath=//img[@id='productImage']", "xpath:attributes"],
+        ["xpath=//div[2]/div/a/img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6f4cde90-49df-4ebd-9396-6119fd5a6735",
+      "comment": "",
+      "command": "click",
+      "target": "id=addToCart",
+      "targets": [
+        ["id=addToCart", "id"],
+        ["name=addToCart", "name"],
+        ["css=#addToCart", "css:finder"],
+        ["xpath=//button[@id='addToCart']", "xpath:attributes"],
+        ["xpath=//div[6]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Add to Cart')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "6d9b6c3a-2724-4348-9e88-07421dc57f17",
+      "comment": "",
+      "command": "assertAlert",
+      "target": "Item added to Cart!",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "7d802e73-b610-43e1-9f73-12f29cda5ce7",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3001/cart",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d4008545-c6a5-4325-8132-fe258cc2e73b",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=dataTable",
+      "targets": [],
+      "value": "5000"
+    }, {
+      "id": "8f2115dd-064c-4794-8d91-43bcbced4d87",
+      "comment": "",
+      "command": "pause",
+      "target": "",
+      "targets": [],
+      "value": "5000"
+    }]
+  }, {
+    "id": "d2c3f31d-6dcb-4c26-ab60-5fa4b1687bdc",
+    "name": "Add to Cart (Same product)",
+    "commands": [{
+      "id": "8b19d48b-0ad8-4621-baf9-7f0f89423f02",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "8c03a6e0-bc97-42ab-a649-417ec40eccba",
+      "comment": "",
+      "command": "click",
+      "target": "id=productImage",
+      "targets": [
+        ["id=productImage", "id"],
+        ["name=productImage", "name"],
+        ["css=.el-wrapper:nth-child(2) #productImage", "css:finder"],
+        ["xpath=//img[@alt='...']", "xpath:img"],
+        ["xpath=//img[@id='productImage']", "xpath:attributes"],
+        ["xpath=//div[2]/div/a/img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6a8e4dca-4dc8-4d61-877c-f36de614d645",
+      "comment": "",
+      "command": "click",
+      "target": "id=addToCart",
+      "targets": [
+        ["id=addToCart", "id"],
+        ["name=addToCart", "name"],
+        ["css=#addToCart", "css:finder"],
+        ["xpath=//button[@id='addToCart']", "xpath:attributes"],
+        ["xpath=//div[6]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Add to Cart')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a26d7ccc-87b1-4816-9950-6809594081b8",
+      "comment": "",
+      "command": "assertAlert",
+      "target": "Item added to Cart!",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "9705b4c4-b33f-4630-90bc-6f9818b78cc0",
+      "comment": "",
+      "command": "click",
+      "target": "id=addToCart",
+      "targets": [
+        ["id=addToCart", "id"],
+        ["name=addToCart", "name"],
+        ["css=#addToCart", "css:finder"],
+        ["xpath=//button[@id='addToCart']", "xpath:attributes"],
+        ["xpath=//div[6]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Add to Cart')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "6a5ee174-b399-4e62-b995-69c93812cf6b",
+      "comment": "",
+      "command": "assertAlert",
+      "target": "Item added to Cart!",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c4d6d17e-2230-4d46-9909-72d9da75ced1",
+      "comment": "",
+      "command": "click",
+      "target": "id=addToCart",
+      "targets": [
+        ["id=addToCart", "id"],
+        ["name=addToCart", "name"],
+        ["css=#addToCart", "css:finder"],
+        ["xpath=//button[@id='addToCart']", "xpath:attributes"],
+        ["xpath=//div[6]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Add to Cart')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0fcc9010-f9e2-4235-9941-05b94ef5fd7c",
+      "comment": "",
+      "command": "assertAlert",
+      "target": "Item added to Cart!",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "771e370b-f9f8-4d49-8b91-d69a4d87a16d",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3001/cart",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "1483ed93-6d5f-4796-9de9-cb6fe1face48",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=dataTable",
+      "targets": [],
+      "value": "5000"
+    }, {
+      "id": "5484b955-15b2-4d27-80ca-d7b7a2dc3abc",
+      "comment": "",
+      "command": "pause",
+      "target": "",
+      "targets": [],
+      "value": "5000"
+    }]
+  }, {
+    "id": "fcd5fecc-17a7-43d5-a642-32c0e6b8c64e",
+    "name": "Add to Cart (Extreme Amount)",
+    "commands": [{
+      "id": "814fd2e2-5f02-48bc-a7a7-0bab3fae17bd",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e4ddd64a-82d8-44b4-8113-461fb791e14a",
+      "comment": "",
+      "command": "click",
+      "target": "id=productImage",
+      "targets": [
+        ["id=productImage", "id"],
+        ["name=productImage", "name"],
+        ["css=.el-wrapper:nth-child(2) #productImage", "css:finder"],
+        ["xpath=//img[@alt='...']", "xpath:img"],
+        ["xpath=//img[@id='productImage']", "xpath:attributes"],
+        ["xpath=//div[2]/div/a/img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4b07ddbf-3b09-4ce3-a932-ef0eebfa8b8b",
+      "comment": "",
+      "command": "sendKeys",
+      "target": "id=myNumber",
+      "targets": [],
+      "value": "10000000000000000000000000"
+    }, {
+      "id": "46197007-d26e-4ead-9af5-4cda87e2b3fe",
+      "comment": "",
+      "command": "click",
+      "target": "id=addToCart",
+      "targets": [
+        ["id=addToCart", "id"],
+        ["name=addToCart", "name"],
+        ["css=#addToCart", "css:finder"],
+        ["xpath=//button[@id='addToCart']", "xpath:attributes"],
+        ["xpath=//div[6]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Add to Cart')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0fe017f6-7424-4658-b160-80cd5a0bf4dd",
+      "comment": "",
+      "command": "assertAlert",
+      "target": "Item added to Cart!",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "73b7e989-a9ec-4dc0-bafc-e00e471468b7",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3001/cart",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "05ea0d8f-3cc5-47f3-8a0a-681c714b49e5",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=dataTable",
+      "targets": [],
+      "value": "5000"
+    }, {
+      "id": "e537b813-6a8c-43b7-a5e9-55d7fac4d31c",
+      "comment": "",
+      "command": "pause",
+      "target": "",
+      "targets": [],
+      "value": "5000"
+    }]
+  }, {
+    "id": "70a856f2-ba67-4bea-9515-023ef5ccde3a",
+    "name": "Add to Cart (Negative Amount)",
+    "commands": [{
+      "id": "f4d515f8-237b-4504-bed3-652334f7f5a5",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "fe8e936e-2f9b-4101-b01d-bd84bc9a732c",
+      "comment": "",
+      "command": "click",
+      "target": "id=productImage",
+      "targets": [
+        ["id=productImage", "id"],
+        ["name=productImage", "name"],
+        ["css=.el-wrapper:nth-child(2) #productImage", "css:finder"],
+        ["xpath=//img[@alt='...']", "xpath:img"],
+        ["xpath=//img[@id='productImage']", "xpath:attributes"],
+        ["xpath=//div[2]/div/a/img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "69dc96de-cf35-4d61-b5f2-e0c2987fd69d",
+      "comment": "",
+      "command": "sendKeys",
+      "target": "id=myNumber",
+      "targets": [],
+      "value": "-10"
+    }, {
+      "id": "61ab9d70-de1a-4536-b2bc-7382fab86ca9",
+      "comment": "",
+      "command": "click",
+      "target": "id=addToCart",
+      "targets": [
+        ["id=addToCart", "id"],
+        ["name=addToCart", "name"],
+        ["css=#addToCart", "css:finder"],
+        ["xpath=//button[@id='addToCart']", "xpath:attributes"],
+        ["xpath=//div[6]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Add to Cart')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "9eedc351-95ec-4503-8ec8-fb7cceacdfc5",
+      "comment": "",
+      "command": "assertAlert",
+      "target": "Item added to Cart!",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f7b88133-559d-4543-a1ab-6cccda3096cd",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3001/cart",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "55b2af69-16ec-482d-9d76-a2418607d019",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=dataTable",
+      "targets": [],
+      "value": "5000"
+    }, {
+      "id": "4a055edd-0bdd-4ccc-b580-790f6883e71c",
+      "comment": "",
+      "command": "pause",
+      "target": "",
+      "targets": [],
+      "value": "5000"
+    }]
+  }, {
+    "id": "35c1d09b-b86f-4f35-8bd8-a5582bcf6341",
+    "name": "Add to Cart (Multiple products)",
+    "commands": [{
+      "id": "bb2e0609-6c16-44eb-ba5e-17436f6e1bbf",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "4158e39e-fe3a-48b2-9a4b-82eccf57f5fa",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "974x1040",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "3e0d4e01-1529-4065-a2f4-0ad830f7f66b",
+      "comment": "",
+      "command": "click",
+      "target": "id=productImage",
+      "targets": [
+        ["id=productImage", "id"],
+        ["name=productImage", "name"],
+        ["css=.el-wrapper:nth-child(2) #productImage", "css:finder"],
+        ["xpath=//img[@alt='...']", "xpath:img"],
+        ["xpath=//img[@id='productImage']", "xpath:attributes"],
+        ["xpath=//div[2]/div/a/img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0aa75e2c-5577-4755-a6a3-7fb17885a1c3",
+      "comment": "",
+      "command": "click",
+      "target": "id=addToCart",
+      "targets": [
+        ["id=addToCart", "id"],
+        ["name=addToCart", "name"],
+        ["css=#addToCart", "css:finder"],
+        ["xpath=//button[@id='addToCart']", "xpath:attributes"],
+        ["xpath=//div[6]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Add to Cart')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "dca9d3e7-6211-40b4-ab83-ac587cc95b2b",
+      "comment": "",
+      "command": "assertAlert",
+      "target": "Item added to Cart!",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "514731f5-0062-4106-a2e4-dab09128dd48",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3001/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "046fe877-e391-4efd-a6a4-9d7336ed354c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.el-wrapper:nth-child(3) #productImage",
+      "targets": [
+        ["css=.el-wrapper:nth-child(3) #productImage", "css:finder"],
+        ["xpath=(//img[@alt='...'])[2]", "xpath:img"],
+        ["xpath=(//img[@id='productImage'])[2]", "xpath:attributes"],
+        ["xpath=//div[3]/div/a/img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c89fd961-e6f6-4d99-9cfd-1d4a70e04112",
+      "comment": "",
+      "command": "click",
+      "target": "id=addToCart",
+      "targets": [
+        ["id=addToCart", "id"],
+        ["name=addToCart", "name"],
+        ["css=#addToCart", "css:finder"],
+        ["xpath=//button[@id='addToCart']", "xpath:attributes"],
+        ["xpath=//div[6]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Add to Cart')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "d95ddd1b-cdd5-4313-b8e2-deb77a806b44",
+      "comment": "",
+      "command": "assertAlert",
+      "target": "Item added to Cart!",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "4023ff0f-3e5b-47aa-9b81-f69d23bfdc83",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3001/cart",
+      "targets": [],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "4f3b430b-f68b-4aa5-8f04-abb4540ac288",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["a58569d5-9dde-4112-9e49-28fcdd3ea846"]
+  }],
+  "urls": ["http://localhost:3001/"],
+  "plugins": []
+}

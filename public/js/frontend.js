@@ -1,8 +1,132 @@
 
+
 $(document).ready(function(){
 
     const MAX_INT = (Number.MAX_SAFE_INTEGER - 10);
     const MIN_INT = (Number.MIN_SAFE_INTEGER + 10);
+
+    const CART = {
+        KEY: "cart",
+        contents: [],
+        init() {
+            let _contents = localStorage.getItem(CART.KEY)
+            if (_contents) {
+                CART.contents = JSON.parse(_contents)
+            } else {
+
+            }
+            CART.sync()
+        },
+        async sync() {
+            let _cart = JSON.stringify(CART.contents);
+            await localStorage.setItem(CART.KEY, _cart);
+        },
+        add(order) {
+            let found = false;
+            let foundIndex;
+            for (let i = 0; i < CART.contents.length; i++) {
+                if (CART.contents[i].product == order.productId) {
+                    foundIndex = i;
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found) {
+                switch(order.size){
+                    case "S":
+                        CART.contents[foundIndex].smallAmount = CART.contents[foundIndex].smallAmount + Number(order.amount);
+                        break;
+                    case "M":
+                        CART.contents[foundIndex].mediumAmount = CART.contents[foundIndex].mediumAmount + Number(order.amount);
+                        break;
+                    case "L":
+                        CART.contents[foundIndex].largeAmount = CART.contents[foundIndex].largeAmount + Number(order.amount);
+                        break;
+                    case "XL":
+                        CART.contents[foundIndex].extraLargeAmount = CART.contents[foundIndex].extraLargeAmount + Number(order.amount);
+                        break;
+                    default:
+                        alert('error')
+                        break;
+                }
+                CART.contents[foundIndex].price = CART.contents[foundIndex].price + Number(order.price);
+                CART.sync();
+                return;
+            }
+
+            let orderItem = {
+                product: order.productId,
+                price: order.price,
+                image: order.image,
+                style: order.style,
+                color: order.color,
+                description: order.description,
+                smallAmount: 0,
+                mediumAmount: 0,
+                largeAmount: 0,
+                extraLargeAmount: 0
+            }
+
+            switch(order.size){
+                case "S":
+                    orderItem.smallAmount = orderItem.smallAmount + Number(order.amount);
+                    break;
+                case "M":
+                    orderItem.mediumAmount = orderItem.mediumAmount + Number(order.amount);
+                    break;
+                case "L":
+                    orderItem.largeAmount = orderItem.largeAmount + Number(order.amount);
+                    break;
+                case "XL":
+                    orderItem.extraLargeAmount = orderItem.extraLargeAmount + Number(order.amount);
+                    break;
+                default:
+                    alert('error')
+                    break;
+            }
+            
+            
+            CART.contents.push(orderItem);
+            CART.sync();
+        }
+
+    }
+    
+    CART.init();
+    $('#updateDeliveryDateBtn').click(function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $(this).prop('disabled', true);
+        $('#updateDeliveryDateError').text("");
+
+        let _id = $('#updateStatusId').val();
+        let deliveryDate = $('#deliveryDate').val();
+        let deliveryStatus = $('#deliveryStatus').val();
+
+        $.post('/admin/cart/checkDeliveryUpdate', {_id: _id, deliveryDate: deliveryDate}, (data) => {
+            if (!data) {
+                $(this).prop('disabled', false);
+                $('#updateDeliveryDateError').text("Delivery date entered is earlier than the order date!");
+                return;
+            }
+
+            $.post('/admin/cart/checkDeliveryStatusUpdate', {_id: _id, deliveryStatus: deliveryStatus}, (hasDeficit) => {
+                if (hasDeficit) {
+                    $(this).prop('disabled', false);
+                    $('#updateDeliveryDateError').text("Order has deficit. Please resolve before setting to delivered.");
+                    return;
+                }
+
+                $(this).prop('disabled', false);
+                $('#updateDeliveryStatusForm').submit();
+            })
+
+            
+
+            
+        })
+      }) 
 
     $('#shipping-fee-btn').click(function(e){
         e.preventDefault();
@@ -24,13 +148,8 @@ $(document).ready(function(){
         let shippingFeeCartId = $('#shippingFeeCartId').val();
         let url = '/admin/orders/updateShippingFee';
 
-        $.post(url, {shippingFeeCartId: shippingFeeCartId, shippingFeeInput: shippingFeeInput, js: true}, (data) => {
-            $('#shippingFee').html('<b>Shipping Fee: </b> ' + data.shippingFee);
-            $('#totalPrice').html('<b>Total price: </b>' + data.totalPrice);
-
-            $('#shipping-fee-btn').prop('disabled', false);
-        });
-    });
+        $('#shippingFeeForm').submit();
+    }); 
 
     $('#paginator').on('change', function (param) {
         let url = $(this).val(); // get selected value
@@ -107,12 +226,20 @@ $(document).ready(function(){
         }
 
         $.post("/admin/inventory/validateNewProduct", {style: style, color: color, description: description}, (data) => {
-            if (data) {
+           
+
+            if (data.isPhasedOut == false) {
                 $('#newProductError').text("Product already exists in the inventory!")
                 return;
             }
 
+            if (data.isPhasedOut == true) {
+                $('#newProductError').text("Phased out product exists. Phase it back in instead.");
+                return;
+            }
+
             $('#newProductForm').submit();
+            
         })
     }) 
 
@@ -122,9 +249,7 @@ $(document).ready(function(){
         $('#newJobOrderError').text('');
 
         let batchNo = $('#newJobOrderBatchNo').val();
-        let style  =  $('#newJobOrderStyle').val();
-        let color =  $('#newJobOrderColor').val();
-        let description =  $('#newJobOrderDescription').val();
+        let newJobOrderSelect = $('#newJobOrderSelect').val();
         let smallOrder =  $('#newJobOrderSmall').val();
         let mediumOrder = $('#newJobOrderMedium').val();
         let largeOrder =  $('#newJobOrderLarge').val();
@@ -132,52 +257,53 @@ $(document).ready(function(){
         let yardage =  $('#newJobOrderYardage').val();
         let remarks =  $('#newJobOrderRemarks').val();
 
-        if (batchNo.trim() == "" || style.trim() == "" || color.trim() == "" || description.trim() == "" ||
-        smallOrder == "" || mediumOrder == "" || largeOrder == "" || extraLargeOrder == "") {
+        if (newJobOrderSelect == "" || batchNo.trim() == "" || smallOrder == "" || mediumOrder == "" || largeOrder == "" || extraLargeOrder == "") {
             $('#newJobOrderError').text("All fields except optional ones required!");
             return;
         } 
-
+        
         if (smallOrder > MAX_INT || smallOrder < MIN_INT) {
             $('#newJobOrderError').text("Invalid small amount!");
             return;
         }
+        
 
         if (mediumOrder > MAX_INT || mediumOrder < MIN_INT) {
             $('#newJobOrderError').text("Invalid medium amount!");
             return;
         }
-
+        
         if (largeOrder > MAX_INT || mediumOrder < MIN_INT) {
             $('#newJobOrderError').text("Invalid large amount!");
             return;
         }
-
+        
         if (extraLargeOrder > MAX_INT || mediumOrder < MIN_INT) {
             $('#newJobOrderError').text("Invalid extra-large amount!");
             return;
         }
-
+        
         if (smallOrder % 1 != 0 || mediumOrder % 1 != 0 || largeOrder % 1 != 0 || extraLargeOrder % 1 != 0) {
             $('#newJobOrderError').text("Orders must be in whole numbers!");
             return;
         }
 
-        $.post('/admin/production/validateNewJobOrder', {batchNo: batchNo, style: style, color: color, description: description}, (data) => {
-            if(data.jobOrderExists) {
-                $('#newJobOrderError').text("Job order with the same batch number already exists!");
+        $.post('/admin/production/validateNewJobOrder', {_id: newJobOrderSelect, batchNo: batchNo}, (data) => {
+            alert(data)
+            if (data.jobOrderExists) {
+                $('#newJobOrderError').text("Job order already exists with the same batch no!");
                 return;
             }
 
             if (!data.productExists) {
-                $('#newJobOrderError').text("Product does not exist!");
+                $('#newJobOrderError').text("Product does not exist");
                 return;
             }
 
-
-
             $('#newJobOrderForm').submit();
         })
+
+        
     })
 
     $('#jobOrderCardContainer').on('click', '#resolveJobOrderBtn', function(e) {
@@ -292,5 +418,267 @@ $(document).ready(function(){
             dropdown.prop('disabled', false);
         })
     })
+
+
+    $('#myTabContent').on('show.bs.modal', 'div[name="modal_edit"]', function(e) {
+        
+        let image = $(this).find('div:nth-child(1)').find('div:nth-child(1)').find('img:nth-child(1)');
+        let id = $(this).find('div:nth-child(1)').find('div:nth-child(1)').find('textarea:nth-child(2)').val();
+        
+
+        $.get('/getProductImage', {_id: id}, (data) => {
+            image.attr('src', '/productimgs/' + data)  
+        })
+        
+    })
+
+    $('#myTabContent').on('click', '#submitProductImage', function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        let form = ($(this.form))[0]
+        let file = ($(this).prevAll('input'))[0];
+        let _id = $(this).prevAll('textarea').val();
+        let error1 = $(this).prev('.text-danger');
+
+        if (file.files[0] === undefined) {
+            error1.text('Choose an image')
+            return;
+        }
+        if (file.files[0].size >  (1048576 * 2)) {
+            error1.text('Image should not be larger than 2MB!')
+            return;
+        }
+
+        $(this.form).submit();
+    })
+
+    $('#addToCart').click(function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        let productId = $('#specificProductId').val();
+        let amount = $('#myNumber').val();
+        let size = $('#specificProductSize').val();
+        let style = $('#specificProductStyle').val();
+        let color = $('#specificProductColor').text();
+        let description = $('#specificProductDescription').val();
+        let image = $('#specificProductImage').attr('src');
+        let price = $('#specificProductPrice').val();
+        
+        let order = {
+            productId: productId,
+            amount: amount,
+            size: size,
+            style: style,
+            color: color,
+            description: description,
+            image: image,
+            price: Number(price) * amount
+        }
+
+        CART.add(order)
+    });
+
+    $('#checkOut').click(function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $('#checkoutError').text('')
+        let items = CART.contents;
+        
+        //if (items === undefined || items.length == 0) {
+        //    $('#checkoutError').text('Cart empty!')
+        //    return;
+        //}
+        
+        $('#modal_customerInfo').modal('toggle')
+    })
+
+    $('#checkoutSubmit').click(function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $('#submitCheckoutError').text("");
+        
+        let items = CART.contents;
+
+        let captcha = $('#g-recaptcha-response').val();
+        let firstname = $('#customerFirstName').val();
+        let lastName = $('#customerLastName').val();
+        let contactNo = $('#customerContact').val();
+        let email = $('#customerEmail').val();
+        let address = $('#customerAddress').val();
+        let region = $('#customerInternational').is(':checked') ? 'INTERNATIONAL' : 'DOMESTIC';
+        let paymentMode = $('#customerPaymentMode').val();
+        let deliveryMode = $('#customerDeliveryMode').val();
+        
+        firstname = firstname.trim();
+        lastName = lastName.trim();
+        contactNo = contactNo.trim();
+        email = email.trim();
+        address = address.trim();
+        paymentMode = paymentMode.trim();
+        deliveryMode = deliveryMode.trim();
+
+        if (firstname == "" || lastName == "" || contactNo == "" || email == "" || address  == "" || paymentMode == "" || deliveryMode == "") {
+            $('#submitCheckoutError').text("Fields required!");
+            return;
+        }
+
+        let regExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!regExp.test(email)) {
+            $('#submitCheckoutError').text("Please enter a valid email!");
+            return;
+        }
+
+        if (captcha == "" || captcha == null) {
+            $('#submitCheckoutError').text("Please prove that you are not a bot.");
+            return;
+        }
+
+        $('#cart').val(JSON.stringify(items));
+        $('#region').val(region);
+
+        $.post('/cart/verifyCaptcha', {captcha: captcha}, (data) => {
+            if (!data) {
+                $('#submitCheckoutError').text("Invalid captcha");
+                return;
+            }
+
+            CART.contents = [];
+            CART.sync();
+            $(this.form).submit();
+        })
+    })
+
+    $('#createAccountBtn').click(function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $('#createAccountError').text('');
+
+        let username = $('#createAccountUsername').val();
+        let password = $('#createAccountPassword').val();
+        let confirmPassword = $('#createAccountConfirmPassword').val();
+
+        username = username.trim();
+        
+        if (username == "" || password == "" || confirmPassword == "") {
+            $('#createAccountError').text('All fields required!');
+            return;
+        }
+
+        let userExp = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{3,16}$/;
+        if (!userExp.test(username)) {
+            $('#createAccountError').text('Username must be between 4 -17 characters and with no special characters.');
+            return;
+        }
+
+        let passExp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+        if (!passExp.test(password)) {
+            $('#createAccountError').text('Password should be at least 8 in length, have 1 uppercase, 1 lowercase, 1 number');
+            return;
+        }
+
+        if (password != confirmPassword) {
+            $('#createAccountError').text('Passwords do not match!');
+            return;
+        }
+
+        $.get("/admin/control/checkUsername", {username: username}, (usernameExists) => {
+            if (usernameExists) {
+                $('#createAccountError').text('Username already exists!');
+                return;
+            }
+
+            $('#createAccountForm').submit();
+        })
+
+    })
+
+    $('#myTabContent').on('click', "#editProductBtn", function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        let id = $(this.form).attr('name')
+        $('#editProductError' + id).text('')
+
+        
+        let style = $('#editProductStyle' + id).val();
+        let description = $('#editProductDescription' + id).val();
+        let color = $('#editProductColor' + id).val();
+        let price = $('#editProductPrice' + id).val();
+
+        style = style.trim();
+        description = description.trim();
+        color = color.trim();
+        
+        if (style == "" || color == "" || description == "" || price == "" ) {
+            $('#editProductError' + id).text('Fields required!')
+            return;
+        }
+
+        $.post('/admin/inventory/checkEdit', {_id: id, style: style, color: color, description: description}, (hasDuplicate) => {
+            if (hasDuplicate) {
+                $('#editProductError' + id).text('Product with same details already exists')
+                return;
+            }
+
+
+            $('#editProductStyle' + id).attr("id", "editProductStyle");
+            $('#editProductDescription' + id).attr("id", "editProductDescription");
+            $('#editProductColor' + id).attr("id", "editProductColor");
+            $('#editProductPrice' + id).attr("id", "editProductColor");
+            $(this.form).submit();
+        })
+    })
+
+    $('#priceSorting').change(function(e) {
+        if ($(this).val() == "1") {
+            window.location.replace(window.location.origin + "/ascending/" + window.location.search)
+        } else if ($(this).val() == "-1") {
+            window.location.replace(window.location.origin + "/" + window.location.search)
+        }
+        
+    })
+
+    $('#changePasswordBtn').click(function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $('#changePasswordError').text("");
+        $('#changePasswordSuccess').text("")
+
+        let current = $('#changePasswordCurrent').val();
+        let newPassword = $('#changePasswordNew').val();
+        let confirmPassword = $('#changePasswordConfirm').val();
+
+        if (current == "" || newPassword == "" || confirmPassword == "") {
+            $('#changePasswordError').text("All fields required");
+            return;
+        }
+
+        let passExp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+        if (!passExp.test(newPassword)) {
+            $('#changePasswordError').text('New password should be at least 8 in length, have 1 uppercase, 1 lowercase, 1 number');
+            return;
+        }
+
+        if (newPassword != confirmPassword) {
+            $('#changePasswordError').text('New passwords do not match');
+            return;
+        }
+
+        $.post('/admin/control/changePassword', {password: current, newPassword: newPassword}, (valid) => {
+            if (!valid) {
+                $('#changePasswordError').text('Current password is incorrect');
+                return;
+            }
+
+            $('#changePasswordSuccess').text("Success!")
+            $('#changePasswordCurrent').val("");
+            $('#changePasswordNew').val("");
+            $('#changePasswordConfirm').val("")
+            $('#changePasswordError').text("");
+        })
+    })
+
 
 })

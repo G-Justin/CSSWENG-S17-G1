@@ -1,6 +1,12 @@
 const Product = require('../model/product.js');
 const InventoryRecord = require('../model/inventoryRecord.js');
+const OrderItem = require("../model/orderitem.js");
+const Order = require('../model/order.js');
 const sanitize = require('mongo-sanitize');
+const orderitem = require('../model/orderitem.js');
+const { findSeries } = require('async');
+const fs = require('fs');
+const JobOrder = require('../model/jobOrder.js');
 const PAGE_LIMIT = 10;
 
 const inventoryController = {
@@ -106,9 +112,11 @@ const inventoryController = {
             description: description.trim().toUpperCase()
         };
 
-        Product.exists(query, function(err, result) {
-            res.send(result);
-        })
+        Product.findOne(query)
+            .select('isPhasedOut')
+            .exec(function(err, result) {
+                res.send(result);
+            })        
     },
 
     updateStock: function(req, res) {
@@ -175,6 +183,9 @@ const inventoryController = {
 
             let inventoryRecord = new InventoryRecord({
                 parentRecord: _id,
+                color: productResult.color,
+                style: productResult.style,
+                description: productResult.description,
                 smallUpdate: s,
                 mediumUpdate: m,
                 largeUpdate: l,
@@ -276,115 +287,329 @@ const inventoryController = {
 
             res.redirect('/admin/inventory/phasedout')
         })
+    },
+
+    phaseIn: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+
+        let _id = sanitize(req.body.productId);
+
+        Product.updateOne({_id: _id}, {
+            isPhasedOut: false
+        }, function(err, updateResult) {
+            if (!updateResult) {
+                console.log(err);
+                res.redirect(req.get('referer'));
+                return;
+            }
+
+            res.redirect('/admin/inventory')
+        })
+    },
+
+    getProductImage: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+
+        let _id = sanitize(req.query._id);
+        Product.findById(_id)
+        .select('image')
+        .exec((err, result) => {
+            res.send(result.image);
+        })
+    },
+
+    updateProductImage: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+
+        let file = req.file;
+        let _id = sanitize(req.body.editImageProductId);
+        
+        if (!file) {
+            res.redirect(req.get('referer'));
+            return;
+        }
+
+        if (file.size > (1048576 * 2)) {
+            res.redirect(req.get('referer'));
+            return;
+        }
+
+        let imageName = renameImage(file, _id);
+
+        updateImage(_id, imageName, res).then((a) => {
+            res.redirect(req.get('referer'));
+        })
+    },
+
+    getProductDetails: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+
+        let _id = sanitize(req.query._id);
+
+        Product.findOne({_id: _id})
+            .select('image style description color price')
+            .exec(function(err, result) {
+                if (!result) {
+                    console.log("no product found");
+                    res.redirect(req.get('referer'));
+                    return;
+                }
+
+                res.send(result);
+            })
+    },
+
+    checkEdit: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+
+        let id = sanitize(req.body._id)
+        let style = sanitize(req.body.style);
+        let description = sanitize(req.body.description);
+        let color = sanitize(req.body.color);
+
+        style = style.toUpperCase();
+        description = description.toUpperCase();
+        color = color.toUpperCase();
+
+        Product.findOne({_id: {$ne: id}, color: color, style: style, description: description}, function (err, result) {
+            if (err) {
+                console.log("error");
+                res.redirect(req.get('referer'))
+                return;
+            }
+
+            let hasDuplicate = result != null;
+            res.send(hasDuplicate)
+          })
+
+    },
+
+    editProductDetails: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+
+        let _id = sanitize(req.body.editProductId);
+        let style = sanitize(req.body.editProductStyle);
+        let color = sanitize(req.body.editProductColor)
+        let description = sanitize(req.body.editProductDescription)
+        let price = sanitize(req.body.editProductPrice);
+
+        Product.findOneAndUpdate({_id: _id}, {style: style, color: color, description: description, price: price}, function (err, result) {
+            if (err) {
+                console.log(err)
+                res.render('error', {
+                    title: 'Facemust',
+                    error: '404',
+                    message: 'AN ERROR OCCURED'
+                })
+                return;
+            }
+            console.log(result);
+            
+            InventoryRecord.update({parentRecord: _id}, {color: color, style: style, description: description}, function(err, result2) {
+                if (err) {
+                    console.log(err)
+                    res.render('error', {
+                        title: 'Facemust',
+                        error: '404',
+                        message: 'AN ERROR OCCURED'
+                    })
+                    return;
+                }
+
+                 JobOrder.update({productId: _id}, {style: style, color: color, description: description}, function(err, result3) {
+                    if (err) {
+                        console.log(err)
+                        res.render('error', {
+                            title: 'Facemust',
+                            error: '404',
+                            message: 'AN ERROR OCCURED'
+                        })
+                        return;
+                    }
+
+                    res.redirect(req.get('referer'));
+                    return;
+                 })
+            })
+
+          })
     }
+
 }
 
 module.exports = inventoryController;
 
-function getInventory(req, res, isPhasedOut) {
-    let style = sanitize(req.query.style);
-    let color = sanitize(req.query.color);
-    let description = sanitize(req.query.description);
-    let query = getQueries(style, color, description, isPhasedOut);
-    let resultsMessage = getResultsMessage(style, color, description);
-    let phasedOutUrlPiece = isPhasedOut ? "/phasedout" : "";
-
-    let page = sanitize(req.query.page);
-    if (page == null) {
-        page = 1;
-    }
-
-    let options = {
-        populate: 'inventoryRecords',
-        lean: true,
-        page: page,
-        limit: PAGE_LIMIT,
-
-        sort: {
-            dateCreated: -1
+async function updateImage(_id, imageName, res) {
+    let extension = imageName.substring(imageName.lastIndexOf("."))
+    let filename = imageName.split('.').slice(0, -1).join('.');
+    
+    Product.updateOne({_id: _id}, {image: imageName}, function(err, result) {
+        if (!result) {
+            console.log(err);
+            res.redirect(req.get('referer'));
         }
-    };
-
-    Product.paginate(query, options, function (err, results) {
-        if (!results) {
-            console.log('no products returned');
-            console.log(results);
-            return;
+        switch (extension) {
+            case '.jpg':
+                fs.unlink('./public/productimgs/' + filename + '.png', (fds) => {});
+                fs.unlink('./public/productimgs/' + filename + '.jpeg', (fds) => {});
+                break;
+            case '.png': 
+                fs.unlink('./public/productimgs/' + filename + '.jpg', (fds) => {});
+                fs.unlink('./public/productimgs/' + filename + '.jpeg', (fds) => {});
+                break;
+            case '.jpeg':
+                fs.unlink('./public/productimgs/' + filename + '.png', (fds) => {});
+                fs.unlink('./public/productimgs/' + filename + '.jpg', (fds) => {});
+                break;
         }
-
-        for (let i = 0; i < results.docs.length; i++) {
-            results.docs[i].notPhasedOut = !isPhasedOut;
-        }
-
-        let selectOptions = new Array();
-        for (let i = 0; i < results.totalPages; i++) {
-            let no = i + 1;
-            let options = {
-                pageLink: "/admin/inventory" + phasedOutUrlPiece + "?style=" + style + "&color=" + color + "&page=" + no,
-                pageNo: no,
-                isSelected: (results.page == no)
-            };
-
-            selectOptions.push(options);
-        }
-
-        let prevPageLink = results.hasPrevPage ? "/admin/inventory" + phasedOutUrlPiece + "?style=" + style + "&color=" + color + "&page=" + results.prevPage : "";
-        let nextPageLink = results.hasNextPage ? "/admin/inventory" + phasedOutUrlPiece + "?style=" + style + "&color=" + color + "&page=" + results.nextPage : "";
-        res.render('admin/inventory', {
-            title: 'Inventory',
-
-            products: results.docs,
-            resultsMessage: resultsMessage,
-            notPhasedOut: !isPhasedOut,
-            noResults: results.docs.length == 0,
-
-            //pagination
-            selectOptions: selectOptions,
-            hasPrev: results.hasPrevPage,
-            hasNext: results.hasNextPage,
-            prevPageLink: prevPageLink,
-            nextPageLink: nextPageLink
-        });
-    });
+    })
 }
 
-function getQueries(style, color, description, isPhasedOut) {
-    let query = {isPhasedOut: isPhasedOut};
+function renameImage(file, newName) {
+    let original = file.originalname;
+    let extension = original.substring(original.lastIndexOf("."));
+    const newUrl = file.destination + '/' + newName + extension;
 
-    if (!isEmpty(style)) {
-        query.style = new RegExp(style, 'i')
+    fs.renameSync(file.path, newUrl);
+    return newName + extension;
+}
+
+
+function getInventory(req, res, phasedOut) {
+
+    Product.find({isPhasedOut: phasedOut})
+        .sort({dateCreated: -1})
+        .lean()
+        .exec(function(err, productResults) {
+            if (!productResults) {
+                console.log("Inventory controller error: no products returned");
+                res.redirect(req.get('referer'));
+                return;
+            }
+
+            for (let i = 0; i < productResults.length; i++) {
+                productResults[i].notPhasedOut = !phasedOut;
+                productResults[i].totalSold = productResults[i].smallSold + productResults[i].mediumSold + productResults[i].largeSold + productResults[i].extraLargeSold
+            }
+
+            updateDeficits(productResults).then((a) => {
+                InventoryRecord.find()
+                    .sort({date: -1})
+                    .lean()
+                    .exec(function(err, inventoryRecordsResult) {
+                        if (!inventoryRecordsResult) {
+                            console.log("Inventory Controller: no records returned");
+                            res.redirect(req.get('referer'));
+                            return;
+                        }
+
+                        res.render('admin/inventory', {
+                            title: 'Inventory',
+                
+                            products: productResults,
+                            inventoryRecords: inventoryRecordsResult,
+                            notPhasedOut: !phasedOut,
+                        });                  
+                    })
+            })
+        })
+}
+
+async function getInventoryRecords(inventoryRecords, results) {
+    for (let i = 0; i < results.length; i++) {
+        let product = await Product.findOne({_id: results[i].parentRecord});
+        
+        if (!product) {
+            console.log("did not find the parent product record for a log");
+            continue;
+        }
+
+        let inventoryRecord = {
+            parentRecord: product._id,
+            color: product.color,
+            style: product.style,
+            description: product.description,
+            date: results[i].date,
+            smallUpdate: results[i].smallUpdate,
+            mediumUpdate: results[i].mediumUpdate,
+            largeUpdate: results[i].largeUpdate,
+            extraLargeUpdate: results[i].extraLargeUpdate
+        }
+
+        inventoryRecords.push(inventoryRecord);
+    }
+}
+
+async function updateDeficits(products) {
+    for (let i = 0; i < products.length; i++) {
+        let items = await OrderItem.find({product: products[i]._id});
+        let orderItems = new Array();
+        for (let j = 0; j < items.length; j++) {
+            let order = await Order.findOne({_id: items[j].parentOrder, deliveryStatus: 'PROCESSING'});
+            if (!order) {
+                continue;
+            }
+            console.log(order)
+            orderItems.push(items[j])
+        }
+        
+        let smallAmount = 0;
+        let mediumAmount = 0;
+        let largeAmount = 0;
+        let extraLargeAmount = 0;
+        let totalAmount = 0;
+
+        for (let j = 0; j < orderItems.length; j++) {
+            smallAmount = smallAmount + orderItems[j].smallAmount;
+            mediumAmount = mediumAmount + orderItems[j].mediumAmount;
+            largeAmount = largeAmount + orderItems[j].largeAmount;
+            extraLargeAmount = extraLargeAmount + orderItems[j].extraLargeAmount;
+        }
+        totalAmount = smallAmount + mediumAmount + largeAmount + extraLargeAmount;
+
+        let smallDeficit = smallAmount - products[i].smallAvailable;
+        products[i].smallDeficit = (smallDeficit > 0) ? smallDeficit : 0;
+
+        let mediumDeficit = mediumAmount - products[i].mediumAvailable;
+        products[i].mediumDeficit = (mediumDeficit > 0) ? mediumDeficit : 0;
+
+        let largeDeficit = largeAmount - products[i].largeAvailable;
+        products[i].largeDeficit = (largeDeficit > 0) ? largeDeficit : 0;
+
+        let extraLargeDeficit = extraLargeAmount - products[i].extraLargeAvailable;
+        products[i].extraLargeDeficit = (extraLargeDeficit > 0) ? extraLargeDeficit : 0;
+
+        let totalDeficit = totalAmount - products[i].totalAvailable;
+        products[i].totalDeficit = (totalDeficit > 0) ? totalDeficit : 0;
+
+        let update = await Product.updateOne({_id: products[i]._id}, {
+            smallDeficit: products[i].smallDeficit,
+            mediumDeficit: products[i].mediumDeficit,
+            largeDeficit: products[i].largeDeficit,
+            extraLargeDeficit: products[i].extraLargeDeficit,
+            totalDeficit: products[i].totalDeficit
+        });
+
     }
 
-    if (!isEmpty(color)) {
-        query.color = new RegExp(color, 'i')
-    }
-
-    if (!isEmpty(description)) {
-        query.description = new RegExp(description, 'i');
-    }
-
-    return query;
-    
-
-    if(isEmpty(style) && isEmpty(color) && isEmpty(description)) {
-        return query;
-    }
-
-    if (isEmpty(style) && !isEmpty(color)) {
-        query = { color: new RegExp(color, 'i'), isPhasedOut: isPhasedOut };
-        return query;
-    } 
-    
-    if (isEmpty(color) && !isEmpty(style)) {
-        query = { style: new RegExp(style, 'i'), isPhasedOut: isPhasedOut };
-        return query;
-    }
-
-    if (!isEmpty(color) && !isEmpty(style)) {
-        query = { color: new RegExp(color, 'i'), style: new RegExp(style, 'i'), isPhasedOut: isPhasedOut };
-        return query;
-    } 
-     
 }
 
 function isEmptyNumberInput(input) {
@@ -409,18 +634,6 @@ function isEmpty(input) {
     }
 
     return false;
-}
-
-function getResultsMessage(style, color, description) {
-    let styleMsg = !isEmpty(style) ? style : "";
-    let colorMsg = !isEmpty(color) ? color : "";
-    let descriptionMsg = !isEmpty(description) ? description : "";
-
-    if (styleMsg == "" && colorMsg == "" && description == "") {
-        return "";
-    }
-
-    return styleMsg + " " + colorMsg + " " + descriptionMsg;
 }
 
 function isValidNumberInput(n) {

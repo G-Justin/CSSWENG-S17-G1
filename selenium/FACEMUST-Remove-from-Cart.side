@@ -1,0 +1,136 @@
+{
+  "id": "0fb2db6d-80ff-49c8-9b8d-994de9066d95",
+  "version": "2.0",
+  "name": "FACEMUST - Remove from Cart",
+  "url": "http://localhost:3001/cart",
+  "tests": [{
+    "id": "788e82af-a015-41cb-b13f-74a58947fdf9",
+    "name": "Remove from Cart (Single Item, with only one item in the cart)",
+    "commands": [{
+      "id": "9a50ca13-9e87-4669-a480-e507ebe2644e",
+      "comment": "",
+      "command": "open",
+      "target": "/cart",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "442a88c1-320e-43d7-b3e9-4ad7bc6dad45",
+      "comment": "",
+      "command": "click",
+      "target": "css=#\\30 > .fa",
+      "targets": [
+        ["css=#\\30 > .fa", "css:finder"],
+        ["xpath=//button[@id='0']/i", "xpath:idRelative"],
+        ["xpath=//button/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d5b2cc5b-be41-4369-a58f-10ef78f85a06",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=dataTable",
+      "targets": [],
+      "value": "5000"
+    }, {
+      "id": "c5293fd1-a0bf-4123-9fc1-16bfbaf082f0",
+      "comment": "",
+      "command": "pause",
+      "target": "",
+      "targets": [],
+      "value": "5000"
+    }]
+  }, {
+    "id": "6b83ba29-461e-4bfd-80ee-cdf2a7be9ec2",
+    "name": "Remove from Cart (Single Item, with Multiple Items in the Cart)",
+    "commands": [{
+      "id": "19040baa-3fb3-4c63-a3c6-3969aff35397",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3001/cart",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "372c54d9-b22f-44b6-a6d2-00365ebe775a",
+      "comment": "",
+      "command": "click",
+      "target": "css=#\\30 > .fa",
+      "targets": [
+        ["css=#\\30 > .fa", "css:finder"],
+        ["xpath=//button[@id='0']/i", "xpath:idRelative"],
+        ["xpath=//button/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5188e6b2-3442-49be-bafc-301d525c3e1e",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=dataTable",
+      "targets": [],
+      "value": "5000"
+    }, {
+      "id": "c98014bc-98b7-4cfe-ab06-7da08d967b6a",
+      "comment": "",
+      "command": "pause",
+      "target": "",
+      "targets": [],
+      "value": "5000"
+    }]
+  }, {
+    "id": "ab8acc27-6ae8-4795-b733-6b9c377d06a6",
+    "name": "Remove from Cart (Multiple items, with Multiple Items in the Cart)",
+    "commands": [{
+      "id": "31ba01f4-7307-41e9-a063-76a6268b03b2",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3001/cart",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "eb2fcef3-a99a-4196-ab7e-ddee3a2b3957",
+      "comment": "",
+      "command": "click",
+      "target": "css=#\\30 > .fa",
+      "targets": [
+        ["css=#\\30 > .fa", "css:finder"],
+        ["xpath=//button[@id='0']/i", "xpath:idRelative"],
+        ["xpath=//button/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c55aa249-ce5a-4a93-8196-9087774c0773",
+      "comment": "",
+      "command": "click",
+      "target": "css=.fa",
+      "targets": [
+        ["css=.fa", "css:finder"],
+        ["xpath=//button[@id='0']/i", "xpath:idRelative"],
+        ["xpath=//button/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c528c4f2-b2e7-4c05-9078-63135326d47a",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=dataTable",
+      "targets": [],
+      "value": "5000"
+    }, {
+      "id": "014b3fc1-bed6-4a2a-a479-720d11a7d260",
+      "comment": "",
+      "command": "pause",
+      "target": "",
+      "targets": [],
+      "value": "5000"
+    }]
+  }],
+  "suites": [{
+    "id": "38d5c385-cb8d-4ea4-b405-62888386570b",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["788e82af-a015-41cb-b13f-74a58947fdf9"]
+  }],
+  "urls": ["http://localhost:3001/", "http://localhost:3001/cart"],
+  "plugins": []
+}

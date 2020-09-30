@@ -5,6 +5,18 @@ var InventoryRecordSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true
     },
+    color: {
+        type: String,
+        //required: true
+    },
+    style: {
+        type: String,
+        //required: true
+    },
+    description: {
+        type: String,
+        //required: true
+    },
     date: {
         type: Date,
         default: Date.now

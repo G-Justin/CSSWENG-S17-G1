@@ -1,0 +1,111 @@
+<link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet'>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+    #productTable th{
+       min-width:250px;
+       max-width:250px;
+    }
+    .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+    }
+    td{
+        min-width:150px;
+    }
+</style>
+
+<div class="card" style="padding:15px;margin-top:5%;font-family: 'Lora';background-color:rgb(52, 58, 64);color:White">
+    <h4>Order Tracking - {{_id}}</h4>
+</div>
+<div class="card" style="padding:15px;font-family: 'Lora';margin-top:-5px;">
+    <table>
+        <thead>
+            <tr>
+                <th>Delivery Status</th>
+                <th>Payment Status</th>
+                <th>Shipping Fee</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{deliveryStatus}}</td>
+                <td>{{paymentStatus}}</td>
+                <td>{{shippingFee}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="card" style="padding:15px;font-family: 'Lora';margin-top:-5px;">
+    <table>
+        <thead>
+            <tr>
+                <th>Delivery Address</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{address}}</td>
+                <td>{{firstname}} {{lastname}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="card" style="padding:15px;font-family: 'Lora';background-color:rgb(52, 58, 64);color:White">
+    <h5>Order Details</h5>
+</div>
+<!-- trackOrder hbs card template -->
+
+
+{{#each orderItems}}
+    {{> trackOrder}}
+{{/each}}
+
+
+
+
+<div class="card" style="padding:15px;font-family: 'Lora'">
+        <table class="center" style="text-align: center;overflow:auto;width:auto">
+            <thead>
+                <tr>
+                    <td>Base Price:   </td>
+                    <td>₱{{basePrice}}</td>
+                </tr>
+                <tr>
+                    <td>Shipping Fee: </td>
+                    <td>{{shippingFee}}</td>
+                </tr>
+                <tr>
+                    <td>Total: </td>
+                    <td>₱{{totalPrice}}</td>
+                </tr>
+            </thead>
+        </table>
+</div>
+<br>
+{{#if canBeVoided}}
+<button class="btn btn-danger" style="float:right" data-toggle="modal" data-target="#modal_confirm_{{_id}}">Void order</button>
+
+<div id="modal_confirm_{{_id}}" class="modal fade" role="dialog">
+          <div id="divtest" class="modal-dialog" id = "md2">
+          <div class="modal-content" style="background-color: rgb(247, 242, 242); text-align:center">
+              <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
+              <h4 class="modal-title">Void Order</h4>
+              <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+              </div>
+              
+            <form method="POST" action="/track/voidOrder"  style="margin-bottom:30px">
+                <textarea id="voidId" name="voidId" readonly="readonly" style="display: none;">{{_id}}</textarea>
+                <h2 style="color:red">Warning</h2><hr>
+                <h4>Are you sure you want to void this order?</h4><br>
+                <button type="submit" class="btn btn-danger" style="color:white;" >Yes</button>	
+                <button type="button" class="btn btn-primary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">No</button>
+            </form>
+          </div>
+          </div>
+  </div>
+  {{/if}}
+

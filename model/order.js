@@ -25,12 +25,12 @@ var OrderSchema = new mongoose.Schema({
     },
     deliveryStatus: {
         type: String,
-        enum: ['PROCESSING', 'DELIVERING', 'DELIVERED'],
+        enum: ['PROCESSING', 'DELIVERED', 'VOIDED'],
         default: 'PROCESSING'
     },
     paymentStatus: {
         type: String,
-        enum: ['TO PAY', 'PAID'],
+        enum: ['TO PAY', 'PAID', 'VOIDED'],
         default: 'TO PAY'
     },
     paymentMode: {
@@ -61,12 +61,16 @@ var OrderSchema = new mongoose.Schema({
     shippingFee: {
         type: Number,
         min: 0,
-        default: 0
     },
     totalPrice: {
         type: Number,
         min: 0,
         default: 0
+    },
+    region: {
+        type: String,
+        enum: ['DOMESTIC', 'INTERNATIONAL'],
+        default: 'DOMESTIC'
     },
     orderItems:[{
         type: mongoose.Schema.Types.ObjectId,

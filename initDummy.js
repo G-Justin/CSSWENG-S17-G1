@@ -48,7 +48,6 @@ let newOrder = new Order({
     deliveryDate: new Date("2021-08-08"),
     basePrice: 1600,
     totalPrice: 1600,
-    shippingFee: 0
 });
 
 let newProduct = new Product({
@@ -95,7 +94,7 @@ let newProduct2 = new Product({
     style: 'STYLE 1', 
     color: 'CAR27',
     description: 'DUCKBILL FLAT',
-    price: 100,
+    price: 50,
     smallInventory: 10,
     mediumInventory: 5,
     largeInventory: 5,

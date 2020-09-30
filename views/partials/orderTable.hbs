@@ -1,0 +1,169 @@
+
+
+<script>
+    function imgFlip(td){ //flips the +,- icon upon click
+        var bg = $(td).css('background-image');
+        bg = bg.replace('url("','').replace('")','');
+        if (bg === 'http://localhost:3001/assets/add.png')
+            $(td).css('background-image','url(../assets/minus.png)')
+        else
+            $(td).css('background-image','url(../assets/add.png)')
+    }
+
+    var id;
+    function initVar(param){ //gets the id of the modal then use it to find the specific tab below
+        id = param;
+    }
+
+    function showDetail(){                                     
+        document.getElementById('pd'+id).className = 'tab-pane fade active show';
+        document.getElementById('i'+id).className = 'tab-pane fade';
+        document.getElementById('p'+id).className = 'tab-pane fade';
+    }
+
+    function showImage(){                                       
+        document.getElementById('pd'+id).className = 'tab-pane fade';
+        document.getElementById('i'+id).className = 'tab-pane fade active show';
+        document.getElementById('p'+id).className = 'tab-pane fade';
+    }
+    function showPhase(){                                       
+        document.getElementById('pd'+id).className = 'tab-pane fade';
+        document.getElementById('i'+id).className = 'tab-pane fade';
+        document.getElementById('p'+id).className = 'tab-pane fade active show';
+    }   
+</script>
+
+<tr>
+    <td class="d-xl-none"  onclick="imgFlip(this)" style="background-image: url(../assets/add.png); background-size:25px; background-repeat:no-repeat; background-position: center;"></td>
+    <!-- these columns are hidden but kinda makes the datatable responsive view weird, so removed for now-->
+    <!--
+    <td class="d-none">{{image}}</td>
+    <td class="d-none">{{id}}</td>
+    -->
+    <td>{{color}}</td>
+    <td>{{style}}</td>
+    <td>{{description}}</td>
+    <td>{{price}}</td>
+    <td>{{smallAvailable}}</td>
+    <td>{{mediumAvailable}}</td>
+    <td>{{largeAvailable}}</td>
+    <td>{{extraLargeAvailable}}</td>
+    <td>{{totalAvailable}}</td>
+    {{#if notPhasedOut}}
+        <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_edit_{{_id}}" onclick="initVar('{{_id}}')" style="font-size:12px">Edit Product</button></td>
+    {{else}}
+        <td> <form id="phaseInProduct" name="phaseInProduct" method="POST" action="/admin/inventory/phaseInProduct">
+            <textarea readonly="readonly" id="productId" name="productId" style="display: none;">{{_id}}</textarea>
+            <button class="btn btn-primary btn-sm" type="submit" style="font-size:12px">Phase In</button>
+        </form>
+        </td>
+    {{/if}}
+</tr>
+	
+    <div id="modal_stock_{{_id}}" class="modal fade" role="dialog">
+          <div id="divtest" class="modal-dialog" id = "md2">
+          <div class="modal-content" style="background-color: rgb(247, 242, 242); text-align:center">
+              <div class="modal-header" style="text-align: center;background-color;background-color: rgb(52, 58, 64);color:white">
+              <h4 class="modal-title">Update Stock in Inventory</h4>
+              <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+              </div>
+              <form id="updateStockForm" name="updateStockForm" method="POST" action="/admin/inventory/updateStock">
+                  <div class="modal-body" style="overflow:auto margin:auto; text-align:center; margin-top:2%">
+                      <label for="s">S: </label>
+                      <input type="number" name="updateStockS" id="updateStockS" placeholder=" Enter Small Amount"><br>
+                      <label for="m">M: </label>
+                      <input type="number" name="updateStockM" id="updateStockM" placeholder=" Enter Medium Amount"><br>
+                      <label for="l">L: </label>
+                      <input type="number" name="updateStockL" id="updateStockL" placeholder=" Enter Large Amount"><br>
+                      <label for="xl">XL: </label>
+                      <input type="number" name="updateStockXL" id="updateStockXL" placeholder=" Enter Extra Large Amount"><br>
+                      <div id="updateStockError" name="updateStockError" class="text-danger" style="text-align:center"></div>
+                  </div>
+                  <div class="modal-footer">
+                      <textarea readonly="readonly" id="productId" name="productId" style="display: none;">{{_id}}</textarea>
+                      <button type="submit" id="updateStockBtn" name="updateStockBtn" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);">Confirm</button>
+                      <button type="button" class="btn btn-secondary" style="background-color: rgb(52, 58, 64);" data-dismiss="modal">Close</button>
+                  </div>
+              </form>
+          </div>
+          </div>
+  </div>
+
+  <div id="modal_edit_{{_id}}" name="modal_edit" class="modal fade" role="dialog">
+          <div id="divtest" class="modal-dialog" id = "md2">
+          <div class="modal-content" style="background-color: rgb(247, 242, 242); text-align:center">
+              <div class="modal-header" style="background-color;background-color: rgb(52, 58, 64);color:white">
+              <h4 class="modal-title">Edit Information</h4>
+              <button type="button" class="close" data-dismiss="modal" style="color:white">&times;</button>
+              </div>
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="image-tab" data-toggle="tab" href="#imageEdit" role="tab" aria-controls="image" aria-selected="true" onclick="showImage()">Image</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="detail-tab" data-toggle="tab" href="#detailEdit" role="tab" aria-controls="detail" aria-selected="false" onclick="showDetail()">Product Detail</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="phase-tab" data-toggle="tab" href="#detailPhase" role="tab" aria-controls="phase" aria-selected="false" onclick="showPhase()">Phase Out</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content mytab-content" id="myTabContent">
+                    <!-- Image TAB -->
+                    <div class="tab-pane fade show active" id="i{{_id}}" role="tabpanel" aria-labelledby="image-tab">
+                        <div class="col-md-12">
+                            <img id="productImage" name="productImage" src="" class="card-img" alt="...">
+                            
+                        </div>
+                        <!--IMPORTANT FORM ATTRIBUTES AND CHILDREN-->
+                        <form id="productImageForm" name="productImageForm" action="/updateProductImage" enctype="multipart/form-data" method="POST"> <!-- uploads the image-->
+                            <textarea readonly="readonly" id="editImageProductId" name="editImageProductId" style="display: none;">{{_id}}</textarea>
+                            <input type="file" id="newProductImage" name="newProductImage" accept="image/*" style="width:220px" required><br><br>
+                            <div id="productImageError" name="productImageError" class="text-danger" style="text-align:center"></div>
+                            <button id="submitProductImage" type="submit" class="btn btn-primary" style="width:220px">Submit</button>
+                        </form>
+                    </div>
+                    <!-- Product Detail TAB -->
+                    <div class="tab-pane fade show" id="pd{{_id}}" role="tabpanel" aria-labelledby="detail-tab"> <!-- edits the inventory-->
+                        <form id="editProductDetailsForm" name="{{_id}}" method="POST" action="/admin/inventory/editProductDetails">
+                            <textarea readonly="readonly" id="editProductId" name="editProductId" style="display: none;">{{_id}}</textarea>
+                            <h5 class="text-center my-2 justify-content-center">Product Details</h5>
+                            <div class="modal-body mx-3">
+                            <div class="row md-form my-2 justify-content-center">
+                                <label class="col-sm-4">Style: </label>
+                                <input maxlength="16" type="text" class="col-sm-3 form-control validate" name="editProductStyle" id="editProductStyle{{_id}}" value='{{style}}' required>
+                            </div>
+                            <div class="row md-form my-2 justify-content-center">
+                                <label class="col-sm-4">Description: </label>
+                                <input maxlength="20" type="text" class="col-sm-3 form-control validate" name="editProductDescription" id="editProductDescription{{_id}}"  value='{{description}}' required>
+                            </div>
+                            <div class="row md-form my-2 justify-content-center">
+                                <label class="col-sm-4">Color: </label>
+                                <input maxlength="16" type="text" class="col-sm-3 form-control validate" name="editProductColor" id="editProductColor{{_id}}"  value='{{color}}' required>
+                            </div>
+                            <div class="row md-form my-2 justify-content-center">
+                                <label class="col-sm-4">Price: </label>
+                                <input min="0" max="9007199254740981" type="number" class="col-sm-3 form-control validate" id="editProductPrice{{_id}}" name="editProductPrice" value='{{price}}' required>
+                            </div>                      
+                            <div id="editProductError{{_id}}" name="editProductError" class="text-danger" style="text-align:center"></div>
+                            <!--<p id="msgEd1" class="text-danger mb-0 mt-2 text-center"></p>-->
+                            </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <textarea readonly="readonly" id="editProductDetailsId" name="editProductDetailsId" style="display: none;">{{_id}}</textarea>
+                        <button type="submit" id="editProductBtn" name="editProductBtn" class="btn btn-primary">Confirm</button>
+                        </div>
+                    </form>
+                    </div>
+                    
+                    <div class="tab-pane fade show" id="p{{_id}}" role="tabpanel" aria-labelledby="phase-tab">
+                        <form method="POST" action="/admin/inventory/phaseOut"  style="margin:auto" onSubmit="return warning(this)">
+                            <textarea id="phaseOutId" name="phaseOutId" readonly="readonly" style="display: none;">{{_id}}</textarea>
+                            <h2 style="color:red">Warning</h2><hr>
+                            <h4>Phased out product won't be seen by the customers and can't be edited!</h4><br><br>
+                            <button class="btn btn-danger" style="color:white;font-size:24px" >Phase out</button>	
+                        </form>
+                    </div>
+                </div>
+          </div>
+    </div>
+  </div>
