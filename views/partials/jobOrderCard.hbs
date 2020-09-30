@@ -76,7 +76,7 @@
 </td>
 {{/if}}
 
-{{#if totalOutput}} <td><button {{#if hasDeficit}} class="btn btn-danger btn-block" {{else}}class="btn btn-primary btn-block"{{/if}}  data-toggle="modal" data-target="#modal_ttloutput_{{_id}}">{{totalOutput}}</button></td>
+{{#if totalOutput}} <td><button {{#if hasDeficit}} class="btn btn-danger btn-block" {{else}}{{#if hasDiscrepancy}}class="btn btn-warning btn-block"{{else}}class="btn btn-primary btn-block"{{/if}}{{/if}}  data-toggle="modal" data-target="#modal_ttloutput_{{_id}}">{{totalOutput}}</button></td>
 {{else}}
 <td><button class="btn btn-danger btn-block" data-toggle="modal" data-target="#modal_actual_{{_id}}">Resolve</button></td>
 {{/if}}
