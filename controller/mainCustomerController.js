@@ -37,7 +37,7 @@ function getCustomerPage(req, res, ascending) {
     let options = {
         lean: true,
         page: page,
-        limit: 30,
+        limit: 14,
 
         sort: {
             price: priceSort
