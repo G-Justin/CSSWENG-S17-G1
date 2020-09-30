@@ -38,12 +38,13 @@
 </script>
 
 <div class="jumbotron shadow p-4 text-center">
-    <h4>{{resultsMessage}}</h4><hr>
+    <h4>Orders</h4><hr>
     <form class="form-inline justify-content-center"  name="searchInventory" mehtod="get" action="#">
         <input placeholder="Start Date" class="form-control my-2 col-sm-2" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="dateStart" name="dateStart"/>
         <input placeholder="End Date" class="form-control my-2 mx-sm-3" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="dateEnd" name="dateEnd"/>
         <button class="btn btn-primary my-2" id="btn" type="submit">Apply Filter</button>
     </form><hr>
+    <p class="lead m-0">{{resultsMessage}}</p>
 </div>
 
 <div class="jumbotron p-4 text-center" style="width:100%;overflow:auto">

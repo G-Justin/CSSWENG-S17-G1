@@ -72,7 +72,7 @@
 </style>
 
 <div class="jumbotron shadow p-4 text-center">
-  <h4>{{resultsMessage}}</h4>
+  <h4>Production</h4><hr>
     <form class="form-inline justify-content-center" id="searchInventory" name="searchInventory" mehtod="get" action="#">
         <select class="form-control custom-select col-sm-2 my-2 mx-sm-3" id="status" name="status">
           <option hidden disabled selected value>Status...</option>
@@ -87,6 +87,7 @@
         <input placeholder="End Date" class="form-control my-2 mx-sm-3" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="dateEnd" name="dateEnd"/>
         <button class="btn btn-primary mt-2" id="btn" type="submit">Apply Filter</button>
     </form>
+    <p class="lead m-0">{{resultsMessage}}</p>
 </div>
 
 
