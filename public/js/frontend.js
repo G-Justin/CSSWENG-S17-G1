@@ -638,18 +638,46 @@ $(document).ready(function(){
             window.location.replace(window.location.origin + "/" + window.location.search)
         }
         
-        alert(window.location.search)
-        return;
-        if (window.location.search.length == "0") {
-            window.location.replace(window.location.href + "?sort=" + $(this).val());
-            return;
-        } else {
-            window.location.replace(window.location.href + "&sort=" + $(this).val());
+    })
+
+    $('#changePasswordBtn').click(function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $('#changePasswordError').text("");
+        $('#changePasswordSuccess').text("")
+
+        let current = $('#changePasswordCurrent').val();
+        let newPassword = $('#changePasswordNew').val();
+        let confirmPassword = $('#changePasswordConfirm').val();
+
+        if (current == "" || newPassword == "" || confirmPassword == "") {
+            $('#changePasswordError').text("All fields required");
             return;
         }
 
-        
-        
+        let passExp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+        if (!passExp.test(newPassword)) {
+            $('#changePasswordError').text('New password should be at least 8 in length, have 1 uppercase, 1 lowercase, 1 number');
+            return;
+        }
+
+        if (newPassword != confirmPassword) {
+            $('#changePasswordError').text('New passwords do not match');
+            return;
+        }
+
+        $.post('/admin/control/changePassword', {password: current, newPassword: newPassword}, (valid) => {
+            if (!valid) {
+                $('#changePasswordError').text('Current password is incorrect');
+                return;
+            }
+
+            $('#changePasswordSuccess').text("Success!")
+            $('#changePasswordCurrent').val("");
+            $('#changePasswordNew').val("");
+            $('#changePasswordConfirm').val("")
+            $('#changePasswordError').text("");
+        })
     })
 
 

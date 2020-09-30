@@ -172,7 +172,40 @@ const controlPageController = {
 
             res.redirect(req.get('referer'))
         })
-    }
+    },
+
+    changePassword: function(req, res) {
+        if (!(req.session.user && req.cookies.user_sid)) {
+            res.redirect('/login');
+            return;
+        }
+
+        let password = sanitize(req.body.password);
+        let newPassword = sanitize(req.body.newPassword)
+        User.findOne({username: req.session.user})
+            .exec((err, result) => {
+                if (!result) {
+                    res.redirect('/login');
+                    return;
+                }
+
+                bcrypt.compare(password, result.password, function(err, equal) {
+                    if (!equal) {
+                        res.send(false);
+                        return;
+                    }
+
+                    bcrypt.hash(newPassword, 10, function (err, hash) {
+                        User.updateOne({username: req.session.user}, {password: hash}, (err, result) => {
+                            console.log(result);
+                            res.send(true);
+                        })
+                      })
+                })
+            })
+    },
+
+    
 }
 
 module.exports = controlPageController;

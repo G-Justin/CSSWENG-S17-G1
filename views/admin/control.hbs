@@ -96,13 +96,13 @@
     <form id="createAccountForm" name="createAccountForm" method="POST" action="/admin/control/createAccount">
             <div class="modal-body mx-3">
 				<div class="row md-form my-2 justify-content-center">
-					<input maxlength="20" type="text" class="col-sm-8 form-control validate" name="createAccountUsername" id="createAccountUsername" placeholder="4 - 17 characters. No special characters." required>
+					<input maxlength="60" type="text" class="col-sm-8 form-control validate" name="createAccountUsername" id="createAccountUsername" placeholder="4 - 17 characters. No special characters." required>
 				</div>
                 <div class="row md-form my-2 justify-content-center">
-					<input maxlength="20" type="password" class="col-sm-8 form-control validate" name="createAccountPassword" id="createAccountPassword" placeholder="8 characters, 1 numer, upper, lower" required>
+					<input maxlength="60" type="password" class="col-sm-8 form-control validate" name="createAccountPassword" id="createAccountPassword" placeholder="8 characters, 1 numer, upper, lower" required>
 				</div>
                 <div class="row md-form my-2 justify-content-center">
-					<input maxlength="20" type="password" class="col-sm-8 form-control validate" name="createAccountConfirmPassword" id="createAccountConfirmPassword" placeholder="Confirm password" required>
+					<input maxlength="60" type="password" class="col-sm-8 form-control validate" name="createAccountConfirmPassword" id="createAccountConfirmPassword" placeholder="Confirm password" required>
 				</div>
             </div>
             <div id="createAccountError" name="createAccountError" class="text-danger" style="text-align:center"></div>
@@ -112,24 +112,24 @@
 
 <div class="jumbotron p-4 text-center center" id="changeInfo" style="width:100%;overflow:auto;">
     <h4>Change Password</h4>
-    <form id="controlForm" name="controlForm" method="POST" action="/">
+    <form id="changePasswordForm" name="changePasswordForm" method="POST" action="">
         <div class="modal-body mx-3">
             <div class="row md-form my-2 justify-content-center">
-                <input maxlength="20" type="password" class="col-sm-8 form-control validate" name="currentPassword" id="currentPassword" placeholder="Current Password" required>
+                <input maxlength="60" type="password" class="col-sm-8 form-control validate" name="changePasswordCurrent" id="changePasswordCurrent" placeholder="Current Password" required>
             </div>
             <div class="row md-form my-2 justify-content-center">
-                <input maxlength="20" type="password" class="col-sm-8 form-control validate" name="currentPasswordConfirm" id="currentPasswordConfirm" placeholder="Retype Current Password" required>
+                <input maxlength="60" type="password" class="col-sm-8 form-control validate" name="changePasswordNew" id="changePasswordNew" placeholder="New Password" required>
             </div>
             <div class="row md-form my-2 justify-content-center">
-                <input maxlength="20" type="password" class="col-sm-8 form-control validate" name="newPassword" id="newPassword" placeholder="New Password" required>
-            </div>
-            <div class="row md-form my-2 justify-content-center">
-                <input maxlength="20" type="password" class="col-sm-8 form-control validate" name="newPasswordConfirm" id="newtPasswordConfirm" placeholder="Retype New Password" required>
+                <input maxlength="60" type="password" class="col-sm-8 form-control validate" name="changePasswordConfirm" id="changePasswordConfirm" placeholder="Retype New Password" required>
             </div>
         </div>
+        <div id="changePasswordError" name="changePasswordError" class="text-danger" style="text-align:center"></div>
+        <div id="changePasswordSuccess" name="changePasswordSuccess" class="text-success" style="text-align:center"></div>
         <div class="modal-footer d-flex justify-content-center">
-            <button type="submit" id="passwordSubmit" name="passwordSubmit" class="btn btn-primary" >Submit</button>
+            <button type="submit" id="changePasswordBtn" name="changePasswordBtn" class="btn btn-primary" >Submit</button>
         </div>
+    </form>
 </div>
 
 <div class="jumbotron p-4 text-center" id="changePicture" style="width:50%;overflow:auto;float:left;border-right: 1px solid gray;">

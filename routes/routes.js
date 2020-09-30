@@ -119,4 +119,5 @@ app.get('/admin/control', controlPageController.getControlPage)
 app.get('/admin/control/checkUsername', controlPageController.checkUsername);
 app.post('/admin/control/createAccount', controlPageController.createAccount)
 app.post('/admin/control/deleteUser', controlPageController.deleteUser);
+app.post('/admin/control/changePassword', controlPageController.changePassword)
 module.exports = app;
