@@ -1,0 +1,167 @@
+{
+  "id": "0b350adb-3fde-4c45-b905-a6954b4b21a3",
+  "version": "2.0",
+  "name": "FACEMUST - Employee Log in",
+  "url": "http://localhost:3001/login",
+  "tests": [{
+    "id": "a58e923f-fc99-4826-adb7-df720c712ef0",
+    "name": "Employee Log in (Valid employee)",
+    "commands": [{
+      "id": "78c9db09-20dc-43df-a4f2-8d7a9e424ee9",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3001/login",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "644557ae-a8d5-4d09-ab6b-d83939408121",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "974x1040",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d62a292a-e61a-4ce8-b032-ccadfdbd94e5",
+      "comment": "",
+      "command": "click",
+      "target": "id=loginUsername",
+      "targets": [
+        ["id=loginUsername", "id"],
+        ["name=loginUsername", "name"],
+        ["css=#loginUsername", "css:finder"],
+        ["xpath=//input[@id='loginUsername']", "xpath:attributes"],
+        ["xpath=//form[@id='login-form']/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "189c326d-cfcb-49db-bcc1-41fdb07b4c0f",
+      "comment": "",
+      "command": "type",
+      "target": "id=loginUsername",
+      "targets": [
+        ["id=loginUsername", "id"],
+        ["name=loginUsername", "name"],
+        ["css=#loginUsername", "css:finder"],
+        ["xpath=//input[@id='loginUsername']", "xpath:attributes"],
+        ["xpath=//form[@id='login-form']/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "John"
+    }, {
+      "id": "27db341d-ff51-410a-8342-c48a54f1ee28",
+      "comment": "",
+      "command": "type",
+      "target": "id=loginPassword",
+      "targets": [
+        ["id=loginPassword", "id"],
+        ["name=loginPassword", "name"],
+        ["css=#loginPassword", "css:finder"],
+        ["xpath=//input[@id='loginPassword']", "xpath:attributes"],
+        ["xpath=//form[@id='login-form']/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "Password123"
+    }, {
+      "id": "7fd8130d-c331-4ff1-bbed-ff4bae79aa14",
+      "comment": "",
+      "command": "click",
+      "target": "id=loginSubmit",
+      "targets": [
+        ["id=loginSubmit", "id"],
+        ["name=loginSubmit", "name"],
+        ["css=#loginSubmit", "css:finder"],
+        ["xpath=//button[@id='loginSubmit']", "xpath:attributes"],
+        ["xpath=//form[@id='login-form']/div[3]/div/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'LOG IN')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "dee7a5c5-25c6-4eec-a4ce-7ad7810e1f3a",
+    "name": "Employee Log in (Username Case Sensitity)",
+    "commands": [{
+      "id": "333e90ae-2445-4f97-ab05-8bd17f7d23f1",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3001/login",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "01071a4d-536a-4020-9b78-8d96af6029be",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "974x1040",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "2b08f240-4d1d-482a-bb89-df20ffb814c7",
+      "comment": "",
+      "command": "click",
+      "target": "id=loginUsername",
+      "targets": [
+        ["id=loginUsername", "id"],
+        ["name=loginUsername", "name"],
+        ["css=#loginUsername", "css:finder"],
+        ["xpath=//input[@id='loginUsername']", "xpath:attributes"],
+        ["xpath=//form[@id='login-form']/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "18cfde7f-662a-49b3-b261-b694ade094df",
+      "comment": "",
+      "command": "type",
+      "target": "id=loginUsername",
+      "targets": [
+        ["id=loginUsername", "id"],
+        ["name=loginUsername", "name"],
+        ["css=#loginUsername", "css:finder"],
+        ["xpath=//input[@id='loginUsername']", "xpath:attributes"],
+        ["xpath=//form[@id='login-form']/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "john"
+    }, {
+      "id": "0d9d3587-67ff-4ca5-88e7-03d41eab9911",
+      "comment": "",
+      "command": "type",
+      "target": "id=loginPassword",
+      "targets": [
+        ["id=loginPassword", "id"],
+        ["name=loginPassword", "name"],
+        ["css=#loginPassword", "css:finder"],
+        ["xpath=//input[@id='loginPassword']", "xpath:attributes"],
+        ["xpath=//form[@id='login-form']/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "Password123"
+    }, {
+      "id": "a2b96493-6a62-4864-8b69-1042c2a3882b",
+      "comment": "",
+      "command": "click",
+      "target": "id=loginSubmit",
+      "targets": [
+        ["id=loginSubmit", "id"],
+        ["name=loginSubmit", "name"],
+        ["css=#loginSubmit", "css:finder"],
+        ["xpath=//button[@id='loginSubmit']", "xpath:attributes"],
+        ["xpath=//form[@id='login-form']/div[3]/div/button", "xpath:idRelative"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'LOG IN')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "4ec7ceb0-49b6-49eb-bebd-86e7c82a799a",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["a58e923f-fc99-4826-adb7-df720c712ef0"]
+  }],
+  "urls": [],
+  "plugins": []
+}
